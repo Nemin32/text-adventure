@@ -63,7 +63,7 @@ export class Room<T extends string> {
       [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
       [/(?:take|pick up)(?: the)? (?<what>.*)/, "take"],
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
-      [/(?:enter|move)(?: the)? (?<what>.*)/, "enter"],
+      [/(?:enter(?: the)?|move|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],
     ]
 
