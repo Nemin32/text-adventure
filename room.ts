@@ -14,6 +14,10 @@ export type Flags<T extends string> = Record<T, boolean>
 export type ActionGenerator<T extends Flags<string>> = (flags: T) => Actions
 
 export class Room<T extends string> {
+  printDescription() {
+    show(this.description(this.flags))
+  }
+
   actions: Actions;
 
   fallbacks: Record<ActionKinds, ActionFn> = {
@@ -32,6 +36,10 @@ export class Room<T extends string> {
 
   setFlag(flag: T, value: boolean) {
     this.flags[flag] = value;
+  }
+
+  getFlag(flag: T): boolean {
+    return this.flags[flag];
   }
 
   findAction(act: ActionKinds, name: string): ActionFn {

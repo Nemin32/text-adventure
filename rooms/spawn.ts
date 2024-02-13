@@ -17,7 +17,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["button", "the button"],
-      action: () => flags.doorOpen ? show("Yep, the button is still there.") : show("The button on the wall still seems to be functional. Maybe you should try pressing it.")
+      action: () => flags.doorOpen ? show("Yep, the button is still there.") : show("The button on the wall still seems to be functional. Maybe you should try [press]-ing it.")
     },
   ],
 
