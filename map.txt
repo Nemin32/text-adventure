@@ -1,0 +1,19 @@
+                        STRIP
+                          |
+        WRBOX - GASPI   ELEVA
+                  |       |
+             <- CORRB - CORRA - GCTRL ->
+                  |       |
+SECUR - MAINT - BOILA   SPAWN
+
+BOILA: Boiler room
+CORRA: Corridor A
+CORRB: Corridor B
+ELEVA: Elevator to surface
+GASPI: Gas pipe room
+GCTRL: Gate control
+MAINT: Maintenance room
+SECUR: Security booth
+SPAWN: Spawn
+STRIP: Landing strip (ENDING)
+WRBOX: Storage (with wrench box)

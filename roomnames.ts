@@ -1,0 +1,14 @@
+
+export enum ROOM_NAME {
+  BOILA,
+  CORRA,
+  CORRB,
+  ELEVA,
+  GASPI,
+  GCTRL,
+  MAINT,
+  SECUR,
+  SPAWN,
+  STRIP,
+  WRBOX
+}
