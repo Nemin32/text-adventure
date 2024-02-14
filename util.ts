@@ -1,5 +1,5 @@
 import { Room } from "./room.ts"
-import { ITEM, ROOM_NAME } from "./roomnames.ts"
+import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts"
 
 /* For the future
 let msgs: string[] = []
@@ -18,6 +18,8 @@ export function show(str: string) {
 }
 
 class GameManager {
+  deaths: Set<DEATH> = new Set()
+  prevName: ROOM_NAME = ROOM_NAME.SPAWN
   currentName: ROOM_NAME = ROOM_NAME.SPAWN
   currentRoom: Room<string> | null = null
   items: ITEM[] = []

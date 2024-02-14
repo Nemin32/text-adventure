@@ -1,6 +1,8 @@
-import { show } from "./util.ts";
+import { move } from "./adjacencies.ts";
+import { ITEM, ROOM_NAME } from "./roomnames.ts";
+import { GM, show } from "./util.ts";
 
-export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read"
+export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump"
 export type ActionFn = (args: Record<string, string>) => void
 
 type Actions = Partial<Record<ActionKinds,
@@ -23,6 +25,7 @@ export class Room<T extends string> {
   fallbacks: Record<ActionKinds, ActionFn> = {
     look: ({what}) => show(`I can't see any ${what} here.`),
     enter: ({what}) => show(`No. I can't enter the ${what}.`),
+    jump: ({what}) => show(`Not gonna jump into the ${what}.`),
     press: ({what}) => show(`How would I even press the ${what}?`),
     take: ({what}) => show(`I couldn't possibly take the ${what}.`),
     talk: ({what}) => show(`Talk to ${what}? Are you stupid?`),
@@ -65,6 +68,7 @@ export class Room<T extends string> {
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
       [/(?:enter(?: the)?|move|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],
+      [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"]
     ]
 
     for (const [rx, action] of cases) {
@@ -74,6 +78,11 @@ export class Room<T extends string> {
         if (res.groups) {
           if (action === "look" && ["around", "the room", "room"].includes(res.groups.what)) {
             return show(this.description(this.flags))
+          }
+
+          if (action === "use" && ["self", "me"].includes(res.groups.what) && res.groups.tool === ITEM.BREW && GM.hasItem(ITEM.BREW)) {
+            show("You drink the brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
+            return move(ROOM_NAME.GOVER)
           }
 
           return this.findAction(action, res.groups.what)(res.groups)

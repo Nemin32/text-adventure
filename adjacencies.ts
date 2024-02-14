@@ -12,7 +12,8 @@ const makeAdjacent = (name1: ROOM_NAME, name2: ROOM_NAME) => {
 const isAdjacent = (other: ROOM_NAME) => adjacency.get(`${ROOM_NAME[GM.currentName]}${ROOM_NAME[other]}`) ?? false
 
 export const move = (name: ROOM_NAME) => {
-  if (isAdjacent(name)) {
+  if (name === ROOM_NAME.GOVER || GM.currentName === ROOM_NAME.GOVER || isAdjacent(name)) {
+    GM.prevName = GM.currentName
     GM.currentName = name;
 
     const newRoom = rooms.get(name)

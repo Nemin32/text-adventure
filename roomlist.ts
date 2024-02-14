@@ -6,6 +6,7 @@ import { corrb } from "./rooms/corrb.ts"
 import { gctrl } from "./rooms/gctrl.ts"
 import { gasto } from "./rooms/gasto.ts"
 import { eleva } from "./rooms/eleva.ts"
+import { gover } from "./rooms/gover.ts"
 
 export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   //["BOILA"]
@@ -19,4 +20,5 @@ export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   [ROOM_NAME.SPAWN, spawn as Room<string>],
   //["STRIP"]
   //["WRBOX"],
+  [ROOM_NAME.GOVER, gover]
 ])
