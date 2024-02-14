@@ -2,7 +2,7 @@ import { move } from "./adjacencies.ts";
 import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts";
 import { GM, show } from "./util.ts";
 
-export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump"
+export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump" | "open"
 export type ActionFn = (args: Record<string, string>) => void
 
 type Actions = Partial<Record<ActionKinds,
@@ -29,7 +29,8 @@ export class Room<T extends string> {
     press: ({what}) => show(`How would I even press the ${what}?`),
     take: ({what}) => show(`I couldn't possibly take the ${what}.`),
     talk: ({what}) => show(`Talk to ${what}? Are you stupid?`),
-    read: ({what}) => show(`I might be illiterate, but I can't read ${what}.`),
+    read: ({what}) => show(`I might be illiterate, but I can't read the ${what}.`),
+    open: ({what}) => show(`I can't exactly open the ${what}.`),
     use: ({what, tool}) => (GM.hasItem(tool as ITEM) ? show(`How would I even use ${tool} on ${what}?`) : show(`I don't have that tool.`))
   }
 
@@ -68,7 +69,8 @@ export class Room<T extends string> {
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
       [/(?:enter(?: the)?|move|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],
-      [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"]
+      [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"],
+
     ]
 
     for (const [rx, action] of cases) {
@@ -89,7 +91,7 @@ export class Room<T extends string> {
             if (!GM.deaths.has(DEATH.BREW)) {
               GM.deaths.add(DEATH.BREW)
               show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
-              move(ROOM_NAME.GOVER)
+              move(ROOM_NAME.DEATH)
               return;
             } else {
               show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")

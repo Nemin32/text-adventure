@@ -12,7 +12,7 @@ const makeAdjacent = (name1: ROOM_NAME, name2: ROOM_NAME) => {
 const isAdjacent = (other: ROOM_NAME) => adjacency.get(`${ROOM_NAME[GM.currentName]}${ROOM_NAME[other]}`) ?? false
 
 export const move = (name: ROOM_NAME) => {
-  if (name === ROOM_NAME.GOVER || GM.currentName === ROOM_NAME.GOVER || isAdjacent(name)) {
+  if (name === ROOM_NAME.DEATH || GM.currentName === ROOM_NAME.DEATH || isAdjacent(name)) {
     GM.prevName = GM.currentName
     GM.currentName = name;
 
@@ -34,3 +34,5 @@ makeAdjacent(ROOM_NAME.CORRA, ROOM_NAME.ELEVA)
 
 makeAdjacent(ROOM_NAME.CORRB, ROOM_NAME.GCTRL)
 makeAdjacent(ROOM_NAME.CORRB, ROOM_NAME.GASTO)
+
+makeAdjacent(ROOM_NAME.GASTO, ROOM_NAME.STORG)

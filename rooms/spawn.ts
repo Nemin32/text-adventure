@@ -93,7 +93,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (!GM.deaths.has(DEATH.MEATSAW)) {
           GM.deaths.add(DEATH.MEATSAW)
           show("Against all sense and better judgement, you jump into the meatsaw. The blades effortlessly mince your meat, you hardly even have time to scream.")
-          move(ROOM_NAME.GOVER)
+          move(ROOM_NAME.DEATH)
         } else {
           show("You feel a queer sense of déja vu and decide against the stupid idea.")
         }

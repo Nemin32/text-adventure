@@ -17,12 +17,12 @@ const actions: ActionGenerator<flags> = (_) => ({
       action: () => move(ROOM_NAME.GCTRL)
     },
     {
-      trigger: ["gas storage", "gas", "storage"],
+      trigger: ["gas reservoirs", "gas", "reservoirs"],
       action: () => {
         if (gctrl.getFlag("gasRoomOpen")) {
           move(ROOM_NAME.GASTO)
         } else {
-          show("You yank the handle, but the door seems to be remotely locked.")
+          show("You yank the handle, but the door doesn't yield. You can't see any keyholes or visible locks.")
         }
       }
     },
@@ -43,6 +43,6 @@ const actions: ActionGenerator<flags> = (_) => ({
   ]
 })
 
-const description = (_: flags) => `You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* hanging from the walls, some of which still faintly glow, while most had long lost its power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside. To your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas storage* and another labeled *maintenance*.`
+const description = (_: flags) => `You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* hanging from the walls, some of which still faintly glow, while most had long lost its power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside. To your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas reservoirs* and another labeled *maintenance*.`
 
 export const corrb = new Room({}, actions, description)

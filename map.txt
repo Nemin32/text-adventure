@@ -10,12 +10,12 @@ SECUR - LOUNG - BOILA   PRISN
 [W] CORRA: Corridor A
 [W] CORRB: Corridor B
 [W] ELEVA: Elevator to landing strip
-[W] GASTO: Gas storage room
+[W] GASTO: Gas reservoirs
 [W] GCTRL: Gate control
 [ ] LOUNG: Lounge
 [ ] SECUR: Security booth
 [W] PRISN: Execution chamber
-[ ] STORG: General storage
+[W] STORG: General storage
 [ ] STRIP: Landing strip
 
 - press button

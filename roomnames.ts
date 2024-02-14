@@ -10,8 +10,8 @@ export enum ROOM_NAME {
   SECUR,
   SPAWN,
   STRIP,
-  WRBOX,
-  GOVER
+  STORG,
+  DEATH
 }
 
 export const enum ITEM {
@@ -19,13 +19,15 @@ export const enum ITEM {
   KEYCARD = "keycard",
   KEY = "key",
   BREW = "brew",
-  BOSS = "boss"
+  BOSS = "boss",
+  GUN = "gun",
 }
 
 export enum DEATH {
-  BREW,
-  BOILER,
-  ABYSS,
-  MEATSAW,
+  BREW, // ANY
+  BOILER, // BOILA
+  ABYSS, // GASTO
+  MEATSAW, // PRISN
+  FUZZLE, // STORG
   __LENGTH
 }

@@ -33,7 +33,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
       trigger: ["sign"],
-      action: () => show("The sign reads:\n'MAINTENANCE\nNo Mudokons Beyond This Point!'")
+      action: () => show("The sign reads:\n'STORAGE\nNo Mudokons Beyond This Point!'")
     },
     {
       trigger: ["valve", "plaque"],
@@ -63,6 +63,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
   ]
 })
 
-const description = (_: flags) => `You step onto a rickety catwalk, hanging above a dark abyss. On both sides you see gigantic oval *tanks*, whose bases disappear in the blackness below. With each careful step of your mechanical harness, the catwalk whines and sways precariously. You can only hope it won't decide to let go of its screws with you on it. Thankfully the room seems unharmed otherwise. You're not really sure how the fires haven't reached here yet and shudder to think what would have happened if they did.\nThere is also a massive pipe above the catwalk, which runs parallel with it, before suddenly splitting in two and disappearing among the tanks. There seems to be some sort of *valve* at the junction.\nBehind you is the open passageway to the *corridor*, while in front of you, at the far end of the catwalk, is another *door* with a *sign* next to it.`
+const description = (_: flags) => `You step onto a rickety catwalk, hanging above a dark *abyss*. On both sides you see gigantic oval *tanks*, whose bases disappear into the blackness below. With each careful step of your mechanical harness, the catwalk whines and sways precariously. You can only hope it won't decide to let go of its screws with you on it. Thankfully the room seems unharmed otherwise. You're not really sure how the fires haven't reached here yet and shudder to think what would have happened if they did.\nThere is also a massive pipe above the catwalk, which runs parallel with it, before suddenly splitting in two and disappearing among the tanks. There seems to be some sort of *valve* at the junction.\nBehind you is the open passageway to the *corridor*, while in front of you, at the far end of the catwalk, is another *door* with a *sign* next to it.`
 
 export const gasto = new Room({gasRedirected: false}, actions, description)

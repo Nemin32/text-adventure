@@ -16,4 +16,4 @@ const actions: ActionGenerator<flags> = (flags) => ({
 
 const description = (flags: flags) => `GAME OVER. You've achieved ${GM.deaths.size} of ${DEATH.__LENGTH} possible deaths.\nHowever, the powers that be have another fate for you. They call for you to go *back* and avoid your death.`
 
-export const gover = new Room({}, actions, description)
+export const death = new Room({}, actions, description)

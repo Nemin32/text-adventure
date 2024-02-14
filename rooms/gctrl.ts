@@ -9,7 +9,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
       trigger: ["terminal", "screen", "code"],
-      action: () => show("[[RFOS v2.0]]\n\nWARNING: Urgent message for Maintenance - Extreme heat detected in BOILR. Check machinery. Profit is at risk.\nWARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Lockdown engaged. Cull dissent.\nWARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised.\nWARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!\n\nCOMMANDS:\n1. Unlock elevator to the landing strip\n2. Unlock gas storage\n3. Directory\n4. Employee tally")
+      action: () => show("[[RFOS v2.0]]\n\nWARNING: Urgent message for Maintenance - Extreme heat detected in BOILR. Check machinery. Profit is at risk.\nWARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Lockdown engaged. Cull dissent.\nWARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised.\nWARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!\n\nCOMMANDS:\n1. Unlock elevator to the landing strip\n2. Unlock gas reservoirs\n3. Directory\n4. Employee tally")
     },
   ],
   look: [
@@ -106,7 +106,7 @@ BOILR: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
 ELEVA: Elevator to landing strip
-GASTO: Gas storage room
+GASTO: Gas reservoirs
 GCTRL: Gate control
 LOUNG: Lounge
 SECUR: Security booth
