@@ -128,6 +128,16 @@ STRIP: Landing strip`)
       trigger: ["right"],
       action: () => move(ROOM_NAME.CORRB)
     }
+  ],
+  talk: [
+    {
+      trigger: ["slig", "body", "corpse"],
+      action: () => show("Yeah... You just tried talking to a corpse. Obviously there is no answer. You're so taking a vacation after this crap is over.")
+    },
+    {
+      trigger: ["terminal", "screen", "computer"],
+      action: () => show("The terminal stares back at you with silent incomprehension. Must be so easy for the boss to just bark orders at screens and have things happen.")
+    }
   ]
 
 })
