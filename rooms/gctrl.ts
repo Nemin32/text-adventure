@@ -1,6 +1,6 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ROOM_NAME } from "../roomnames.ts";
+import { ITEM, ROOM_NAME } from "../roomnames.ts";
 import { GM, show } from "../util.ts";
 
 type flags = Flags<"powerRestored" | "gateOpen" | "gasRoomOpen" | "noticedKeycard" | "noticedSomething">
@@ -21,7 +21,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["slig", "body", "corpse"],
       action: () => {
         show("Poor guy probably died before the whole shitstorm began. These terminals are notoriously fickle things.")
-        if (!GM.hasItem("keycard")) {
+        if (!GM.hasItem(ITEM.KEYCARD)) {
           show("Huh, he seems to have *something* clutched in his hand.")
           flags.noticedSomething = true
         }
@@ -35,7 +35,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return
         }
 
-        if (GM.hasItem("keycard")) {
+        if (GM.hasItem(ITEM.KEYCARD)) {
           show("You've already put away the keycard.")
         } else {
           show("Your dead compatriot is holding a security *keycard*. Jackpot.")
@@ -53,8 +53,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return
         }
 
-        if (!GM.hasItem("keycard") ) {
-          GM.addItem("keycard")
+        if (!GM.hasItem(ITEM.KEYCARD) ) {
+          GM.addItem(ITEM.KEYCARD)
           show("You pocket the keycard into your mechanical pants.")
         } else {
           show("You've already got the keycard.")

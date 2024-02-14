@@ -12,3 +12,10 @@ export enum ROOM_NAME {
   STRIP,
   WRBOX
 }
+
+export const enum ITEM {
+  WRENCH = "wrench",
+  KEYCARD = "keycard",
+  KEY = "key",
+  BREW = "brew"
+}

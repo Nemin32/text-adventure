@@ -1,5 +1,5 @@
 import { Room } from "./room.ts"
-import { ROOM_NAME } from "./roomnames.ts"
+import { ITEM, ROOM_NAME } from "./roomnames.ts"
 
 /* For the future
 let msgs: string[] = []
@@ -20,13 +20,13 @@ export function show(str: string) {
 class GameManager {
   currentName: ROOM_NAME = ROOM_NAME.SPAWN
   currentRoom: Room<string> | null = null
-  items: string[] = []
+  items: ITEM[] = []
 
-  hasItem(item: string): boolean {
+  hasItem(item: ITEM): boolean {
     return this.items.includes(item)
   }
 
-  addItem(item: string) {
+  addItem(item: ITEM) {
     this.items.push(item)
   }
 }

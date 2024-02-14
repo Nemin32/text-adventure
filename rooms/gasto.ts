@@ -1,6 +1,6 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ROOM_NAME } from "../roomnames.ts";
+import { ITEM, ROOM_NAME } from "../roomnames.ts";
 import { GM, show } from "../util.ts";
 
 type flags = Flags<"gasRedirected">
@@ -44,8 +44,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["valve"],
       action: ({tool}) => {
-        if (tool == "wrench") {
-          if (GM.hasItem("wrench")) {
+        if (tool == ITEM.WRENCH) {
+          if (GM.hasItem(ITEM.WRENCH)) {
             if (!flags.gasRedirected) {
               flags.gasRedirected = true;
               show("You switch over the valve.")
