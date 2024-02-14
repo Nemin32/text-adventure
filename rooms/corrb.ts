@@ -28,7 +28,7 @@ const actions: ActionGenerator<flags> = (_) => ({
     },
     {
       trigger: ["maintenance"],
-      action: () => move(ROOM_NAME.MAINT)
+      action: () => move(ROOM_NAME.LOUNG)
     }
   ],
   look: [

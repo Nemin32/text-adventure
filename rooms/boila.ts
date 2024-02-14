@@ -15,7 +15,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["path"],
       action: () => {
         if (flags.boilerFixed) {
-          move(ROOM_NAME.MAINT)
+          move(ROOM_NAME.LOUNG)
         } else {
           if (!GM.deaths.has(DEATH.BOILER)) {
             GM.deaths.add(DEATH.BOILER)

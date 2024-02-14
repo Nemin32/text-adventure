@@ -13,7 +13,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["door", "maintenance"],
-      action: () => move(ROOM_NAME.MAINT)
+      action: () => move(ROOM_NAME.LOUNG)
     }
   ],
   look: [

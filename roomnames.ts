@@ -6,12 +6,14 @@ export enum ROOM_NAME {
   ELEVA,
   GASRE,
   GCTRL,
-  MAINT,
+  LOUNG,
   SECUR,
   SPAWN,
   STRIP,
   STORG,
-  DEATH
+
+  DEATH,
+  WIN
 }
 
 export const enum ITEM {
@@ -21,6 +23,7 @@ export const enum ITEM {
   BREW = "brew",
   BOSS = "boss",
   GUN = "gun",
+  HAT = "pilot cap"
 }
 
 export enum DEATH {

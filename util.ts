@@ -22,16 +22,16 @@ class GameManager {
   prevName: ROOM_NAME = ROOM_NAME.SPAWN
   currentName: ROOM_NAME = ROOM_NAME.SPAWN
   currentRoom: Room<string> | null = null
-  items: ITEM[] = []
+  items: Set<ITEM> = new Set()
 
   brewUsed = false
 
   hasItem(item: ITEM): boolean {
-    return this.items.includes(item)
+    return this.items.has(item)
   }
 
   addItem(item: ITEM) {
-    this.items.push(item)
+    this.items.add(item)
   }
 }
 
