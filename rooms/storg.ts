@@ -9,7 +9,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
   enter: [
     {
       trigger: ["back", "door"],
-      action: () => move(ROOM_NAME.GASTO)
+      action: () => move(ROOM_NAME.GASRE)
     }
   ],
   look: [

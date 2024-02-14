@@ -4,7 +4,7 @@ export enum ROOM_NAME {
   CORRA,
   CORRB,
   ELEVA,
-  GASTO,
+  GASRE,
   GCTRL,
   MAINT,
   SECUR,
@@ -26,7 +26,7 @@ export const enum ITEM {
 export enum DEATH {
   BREW, // ANY
   BOILER, // BOILA
-  ABYSS, // GASTO
+  ABYSS, // GASRE
   MEATSAW, // PRISN
   FUZZLE, // STORG
   __LENGTH

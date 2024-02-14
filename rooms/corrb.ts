@@ -20,7 +20,7 @@ const actions: ActionGenerator<flags> = (_) => ({
       trigger: ["gas reservoirs", "gas", "reservoirs"],
       action: () => {
         if (gctrl.getFlag("gasRoomOpen")) {
-          move(ROOM_NAME.GASTO)
+          move(ROOM_NAME.GASRE)
         } else {
           show("You yank the handle, but the door doesn't yield. You can't see any keyholes or visible locks.")
         }

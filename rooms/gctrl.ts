@@ -83,7 +83,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => {
         if (!flags.gasRoomOpen) {
           flags.gasRoomOpen = true;
-          show("The terminal beeps affirmatively. You take another look at the screen. It says 'GASTO REMOTE LOCK OPEN.'")
+          show("The terminal beeps affirmatively. You take another look at the screen. It says 'GASRE REMOTE LOCK OPEN.'")
         } else {
           show("The terminal beeps confused. The storage is already open.")
         }
@@ -96,7 +96,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
 
                         STRIP
                           |
-        STORG - GASTO   ELEVA
+        STORG - GASRE   ELEVA
                   |       |
              <- CORRB - CORRA - GCTRL ->
                   |       |
@@ -106,7 +106,7 @@ BOILR: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
 ELEVA: Elevator to landing strip
-GASTO: Gas reservoirs
+GASRE: Gas reservoirs
 GCTRL: Gate control
 LOUNG: Lounge
 SECUR: Security booth

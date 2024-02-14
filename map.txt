@@ -1,6 +1,6 @@
                         STRIP
                           |
-        STORG - GASTO   ELEVA
+        STORG - GASRE   ELEVA
                   |       |
              <- CORRB - CORRA - GCTRL ->
                   |       |
@@ -10,7 +10,7 @@ SECUR - LOUNG - BOILA   PRISN
 [W] CORRA: Corridor A
 [W] CORRB: Corridor B
 [W] ELEVA: Elevator to landing strip
-[W] GASTO: Gas reservoirs
+[W] GASRE: Gas reservoirs
 [W] GCTRL: Gate control
 [ ] LOUNG: Lounge
 [ ] SECUR: Security booth
@@ -21,7 +21,7 @@ SECUR - LOUNG - BOILA   PRISN
 - press button
 - open door
 - enter GCTRL
-- open GASTO
+- open GASRE
 - pick up keycard
 - enter ELEVA
 - pick up brew
@@ -31,7 +31,7 @@ SECUR - LOUNG - BOILA   PRISN
 - pick up key
 - go to STORG
 - pick up wrench and gun
-- go to GASTO
+- go to GASRE
 - use wrench on valve
 - go to LOUNG
 - use gun on door
