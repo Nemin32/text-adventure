@@ -9,13 +9,13 @@ const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
       trigger: ["terminal", "screen", "code"],
-      action: () => show("[[RFOS v2.0]]\n\nWARNING: Urgent message for Caretakers - Extreme heat detected. Check animals. Profit is at risk.\nWARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Apply force.\nWARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised.\nWARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!\n\nCOMMANDS:\n1. Unlock elevator to the landing strip\n2. Unlock gas storage\n3. Directory\n4. Employee tally")
+      action: () => show("[[RFOS v2.0]]\n\nWARNING: Urgent message for Maintenance - Extreme heat detected in BOILR. Check machinery. Profit is at risk.\nWARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Lockdown engaged. Cull dissent.\nWARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised.\nWARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!\n\nCOMMANDS:\n1. Unlock elevator to the landing strip\n2. Unlock gas storage\n3. Directory\n4. Employee tally")
     },
   ],
   look: [
     {
       trigger: ["terminal", "computer", "screen"],
-      action: () => show("A standard-use VYKKERTEK terminal, operated with a keyboard with just slightly too big gaps between keys for comfort.\nUsable 80% of 50% of the time.\nOccasionally explodes under heavy load.\n\n\nYou're kind of happy you've been promoted to valet instead of computer duty.")
+      action: () => show("A standard-use VYKKER-TEK terminal, operated with a keyboard with just slightly too big gaps between keys for comfort.\nUsable 80% of 50% of the time.\nOccasionally explodes under heavy load.\n\n\nYou're kind of happy you've been promoted to valet instead of computer duty.")
     },
     {
       trigger: ["slig", "body", "corpse"],
@@ -83,7 +83,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => {
         if (!flags.gasRoomOpen) {
           flags.gasRoomOpen = true;
-          show("The terminal beeps affirmatively. You take another look at the screen. It says 'GAS STORAGE UNLOCKED.'")
+          show("The terminal beeps affirmatively. You take another look at the screen. It says 'GASTO REMOTE LOCK OPEN.'")
         } else {
           show("The terminal beeps confused. The storage is already open.")
         }
@@ -96,19 +96,19 @@ const actions: ActionGenerator<flags> = (flags) => ({
 
                         STRIP
                           |
-        STORG - GASPI   ELEVA
+        STORG - GASTO   ELEVA
                   |       |
              <- CORRB - CORRA - GCTRL ->
                   |       |
-SECUR - MAINT - BOILA   PRISN
+SECUR - LOUNG - BOILA   PRISN
 
-BOILA: Boiler room
+BOILR: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
 ELEVA: Elevator to landing strip
-GASPI: Gas storage room
+GASTO: Gas storage room
 GCTRL: Gate control
-MAINT: Maintenance room
+LOUNG: Lounge
 SECUR: Security booth
 PRISN: Execution chamber
 STORG: General storage

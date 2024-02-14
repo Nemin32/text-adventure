@@ -1,5 +1,5 @@
 import { move } from "./adjacencies.ts";
-import { ITEM, ROOM_NAME } from "./roomnames.ts";
+import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts";
 import { GM, show } from "./util.ts";
 
 export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump"
@@ -30,7 +30,7 @@ export class Room<T extends string> {
     take: ({what}) => show(`I couldn't possibly take the ${what}.`),
     talk: ({what}) => show(`Talk to ${what}? Are you stupid?`),
     read: ({what}) => show(`I might be illiterate, but I can't read ${what}.`),
-    use: ({what, recv}) => show(`How would I even use ${what} on ${recv}?`)
+    use: ({what, tool}) => (GM.hasItem(tool as ITEM) ? show(`How would I even use ${tool} on ${what}?`) : show(`I don't have that tool.`))
   }
 
   constructor(private flags: Flags<T>, actionGenerator: (flags: Flags<T>) => Actions, private description: (flags: Flags<T>) => string) {
@@ -80,9 +80,21 @@ export class Room<T extends string> {
             return show(this.description(this.flags))
           }
 
-          if (action === "use" && ["self", "me"].includes(res.groups.what) && res.groups.tool === ITEM.BREW && GM.hasItem(ITEM.BREW)) {
-            show("You drink the brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
-            return move(ROOM_NAME.GOVER)
+          const canDrink = action === "use" 
+            && ["self", "me"].includes(res.groups.what)
+            && res.groups.tool === ITEM.BREW 
+            && GM.hasItem(ITEM.BREW)
+
+          if (canDrink) {
+            if (!GM.deaths.has(DEATH.BREW)) {
+              GM.deaths.add(DEATH.BREW)
+              show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
+              move(ROOM_NAME.GOVER)
+              return;
+            } else {
+              show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")
+              return;
+            }
           }
 
           return this.findAction(action, res.groups.what)(res.groups)

@@ -4,16 +4,46 @@
                   |       |
              <- CORRB - CORRA - GCTRL ->
                   |       |
-SECUR - MAINT - BOILA   PRISN
+SECUR - LOUNG - BOILA   PRISN
 
-BOILA: Boiler room
-CORRA: Corridor A
-CORRB: Corridor B
-ELEVA: Elevator to landing strip
-GASTO: Gas storage room
-GCTRL: Gate control
-MAINT: Maintenance room
-SECUR: Security booth
-PRISN: Execution chamber
-STORG: General storage
-STRIP: Landing strip
+[ ] BOILR: Boiler room
+[W] CORRA: Corridor A
+[W] CORRB: Corridor B
+[W] ELEVA: Elevator to landing strip
+[W] GASTO: Gas storage room
+[W] GCTRL: Gate control
+[ ] LOUNG: Lounge
+[ ] SECUR: Security booth
+[W] PRISN: Execution chamber
+[ ] STORG: General storage
+[ ] STRIP: Landing strip
+
+- press button
+- open door
+- enter GCTRL
+- open GASTO
+- pick up keycard
+- enter ELEVA
+- pick up brew
+- go to BOILA
+- use brew on boiler
+- go to LOUNG
+- pick up key
+- go to STORG
+- pick up wrench and gun
+- go to GASTO
+- use wrench on valve
+- go to LOUNG
+- use gun on door
+- go to SECUR
+- use keycard on terminal
+- enter "yes" (lift lockdown)
+- (pick up hat)
+- go to BOILA
+- turn on generator
+- go to GCTRL
+- open gate
+- go to PRISN
+- pick up boss
+- go to STRIP
+- leave
