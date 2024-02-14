@@ -2,8 +2,9 @@ import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
 import { GM, show } from "../util.ts";
+import { boila } from "./boila.ts";
 
-type flags = Flags<"powerRestored" | "gateOpen" | "gasRoomOpen" | "noticedKeycard" | "noticedSomething">
+type flags = Flags<"gateOpen" | "gasRoomOpen" | "noticedKeycard" | "noticedSomething">
 
 const actions: ActionGenerator<flags> = (flags) => ({
   read: [
@@ -66,7 +67,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["one", "1"],
       action: () => {
-        if (!flags.powerRestored) {
+        if (!boila.getFlag("generatorFixed")) {
           show("The terminal beeps angrily. The words 'INSUFFICIENT POWER.' appear on the screen.\nCrap, better do something about it.")
         } else {
           if (!flags.gateOpen) {
@@ -146,4 +147,4 @@ const description = (_: flags) => `You find yourself in a computer nest, right n
 Miraculously the master *terminal* at the end of the room somehow still has enough power to work and it is waiting for instructions at the moment. You're not exactly qualified, but at this point nobody could stop you from [enter]-ing some commands, if you wanted.
 Otherwise, there is nothing else to note in the room. Both to your *left* and your *right*, you see two corridors stretch as far as the eye could see.`
 
-export const gctrl = new Room({powerRestored: false, gateOpen: false, gasRoomOpen: false, noticedKeycard: false, noticedSomething: false}, actions, description)
+export const gctrl = new Room({gateOpen: false, gasRoomOpen: false, noticedKeycard: false, noticedSomething: false}, actions, description)

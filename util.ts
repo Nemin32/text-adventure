@@ -24,6 +24,8 @@ class GameManager {
   currentRoom: Room<string> | null = null
   items: ITEM[] = []
 
+  brewUsed = false
+
   hasItem(item: ITEM): boolean {
     return this.items.includes(item)
   }

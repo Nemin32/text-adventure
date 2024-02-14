@@ -86,6 +86,7 @@ export class Room<T extends string> {
             && ["self", "me"].includes(res.groups.what)
             && res.groups.tool === ITEM.BREW 
             && GM.hasItem(ITEM.BREW)
+            && !GM.brewUsed
 
           if (canDrink) {
             if (!GM.deaths.has(DEATH.BREW)) {
