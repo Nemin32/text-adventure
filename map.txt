@@ -1,6 +1,6 @@
                         STRIP
                           |
-        STORG - GASPI   ELEVA
+        STORG - GASTO   ELEVA
                   |       |
              <- CORRB - CORRA - GCTRL ->
                   |       |
@@ -10,7 +10,7 @@ BOILA: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
 ELEVA: Elevator to landing strip
-GASPI: Gas storage room
+GASTO: Gas storage room
 GCTRL: Gate control
 MAINT: Maintenance room
 SECUR: Security booth

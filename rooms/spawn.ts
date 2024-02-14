@@ -60,9 +60,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
 
   use: [
     {
-      trigger: ["self", "me"],
-      action: ({ recv }) => {
-        if (MOLLUCK.includes(recv)) {
+      trigger: MOLLUCK,
+      action: ({ tool }) => {
+        if (["self", "me"].includes(tool)) {
           show("Ew, gross!")
         } else {
           show("Huh?")

@@ -26,6 +26,9 @@ export const move = (name: ROOM_NAME) => {
 }
 
 makeAdjacent(ROOM_NAME.SPAWN, ROOM_NAME.CORRA)
+
 makeAdjacent(ROOM_NAME.CORRA, ROOM_NAME.CORRB)
 makeAdjacent(ROOM_NAME.CORRA, ROOM_NAME.GCTRL)
+
 makeAdjacent(ROOM_NAME.CORRB, ROOM_NAME.GCTRL)
+makeAdjacent(ROOM_NAME.CORRB, ROOM_NAME.GASTO)

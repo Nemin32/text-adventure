@@ -59,7 +59,7 @@ export class Room<T extends string> {
   doAction(input: string) {
     const cases: Array<[RegExp, ActionKinds]>  = [
       [/(?:(look( at)?)|inspect)(?: the)? (?<what>.*)/, "look"],
-      [/use(?: the)? (?<what>.*) on(?: the)? (?<recv>.*)/, "use"],
+      [/use(?: the)? (?<tool>.*) on(?: the)? (?<what>.*)/, "use"],
       [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
       [/(?:take|pick up)(?: the)? (?<what>.*)/, "take"],
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],

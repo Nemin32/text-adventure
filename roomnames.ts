@@ -4,7 +4,7 @@ export enum ROOM_NAME {
   CORRA,
   CORRB,
   ELEVA,
-  GASPI,
+  GASTO,
   GCTRL,
   MAINT,
   SECUR,
