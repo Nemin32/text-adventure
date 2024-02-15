@@ -28,7 +28,7 @@ const actions: ActionGenerator<flags> = (_) => ({
     },
     {
       trigger: ["maintenance"],
-      action: () => move(ROOM_NAME.LOUNG)
+      action: () => move(ROOM_NAME.BOILA)
     }
   ],
   look: [
@@ -38,11 +38,11 @@ const actions: ActionGenerator<flags> = (_) => ({
     },
     {
       trigger: ["boardroom", "door", "inside"],
-      action: () => show("You peer inside the door. As expected the situation is no better than outside. The main elevator had collapsed into the pit below. As you crane your neck, you can still faintly see the fire of the wreckage illuminate the hole. The main projector glitches on and off, occasionally illuminating the walls which glisten from the half-dried gore of your former superiors.")
+      action: () => show("You peer inside the door. The situation is even more grim inside than you expected. The main elevator had collapsed into the pit below. As you crane your neck, you can still faintly see the fire of the wreckage light up the hole. The main projector glitches on and off, occasionally illuminating the walls which glisten from the half-dried gore of your former superiors.")
     }
   ]
 })
 
-const description = (_: flags) => `You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* hanging from the walls, some of which still faintly glow, while most had long lost its power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside. To your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas reservoirs* and another labeled *maintenance*.`
+const description = (_: flags) => "You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* mounted on the wall, some of which still faintly glow, the having long had lost their power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside. To your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas reservoirs* and another labeled *maintenance*."
 
 export const corrb = new Room({}, actions, description)
