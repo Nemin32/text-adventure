@@ -3,6 +3,7 @@ import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
 import { GM, show } from "../util.ts";
 import { boila } from "./boila.ts";
+import { secur } from "./secur.ts";
 
 type flags = Flags<"gateOpen" | "gasRoomOpen" | "noticedKeycard" | "noticedSomething">
 
@@ -10,7 +11,28 @@ const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
       trigger: ["terminal", "screen", "code"],
-      action: () => show("[[RFOS v2.0]]\n\nWARNING: Urgent message for Maintenance - Extreme heat detected in BOILR. Check machinery. Profit is at risk.\nWARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Lockdown engaged. Cull dissent.\nWARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised.\nWARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!\n\nCOMMANDS:\n1. Unlock elevator to the landing strip\n2. Unlock gas reservoirs\n3. Directory\n4. Employee tally")
+      action: () => {
+        const warnings: Array<[boolean, string]> = [
+          [!boila.getFlag("boilerFixed"), "WARNING: Urgent message for Maintenance - Extreme heat detected in BOILA. Check machinery. Profit is at risk."],
+          [!secur.getFlag("lockdownLifted"), "WARNING: Urgent message for Security - Employee count mismatch. Potential breakout attempt in progress. Lockdown engaged."],
+          [!boila.getFlag("generatorFixed"), "WARNING: Urgent message for Maintenance - Extreme power surge detected. Main power supply compromised."],
+          [true, "WARNING: Urgent message for ALL DEPARTMENTS - Multiple structural failures detected. Capital is at risk. FIX IT!!!"]
+        ];
+
+        const warnMsg = warnings.filter(([cond, _]) => cond).map(([_, msg]) => msg).join("\n")
+
+        const msg = `[[RFOS v2.0]]
+        
+${warnMsg}
+
+COMMANDS:
+1. Unlock elevator to the landing strip
+2. Unlock gas reservoirs
+3. Directory
+4. Employee tally`
+
+        show(msg)
+      }
     },
   ],
   look: [
@@ -21,7 +43,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["slig", "body", "corpse"],
       action: () => {
-        show("Poor guy probably died before the whole shitstorm began. These terminals are notoriously fickle things.")
+        show("You take a closer look at your former compatriot. If not for the many sharp glass fragments sticking out of him and the copious amount of dried blood, he'd look like he's sound asleep. Poor guy probably died before the whole shitstorm began. These terminals are notoriously fickle things.")
         if (!GM.hasItem(ITEM.KEYCARD)) {
           show("Huh, he seems to have *something* clutched in his hand.")
           flags.noticedSomething = true
@@ -69,13 +91,18 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => {
         if (!boila.getFlag("generatorFixed")) {
           show("The terminal beeps angrily. The words 'INSUFFICIENT POWER.' appear on the screen.\nCrap, better do something about it.")
+          return;
+        }
+
+        if (!secur.getFlag("lockdownLifted")) {
+          show("The temrinal prints 'DENIED. LOCKDOWN IN PROGRESS.' onto the screen. No getting out from here until the system thinks things are fine.")
+        }
+
+        if (!flags.gateOpen) {
+          flags.gateOpen = true;
+          show("That did the trick.\nYou should get the boss and get outta here before this burning heap collapses on your neck.")
         } else {
-          if (!flags.gateOpen) {
-            flags.gateOpen = true;
-            show("That did the trick.\nYou should get the boss and get outta here before this burning heap collapses on your neck.")
-          } else {
-            show("The gate is already open, what are you waiting for?\nDO EET!")
-          }
+          show("The gate is already open, what are you waiting for?\n Move already!")
         }
       }
     },
@@ -103,7 +130,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
                   |       |
 SECUR - LOUNG - BOILA   PRISN
 
-BOILR: Boiler room
+BOILA: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
 ELEVA: Elevator to landing strip
