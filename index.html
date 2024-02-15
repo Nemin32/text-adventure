@@ -5,11 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="main.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      line-height: 1.65;
+      font-size: 18px;
+    }
+
+    #output {
+      margin-top: 1rem;
+
+      width: 100%;
+
+      min-height: 600px;
+      max-height: 600px;
+
+      overflow-y: auto;
+
+      border: 1px solid black;
+
+      p {
+        margin: 0;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+
+      }
+    }
+
+    #act {
+      width: 100%;
+    }
+
+    #input {
+      width: 100%;
+      padding: 0;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      max-width: 900px;
+      min-width: 400px;
+
+      margin: 2rem auto;
+    }
+  </style>
 </head>
 <body>
-  <div id="output"></div>
-  <form id="act">
-  <input id="input">
-  </form>
+  <div id="container">
+    <div id="output"></div>
+    <form id="act">
+    <input id="input">
+    </form>
+  </div>
 </body>
 </html>
