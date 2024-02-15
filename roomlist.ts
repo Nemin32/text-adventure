@@ -12,6 +12,7 @@ import { boila } from "./rooms/boila.ts"
 import { secur } from "./rooms/secur.ts"
 import { loung } from "./rooms/loung.ts"
 import { strip } from "./rooms/strip.ts"
+import { finis } from "./rooms/finis.ts"
 
 export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   [ROOM_NAME.BOILA, boila],
@@ -25,5 +26,6 @@ export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   [ROOM_NAME.SPAWN, spawn],
   [ROOM_NAME.STRIP, strip],
   [ROOM_NAME.STORG, storg],
+  [ROOM_NAME.FINIS, finis],
   [ROOM_NAME.DEATH, death as Room<string>]
 ])

@@ -13,7 +13,7 @@ export enum ROOM_NAME {
   STORG,
 
   DEATH,
-  WIN
+  FINIS
 }
 
 // biome-ignore lint/suspicious/noConstEnum: <explanation>
@@ -29,6 +29,7 @@ export  const enum ITEM {
 
 export enum DEATH {
   BREW, // ANY
+  GUN, // ANY
   BOILER, // BOILA
   ABYSS, // GASRE
   MEATSAW, // PRISN
