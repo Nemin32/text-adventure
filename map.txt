@@ -6,7 +6,7 @@
                   |       |
 SECUR - LOUNG - BOILA   PRISN
 
-[W] BOILR: Boiler room
+[W] BOILA: Boiler room
 [W] CORRA: Corridor A
 [W] CORRB: Corridor B
 [W] ELEVA: Elevator to landing strip

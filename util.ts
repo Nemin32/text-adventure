@@ -1,20 +1,34 @@
 import { Room } from "./room.ts"
 import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts"
 
-/* For the future
-let msgs: string[] = []
+type Msg = {type: "msg", msg: string} | {type: "divider"}
 
-setInterval(() => {
-  if (msgs.length > 0) {
-    console.log(msgs[0])
-    msgs = msgs.slice(1)
-  }
-}, 200)
-*/
+let msgs: Msg[] = []
+
+window.addEventListener("load", () => {
+  const output = document.getElementById("output")!
+
+  setInterval(() => {
+    if (msgs.length > 0) {
+      //console.log(msgs[0])
+
+      if (msgs[0].type === "divider") {
+        output.appendChild(document.createElement("hr"))
+      } else {
+        const p = document.createElement("p")
+        p.innerText = msgs[0].msg
+        output.appendChild(p)
+      }
+
+      msgs = msgs.slice(1)
+    }
+  }, 200)
+
+})
 
 export function show(str: string) {
-  console.log(str)
-  //msgs = [...msgs, ...str.split("\n")]
+  //console.log(str)
+  msgs = [...msgs, ...str.split("\n").map<Msg>(s => ({type: "msg", msg: s})), {type: "divider"}]
 }
 
 class GameManager {
