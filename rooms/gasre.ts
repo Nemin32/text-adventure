@@ -12,8 +12,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => move(ROOM_NAME.CORRB)
     },
     {
-      trigger: ["door", "maintenance"],
-      action: () => move(ROOM_NAME.LOUNG)
+      trigger: ["door", "storage"],
+      action: () => move(ROOM_NAME.STORG)
     }
   ],
   look: [
