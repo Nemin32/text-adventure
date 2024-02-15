@@ -35,7 +35,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["locker"],
       action: () => {
         if (!GM.hasItem(ITEM.GUN)) {
-          show("To your dismay the gun only has a single bullet in it. Still, gripping the weapon gives you a certain calmness you haven't felt for a long time.")
+          show("You're overjoyed to find a fresh gun inside... only to suddenly realize in dismay that it only has a single bullet in it. Still, gripping the weapon gives you a certain calmness you haven't felt for a long time.")
           GM.addItem(ITEM.GUN)
         } else {
           show("The locker is empty.")
