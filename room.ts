@@ -70,7 +70,7 @@ export class Room<T extends string> {
       [/(?:enter(?: the)?|move|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],
       [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"],
-
+      [/open (?<what>.*)/, "open"]
     ]
 
     for (const [rx, action] of cases) {

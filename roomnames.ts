@@ -16,7 +16,8 @@ export enum ROOM_NAME {
   WIN
 }
 
-export const enum ITEM {
+// biome-ignore lint/suspicious/noConstEnum: <explanation>
+export  const enum ITEM {
   WRENCH = "wrench",
   KEYCARD = "keycard",
   KEY = "key",
@@ -32,5 +33,6 @@ export enum DEATH {
   ABYSS, // GASRE
   MEATSAW, // PRISN
   FUZZLE, // STORG
+  GAS, // SECUR
   __LENGTH
 }

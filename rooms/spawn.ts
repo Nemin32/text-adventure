@@ -46,11 +46,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["button", "the button"],
       action: () => {
-        show("The button lets out a quiet click as you press it.")
-
         if (!flags.doorOpen) {
           flags.doorOpen = true;
-          show("The door next to the button hisses open.")
+          show("The button lets out a quiet click as you press it.\nThe door next to the button hisses open.")
         } else {
           show("Nothing happens.")
         }
@@ -77,7 +75,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["door"],
       action: () => {
         if (flags.doorOpen) {
-          show("You step through the door.")
           move(ROOM_NAME.CORRA)
         } else {
           show("The door is locked.")
