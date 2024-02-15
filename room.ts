@@ -67,23 +67,84 @@ export class Room<T extends string> {
       [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
       [/(?:take|pick up)(?: the)? (?<what>.*)/, "take"],
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
-      [/(?:enter(?: the)?|move|go) (?<what>.*)/, "enter"],
+      [/(?:enter(?: the)?|(?:move(?: to)?)|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],
       [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"],
       [/open (?<what>.*)/, "open"]
     ]
+
+    const YOURSELF = ["me", "yourself", "self", "player", "character"]
+
+    if (input === "help") {
+      const helpMsg = `Escape from RuptureFarms is a text-based adventure game, similar in spirit to Zork.
+You interact with the world using the following text commands:
+
+- look around
+- look at <object>
+- use <tool> on <subject> (<subject> may be "me" or "self" to use an item on yourself)
+- press / push <object>
+- talk to <someone>
+- go / enter / move to <location> (use "go back" to enter the previous room)
+- read <something>
+- jump / dive into <somewhere>
+- open <something>
+- inventory
+
+Some puzzles might be concealed or require special interaction before you can solve them, but no puzzle requires anything not mentioned here. Experiment!
+If any problems come up, please complain to Nemin.`
+
+      show(helpMsg)
+      return
+    }
+
+    if (input === "inventory") {
+      if (GM.items.size === 0) {
+        show("You don't have any items on you.")
+        return;
+      }
+
+      const invMap = new Map<ITEM, string>([
+        [ITEM.BOSS, "Your knocked out boss. It's best not to disturb him any more than being carried on your boney back already does."],
+        [ITEM.BREW, "A refreshing bottle of SoulStorm Brew. Extremely flammable, even more tasty."],
+        [ITEM.GUN, "A gun with one bullet. A Slig's best friend... after a Slog, perhaps."],
+        [ITEM.HAT, "A pilot's trustiest companion. Just having it on your head fills you with confidence."],
+        [ITEM.KEY, "A small key with a tag on it that simply says 'FOR EMERGENCIES'."],
+        [ITEM.KEYCARD, "A small gray keycard with the word 'SECURITY' stamped on it."],
+        [ITEM.WRENCH, "A long, heavy-duty wrench, with a hexagonal slot."]
+      ])
+
+      const items = [...GM.items.values()].map(i => `- ${i}: ${invMap.get(i)}`).join("\n")
+      show(`Your current possessions:\n${items}`)
+
+      return;
+    }
 
     for (const [rx, action] of cases) {
       const res = input.match(rx)
 
       if (res !== null) {
         if (res.groups) {
+          const canShoot = action === "use" 
+            && YOURSELF.includes(res.groups.what) 
+            && res.groups.tool === ITEM.GUN 
+            && GM.hasItem(ITEM.GUN)
+
+          if (canShoot) {
+            if (!GM.deaths.has(DEATH.GUN)) {
+              GM.deaths.add(DEATH.GUN)
+              show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as everything cuts to black.")
+              move(ROOM_NAME.DEATH)
+            } else {
+              show("No, that would not solve anything. You have to press on and see this to the end.")
+            }
+          } 
+
           if (action === "look" && ["around", "the room", "room"].includes(res.groups.what)) {
             return show(this.description(this.flags))
           }
 
           const canDrink = action === "use" 
-            && ["self", "me"].includes(res.groups.what)
+            && YOURSELF.includes(res.groups.what)
             && res.groups.tool === ITEM.BREW 
             && GM.hasItem(ITEM.BREW)
             && !GM.brewUsed
@@ -93,11 +154,11 @@ export class Room<T extends string> {
               GM.deaths.add(DEATH.BREW)
               show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
               move(ROOM_NAME.DEATH)
-              return;
             } else {
               show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")
-              return;
             }
+
+            return;
           }
 
           return this.findAction(action, res.groups.what)(res.groups)
