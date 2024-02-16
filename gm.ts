@@ -10,6 +10,8 @@ class GameManager {
 
   brewUsed = false;
 
+  stepCounter = 0;
+
   hasItem(item: ITEM): boolean {
     return this.items.has(item);
   }
