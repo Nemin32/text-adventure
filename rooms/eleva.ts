@@ -1,7 +1,8 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 import { gctrl } from "./gctrl.ts";
 
 type flags = Flags<"noticedBrew">
@@ -52,10 +53,20 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["door"],
       action: () => move(ROOM_NAME.CORRA)
+    },
+    {
+      trigger: ["gate"],
+      action: () => {
+        if (gctrl.getFlag("gateOpen")) {
+          move(ROOM_NAME.STRIP)
+        } else {
+          show("The gate remains locked and sadly you cannot phase though metal.")
+        }
+      }
     }
   ]
 })
 
-const description = (flags: flags) => `One step from freedom. ${gctrl.getFlag("gateOpen") ? "The *gate* is wide open, you should hurry and get out already." : "Except for the ten-ton *gate* in front of you blocking the path."} Just a few hours ago this was an endlessly busy hub of wares coming and going from the Farms, using the freight elevator that connects the main corridor of the facility with the landing strip on the roof. *Schedules* are haphazardly stapled on the walls. There is a small, abandoned guard booth next to the gate, with a *telephone* inside. The floor is covered in scratches from all the boxes being dragged around, a visible path of rubbed out metal connecting the elevator to the *door* into the factory. While the path itself is empty, those stupid Mudokons never had too much finesse handling goods, so there is a lot of *junk* strewn around left and right.`
+const description = (flags: flags) => `One step from freedom. ${gctrl.getFlag("gateOpen") ? "The *gate* is wide open, you should hurry and get out already." : "Except for the ten-ton *gate* in front of you blocking the path."} Just a few hours ago this was an endlessly busy hub of wares coming and going from the Farms, using the freight elevator that connects the main corridor of the facility with the landing strip on the roof.\n*Schedules* are haphazardly stapled on the walls. There is a small, abandoned guard booth next to the gate, with a *telephone* inside. While the path between the two ends of the room is mostly clean, those stupid Mudokons never had too much finesse handling goods, so there is a lot of *junk* strewn around left and right.\nThe floor itself is covered in scratches from all the boxes being dragged around, with a visible path of rubbed-out metal connecting the elevator to the *door* into the factory.`
 
 export const eleva = new Room({noticedBrew: false}, actions, description)

@@ -1,7 +1,8 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 
 type flags = Flags<never>
 
@@ -11,9 +12,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["ship", "blimp", "plane"],
       action: () => {
         if (GM.hasItem(ITEM.BOSS)) {
-          show("Yay, you win.")
+          move(ROOM_NAME.FINIS)
         } else {
-          show("Oh no, you don't have Molluck")
+          show("You cannot leave the boss behind. Who'd pay for your legs?")
         }
       }
     },

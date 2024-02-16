@@ -1,7 +1,8 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 
 type flags = Flags<"lockdownLifted" | "terminalUnlocked" | "safeOpened">
 
@@ -77,7 +78,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["safe"],
       action: () => {
         if (!flags.safeOpened) {
-          show("The safe is securely locked. The number-pad on it is expecting a four digit input. You could [enter] the password here, if you knew it. There is also a small *note* plastered onto the safe.")
+          show("The safe is securely locked. The number-pad on it is expecting a four digit input. You could *enter* the password here, if you knew it. There is also a small *note* plastered onto the safe.")
         } else {
           if (!GM.hasItem(ITEM.HAT)) {
             show("A snazzy pilot *cap* is staring back at you from inside the safe.")
@@ -97,7 +98,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: TERMINAL,
-      action: () => show("The security terminal is the exact same model as the one you have seen at the gate control. This one just seems to be even more decrepit from all the cigarette smoke and messy eating of your former buddies. There seems to be some text on it you could read.")
+      action: () => show("The security terminal is the exact same model as the one you have seen at the gate control. This one just seems to be even more decrepit from all the cigarette smoke and messy eating of your former buddies. The terminal's screen is lit up with text you could read.")
     },
   ],
   use: [
@@ -145,6 +146,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
   ]
 })
 
-const description = (flags: flags) => `The security office is a mess. Everywhere you look you see the signs of a hurried leave. The desks are full of coffee-stained *papers*, some of which have been blown off and now lie trampled on the floor. Among the papers you see a still-operational *terminal*. Many of the chairs in the room have toppled over as their occupants rushed out to respond to the emergency, but even those that managed to stand upright ended up clumped in the middle of the room. ${flags.lockdownLifted ? "The emergency light and the siren have mercifully turned off. In their stead, a cold fluorescent bulb illuminates the room, granting it an unnervingly still atmosphere." : "A rotating emergency light paints the room in hellish red hues, accompanied by the moderately quiet, but still grating blaring of a siren."} A massive ${flags.safeOpened ? "open" : "closed"} *safe* sits in the corner of the room, occupying a sizeable chunk of it. The now blasted-open *door* leads back into the lounge.`
+const description = (flags: flags) => `The security office is a mess. Everywhere you look you see the signs of a hurried leave. The desks are full of coffee-stained *papers*, some of which have been blown off and now lie trampled on the floor. Among the papers you see a still-operational *terminal*. Many of the chairs in the room have toppled over as their occupants rushed out to respond to the emergency, but even those that managed to stand upright ended up clumped in the middle of the room.\n${flags.lockdownLifted ? "The emergency light and the siren have mercifully turned off. In their stead, a cold fluorescent bulb illuminates the room, granting it an unnervingly still atmosphere." : "A rotating emergency light paints the room in hellish red hues, accompanied by the moderately quiet, but still grating blaring of a siren."}\nA massive ${flags.safeOpened ? "open" : "closed"} *safe* sits in the corner of the room, occupying a sizeable chunk of it. The now blasted-open *door* leads back into the lounge.`
 
 export const secur = new Room({lockdownLifted: false, safeOpened: false, terminalUnlocked: false}, actions, description)

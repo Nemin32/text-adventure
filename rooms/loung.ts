@@ -1,9 +1,10 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 
-type flags = Flags<"securityOpen">
+type flags = Flags<"securityOpen" | "keyNoticed">
 
 const actions: ActionGenerator<flags> = (flags) => ({
   look: [
@@ -12,8 +13,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => show("A few darts are sticking out from the board, mostly around the edges. None of the guys were very good shots. It's easier when you don't have to care about things like 'ballistics' and 'having a good aim'.`")
     },
     {
-      trigger: ["poker table", "table", "poker"],
-      action: () => show("You see four hands on the table, one of them being a five of aces... Yeah, there is reason why you eventually stopped playing for Moolah. Upper management was incredibly unhappy with the amount of break-time fatalities.")
+      trigger: ["poker table", "table", "poker", "desk"],
+      action: () => {
+        flags.keyNoticed = true;
+        show(`You see four hands on the table, one of them being a five of aces... Yeah, there is reason why you eventually stopped playing for Moolah. Upper management was incredibly unhappy with the amount of break-time fatalities.${!GM.hasItem(ITEM.KEY) ? " Huh there also seems to be a small *key* on the desk." : ""}`)
+      }
     },
     {
       trigger: ["poster"],
@@ -53,6 +57,24 @@ const actions: ActionGenerator<flags> = (flags) => ({
       }
     }
   ],
+  take: [
+    {
+      trigger: ["key", "small key"],
+      action: () => {
+        if (!flags.keyNoticed) {
+          show("Huh, what key?")
+          return;
+        }
+
+        if (!GM.hasItem(ITEM.KEY)) {
+          GM.addItem(ITEM.KEY)
+          show("You pocket the small key.")
+        } else {
+          show("You've already put the key away.")
+        }
+      }
+    }
+  ],
   enter: [
     {
       trigger: ["path", "boiler room"],
@@ -71,6 +93,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
   ]
 })
 
-const description = (flags: flags) => `You step into the employee lounge area. You've never quite understood why they placed the lounge past the boilers, but then you've suspected for years that RuptureFarms wasn't exactly built up to code... If there even was a code to begin with.\nStill, even with all the chaos and destruction outside, you feel a bit of fuzziness in your cold, dead heart as you gaze over the place that gave you so many good memories. A poker *table* dominates the middle of the room, situated between a handful of three-legged chairs. The floor is covered by a cheap, faded carpet, its pattern long unrecognizable under all the stains and years of abuse. A *darts board* hangs on the far end of the wall, next to it a faded *poster*. Below them, on a small cubby, you hear an old *TV* babbling to itself. As you make your way through the room, your legs keep kicking away empty bottles of SoulStorm Brew. You smile. It's a mess for sure, but it was always your mess.\nA *door* to the left leads into a nearby security booth, while the *path* back into the boiler room is behind you.`
+const description = (flags: flags) => `You step into the employee lounge area. You've never quite understood why they placed the lounge past the boilers, but then you've suspected for years that RuptureFarms wasn't exactly built up to code... If there even was a code to begin with.\nStill, even with all the chaos and destruction outside, you feel a bit of fuzziness in your cold, dead heart as you gaze over the place that gave you so many good memories. A poker *table* dominates the middle of the room, situated between a handful of three-legged chairs. The floor is covered by a cheap, faded carpet, its pattern long unrecognizable under all the stains and years of abuse. A *darts board* hangs on the far end of the wall, next to it a faded *poster*. Below them, on a small cubby, you hear an old *TV* babbling to itself. As you make your way through the room, your legs keep kicking away empty bottles of SoulStorm Brew. You smile. It's a mess for sure, but it is your mess.\nA *door* to the left leads into a nearby security booth, while the *path* back into the boiler room is behind you.`
 
-export const loung = new Room({securityOpen: false}, actions, description)
+export const loung = new Room({securityOpen: false, keyNoticed: false}, actions, description)

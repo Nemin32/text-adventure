@@ -1,7 +1,9 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
+import { gasre } from "./gasre.ts";
 
 type flags = Flags<"boilerFixed" | "generatorFixed">
 
@@ -49,10 +51,33 @@ const actions: ActionGenerator<flags> = (flags) => ({
           show("No, I don't think that would work.")
         }
       }
+    },
+    {
+      trigger: ["generator"],
+      action: ({tool}) => {
+        if (flags.generatorFixed) {
+          show("The generator is happily running. There is nothing else you need to do.")
+          return;
+        }
+
+        if (tool === ITEM.KEY) {
+          if (GM.hasItem(ITEM.KEY)) {
+            if (!gasre.getFlag("gasRedirected")) {
+              show("You turn the key... and nothing happens. Hm. The generator seems to be out of gas.")
+              return;
+            }
+
+            flags.generatorFixed = true;
+            show("With a grating sputter and a wild jerk the generator springs into life, delivering vital electricity to the grid.")
+          } else {
+            show("Hmm, you seem to need a key to start this baby.")
+          }
+        }
+      }
     }
   ]
 })
 
-const description = (flags: flags) => `The boiler room has seen better days. As you navigate the wild web of pipes, you take a peek at the gauges. As expected, they're all in the red. In one corner of the room a dirty generator ${flags.generatorFixed ? "belches disgusting smoke, as it converts the gas into electricity." : "sits unused."}\nA *door* leads back into the corridor. Another *path* leads deeper inside, towards the employee lounge. ${flags.boilerFixed ? "Next to it, you see the still-smoking wreckage of what was once a *furnace*." : "However, passage is currently blocked by the flames of an overheated *furnace* next to it."}`
+const description = (flags: flags) => `The boiler room has seen better days. As you navigate the wild web of pipes, you take a peek at the gauges. As expected, they're all in the red. In one corner of the room a dirty *generator* ${flags.generatorFixed ? "belches disgusting smoke, as it converts the gas into electricity." : "sits unused."}\nA *door* leads back into the corridor. Another *path* leads deeper inside, towards the employee lounge. ${flags.boilerFixed ? "Next to it, you see the still-smoking wreckage of what was once a *furnace*." : "However, passage is currently blocked by the flames of an overheated *furnace* next to it."}`
 
 export const boila = new Room({boilerFixed: false, generatorFixed: false}, actions, description)

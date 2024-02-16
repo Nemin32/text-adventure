@@ -1,6 +1,6 @@
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATH, ITEM } from "../roomnames.ts";
-import { GM } from "../util.ts";
+import { GM } from "../gm.ts";
 
 type flags = Flags<never>
 

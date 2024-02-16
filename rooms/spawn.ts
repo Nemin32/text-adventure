@@ -1,6 +1,7 @@
 import { Flags, Room, ActionGenerator } from "../room.ts";
 import { move } from "../adjacencies.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { gctrl } from "./gctrl.ts";
 
@@ -14,7 +15,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: MOLLUCK,
       action: () => {
         if (!gctrl.getFlag("gateOpen")) {
-          show("It doesn't seem like a good idea to try to move him until the gate is open. If he came to any further harm, there's no way you'd get out of here alive.")
+          show("It doesn't seem like a good idea to try to move him until you've found a way to leave. If he came to any further harm, there's no way you'd get out of here alive.")
         } else {
           if (!GM.hasItem(ITEM.BOSS)) {
             show("As carefully as you can, you pick him up and place him on your shoulders. Your pants complain from the extra weight, but they'll have to manage. The trip isn't that long anyway and, thankfully, the boss is less heavy than he looks. His bones seem brittle as glass and his skin is like the toilet paper they had at the guardhouse.\nNo wonder he likes to hide in those huge suits, if he looks this much like a freak.")

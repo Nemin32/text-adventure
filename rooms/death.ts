@@ -1,17 +1,17 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATH } from "../roomnames.ts";
-import { GM } from "../util.ts";
+import { GM } from "../gm.ts";
 
 type flags = Flags<never>
 
 const actions: ActionGenerator<flags> = (flags) => ({
-  enter: [
+  /*enter: [
     {
       trigger: ["back"],
       action: () => move(GM.prevName)
     }
-  ]
+  ]*/
 })
 
 

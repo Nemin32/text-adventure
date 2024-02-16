@@ -27,7 +27,7 @@ const actions: ActionGenerator<flags> = (_) => ({
       }
     },
     {
-      trigger: ["maintenance"],
+      trigger: ["maintenance", "boiler", "maint"],
       action: () => move(ROOM_NAME.BOILA)
     }
   ],
@@ -43,6 +43,6 @@ const actions: ActionGenerator<flags> = (_) => ({
   ]
 })
 
-const description = (_: flags) => "You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* mounted on the wall, some of which still faintly glow, the having long had lost their power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside. To your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas reservoirs* and another labeled *maintenance*."
+const description = (_: flags) => "You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* mounted on the wall, some of which still faintly glow, the having long had lost their power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside.\nTo your *right* is the way back to the execution chamber, to your *left* the path loops around to the gate control. There is also a door labeled *gas reservoirs* and another labeled *maintenance*."
 
 export const corrb = new Room({}, actions, description)

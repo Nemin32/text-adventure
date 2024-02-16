@@ -1,7 +1,8 @@
 import { move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { GM, show } from "../util.ts";
+import { show } from "../util.ts";
+import { GM } from "../gm.ts";
 import { boila } from "./boila.ts";
 import { secur } from "./secur.ts";
 
@@ -38,7 +39,7 @@ COMMANDS:
   look: [
     {
       trigger: ["terminal", "computer", "screen"],
-      action: () => show("A standard-use VYKKER-TEK terminal, operated with a keyboard with just slightly too big gaps between keys for comfort.\nUsable 80% of 50% of the time.\nOccasionally explodes under heavy load.\n\n\nYou're kind of happy you've been promoted to valet instead of computer duty.")
+      action: () => show("A standard-use VYKKER-TEK terminal, operated with a keyboard with just slightly too big gaps between keys for comfort.\nUsable 80% of 50% of the time.\nOccasionally explodes under heavy load.\n\nAll things considered you'd rather tolerate the boss any day than be on computer duty.")
     },
     {
       trigger: ["slig", "body", "corpse"],
@@ -95,7 +96,8 @@ COMMANDS:
         }
 
         if (!secur.getFlag("lockdownLifted")) {
-          show("The temrinal prints 'DENIED. LOCKDOWN IN PROGRESS.' onto the screen. No getting out from here until the system thinks things are fine.")
+          show("The terminal prints 'DENIED. LOCKDOWN IN PROGRESS.' onto the screen. No getting out from here until the system thinks things are fine.")
+          return;
         }
 
         if (!flags.gateOpen) {
@@ -171,7 +173,7 @@ STRIP: Landing strip`)
 })
 
 const description = (_: flags) => `You find yourself in a computer nest, right next to the elevator. Chairs lie haphazardly scattered around the room. A few terminals are embedded in the wall, wires running wildly all over the floor. You try some of them, but they're completely busted. A *slig* sits slumped in a chair nearby, his chest is full of sharp glass fragments. The terminal in front of him is belching smoke and you're pretty sure you can hear fire quietly popping from the inside.
-Miraculously the master *terminal* at the end of the room somehow still has enough power to work and it is waiting for instructions at the moment. You're not exactly qualified, but at this point nobody could stop you from [enter]-ing some commands, if you wanted.
+Miraculously the master *terminal* at the end of the room somehow still has enough power to work and it is waiting for instructions at the moment. You're not exactly qualified, but at this point nobody could stop you from *enter*-ing some commands, if you wanted.
 Otherwise, there is nothing else to note in the room. Both to your *left* and your *right*, you see two corridors stretch as far as the eye could see.`
 
 export const gctrl = new Room({gateOpen: false, gasRoomOpen: false, noticedKeycard: false, noticedSomething: false}, actions, description)
