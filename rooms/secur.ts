@@ -42,7 +42,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
 
         if (!GM.deaths.has(DEATH.GAS)) {
-          show("You hear distant hissing in the pipes as nerve-gas fills the lower levels, killing all those who might have survived the initial onslaught. A few seconds later you hear a deafening thud and the very floor opens below your metal legs. The gas, ignited by the fires ravaging the facility, erupts into the room and melts you in less than a moment.")
+          show("You hear distant hissing in the pipes as nerve-gas fills the lower levels, killing all those who might have survived the initial catastrophe. A few seconds later you hear a deafening thud and the very floor bulges, then opens below your metal legs. An incredible volume of gas, ignited by the fires ravaging the facility, erupts into the room and melts you in less than a moment.")
           GM.deaths.add(DEATH.GAS)
           die()
         } else {
@@ -113,7 +113,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (tool === ITEM.KEYCARD) {
           if (GM.hasItem(ITEM.KEYCARD)) {
             flags.terminalUnlocked = true;
-            show("The terminal lets out a small chime and lets you in.")
+            show("The terminal lets out a small chime as it logs you in.")
           } else {
             show("I need to find a keycard first.")
           }
@@ -126,7 +126,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
       trigger: ["note"],
-      action: () => show("The note reads: 'Alright, shitheads, let me explain it for the last time. The code is the date of the factory's opening. That's the one and only number have to remember to keep your job here. If you're unable to even accomplish this one task, visit me and I'll personally arrange for your early retirement. - MGMT'")
+      action: () => show("The note reads:\n'Alright, shitheads, let me explain it for the last time. *The code is the date of the factory's opening.* That's the one and only number have to remember to keep your job here. If you're unable to even accomplish this one task, visit me and I'll personally arrange for your early retirement. - Head of Security'")
     },
     {
       trigger: TERMINAL,
@@ -139,13 +139,13 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (flags.lockdownLifted) {
           show("[[RFOS v2.0]]\nAll operations nominal. Have a very safe and productive day!")
         } else {
-          show("[[RFOS v2.0]]\nATTENTION - Site-wide employee tally mismatch. Potential breakout in progress. Lockdown engaged, all commerce halted. Apply force and cull dissent.\n\nOPTIONS:\n1. Manually lift lockdown\n2. Flush lower levels with gas")
+          show("[[RFOS v2.0]]\nATTENTION - Site-wide employee tally mismatch. Potential breakout in progress. Lockdown engaged, all commerce halted. Apply force, cull dissent, restore productivity.\n\nOPTIONS:\n1. Manually lift lockdown\n2. Flush lower levels with gas")
         }
       }
     }
   ]
 })
 
-const description = (flags: flags) => `The security office is a mess. Everywhere you look you see the signs of a hurried leave. The desks are full of coffee-stained *papers*, some of which have been blown off and now lie trampled on the floor. Among the papers you see a still-operational *terminal*. Many of the chairs in the room have toppled over as their occupants rushed out to respond to the emergency, but even those that managed to stand upright ended up clumped in the middle of the room.\n${flags.lockdownLifted ? "The emergency light and the siren have mercifully turned off. In their stead, a cold fluorescent bulb illuminates the room, granting it an unnervingly still atmosphere." : "A rotating emergency light paints the room in hellish red hues, accompanied by the moderately quiet, but still grating blaring of a siren."}\nA massive ${flags.safeOpened ? "open" : "closed"} *safe* sits in the corner of the room, occupying a sizeable chunk of it. The now blasted-open *door* leads back into the lounge.`
+const description = (flags: flags) => `The security office is a mess. Everywhere you look you see the signs of a hurried leave. The desks are full of half-eaten food and coffee-stained *papers*, some of which have been blown off and now lie trampled on the floor. Among the papers you see a still-operational *terminal*.\nMany of the chairs in the room have toppled over as their occupants rushed out to respond to the emergency, but even those that managed to stand upright ended up clumped in the middle of the room.\n${flags.lockdownLifted ? "The emergency light and the siren have mercifully turned off. In their stead, a cold fluorescent bulb illuminates the room, granting it an unnervingly still atmosphere." : "A rotating emergency light paints the room in hellish red hues, accompanied by the moderately quiet, but still grating blaring of a siren."}\nA massive ${flags.safeOpened ? "open" : "closed"} *safe* sits in the corner of the room, occupying a sizeable chunk of it. The now blasted-open *door* leads back into the lounge.`
 
 export const secur = new Room({lockdownLifted: false, safeOpened: false, terminalUnlocked: false}, actions, description)

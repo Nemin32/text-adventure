@@ -21,11 +21,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["poster"],
-      action: () => show("The poster depicts a Slig proudly wearing the TreadMaster X500 Ultralight Kevlar-Composite Mechanical Harness, or - as you and the boys always called it - the good stuff. You always dreamt of one day being able to afford this model, but with the recent events the prospect seems more distant than ever.")
+      action: () => show("The poster depicts a Slig proudly wearing the TreadMaster X500 Ultralight Kevlar-Composite Mechanical Harness, or - as you and the boys always called it - the good stuff. You always dreamt of one day being able to afford this model, but with the recent events the prospect seems more distant than ever.\nPreviously one of your weirdo colleagues hung a pinup of an Elum in a very questionable pose in its place, but that was before you promptly and collectively decided to rip it off and ridicule the guy to preserve a bit of your team's dignity.")
     },
     {
       trigger: ["TV", "tv", "television"],
-      action: () => show("The TV is repeating a pre-recorded message from The Magog on the March. Everything will be fine, just go back to work, let smarter people deal with it, yadda, yadda. I wonder if he even slightly believes the drivel they make him say.")
+      action: () => show("The TV is repeating a pre-recorded message from The Magog on the March. 'Everything will be fine, just go back to work, let smarter people deal with it, invest into Sligcoin and AyEye, yadda, yadda.'\nPoor sod, I wonder if he believes even a single word of the drivel they make him say.")
     },
 
     {

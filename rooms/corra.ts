@@ -8,7 +8,7 @@ type flags = Flags<never>
 const actions: ActionGenerator<flags> = (_) => ({ 
   enter: [
     {
-      trigger: ["chamber", "back"], 
+      trigger: ["chamber", "behind"], 
       action: () => move(ROOM_NAME.SPAWN)
     },
     {
@@ -20,7 +20,7 @@ const actions: ActionGenerator<flags> = (_) => ({
       action: () => move(ROOM_NAME.ELEVA)
     },
     {
-      trigger: ["right", "gate control", "control"],
+      trigger: ["right", "gate control", "control", "gate"],
       action: () => move(ROOM_NAME.GCTRL)
     }
   ],
@@ -38,6 +38,6 @@ const actions: ActionGenerator<flags> = (_) => ({
   ],
 })
 
-const description = (flags: flags) => `You find yourself on a dull utility corridor. The door to the execution *chamber* looms behind you. You see a *sign* in front of you. Three other paths lead away in each cardinal direction.`
+const description = (flags: flags) => "You find yourself on a dull utility corridor. The whole facility is dead silent, except for the slight whirring coming from the door to the execution *chamber* behind you. You see a *sign* on the wall in front of you. Three other paths lead away in each cardinal direction."
 
 export const corra = new Room({}, actions, description)

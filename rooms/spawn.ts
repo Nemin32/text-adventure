@@ -40,12 +40,16 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["door"],
       action: () => show("The sliding door has the the company's Laughing Glukkon logo painted on it. I'm not sure there is much to laugh about now though. Not after what that bastard did to us.")
+    },
+    {
+      trigger: ["meatsaw", "saw"],
+      action: () => show("Despite the calamity, the saw spins on unbothered. For some reason the boss insisted on giving it its own power supply. 'For prisoner processing efficiency,' you recall him saying. So much for that.")
     }
   ],
 
   press: [
     {
-      trigger: ["button", "the button"],
+      trigger: ["button"],
       action: () => {
         if (!flags.doorOpen) {
           flags.doorOpen = true;
@@ -64,7 +68,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (!GM.hasItem(ITEM.BOSS)) {
           show("You try asking him what to do, but he's out cold. For better or worse, you're on your own.") 
         } else {
-          show("You don't feel like talking to him while his weight is compressing your lungs.")
+          show("He grumbles something, most likely a complaint, but you can't understand his words.")
         }
       }
 
@@ -78,7 +82,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (flags.doorOpen) {
           move(ROOM_NAME.CORRA)
         } else {
-          show("The door is locked.")
+          show("You walk face first into the the door. These things aren't motion controlled, y'know?")
         }
       }
     },
@@ -101,7 +105,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
 })
 
 const desc = (flags: flags): string => {
-  return `The chamber looks surprisingly fine despite just being ravaged by lightning. But then most of the place was made from metal. The *meatsaw* in the center of the room is still active, though the prisoner is nowhere to be seen. ${GM.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."} On the wall opposite to you, there is a *button* and ${flags.doorOpen ? "an open" : "a closed"} *door*.`
+  return `The chamber looks surprisingly fine despite having been ravaged by lightning. But then most of the place was made from metal. That's probably the only reason you're alive now.\nThe *meatsaw* in the center of the room is still active, though the prisoner meant to be dropped into it is nowhere to be seen. ${GM.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."} On the wall opposite to you, there is a *button* and ${flags.doorOpen ? "an open" : "a closed"} *door*.`
 }
 
 const room = new Room({doorOpen: false}, actions, desc)
