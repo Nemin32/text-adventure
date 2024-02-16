@@ -5,15 +5,7 @@ import { GM } from "../gm.ts";
 
 type flags = Flags<never>
 
-const actions: ActionGenerator<flags> = (flags) => ({
-  /*enter: [
-    {
-      trigger: ["back"],
-      action: () => move(GM.prevName)
-    }
-  ]*/
-})
-
+const actions: ActionGenerator<flags> = (flags) => ({})
 
 const description = (flags: flags) => {
   const gotAllDeaths = GM.deaths.size >= DEATH.__LENGTH

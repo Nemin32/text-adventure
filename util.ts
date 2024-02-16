@@ -24,7 +24,11 @@ window.addEventListener("load", () => {
           p.style.fontWeight = "bold";
         }
 
-        p.innerText = msgs[0].msg
+        p.innerHTML = msgs[0].msg
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replace(/\*(.*?)\*/g, "<span class='spec'>$1</span>")
+
         output.appendChild(p)
       }
 
