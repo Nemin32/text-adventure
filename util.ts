@@ -1,7 +1,5 @@
-import { Room } from "./room.ts"
-import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts"
 
-type Msg = {type: "msg", msg: string} | {type: "divider"}
+type Msg = {type: "msg", msg: string} | {type: "divider"} | {type: "bold", msg: string}
 
 let msgs: Msg[] = []
 
@@ -16,9 +14,16 @@ window.addEventListener("load", () => {
         output.appendChild(document.createElement("hr"))
       } else {
         const p = document.createElement("p")
+
+        if (msgs[0].type === "bold") {
+          p.style.fontWeight = "bold";
+        }
+
         p.innerText = msgs[0].msg
         output.appendChild(p)
       }
+
+      output.scrollTop = output.scrollHeight
 
       msgs = msgs.slice(1)
     }
@@ -26,30 +31,7 @@ window.addEventListener("load", () => {
 
 })
 
-export function show(str: string) {
+export function show(str: string, bold = false) {
   //console.log(str)
-  msgs = [...msgs, ...str.split("\n").map<Msg>(s => ({type: "msg", msg: s})), {type: "divider"}]
+  msgs = [...msgs, ...str.split("\n").map<Msg>(s => ({type: bold ? "bold" : "msg", msg: s})), {type: "divider"}]
 }
-
-class GameManager {
-  deaths: Set<DEATH> = new Set()
-  prevName: ROOM_NAME = ROOM_NAME.SPAWN
-  currentName: ROOM_NAME = ROOM_NAME.SPAWN
-  currentRoom: Room<string> | null = null
-  items: Set<ITEM> = new Set()
-
-  brewUsed = false
-
-  hasItem(item: ITEM): boolean {
-    return this.items.has(item)
-  }
-
-  addItem(item: ITEM) {
-    this.items.add(item)
-  }
-}
-
-const GM = new GameManager()
-
-export {GM}
-export type {GameManager}
