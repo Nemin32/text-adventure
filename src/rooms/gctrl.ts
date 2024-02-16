@@ -23,7 +23,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
         const warnMsg = warnings.filter(([cond, _]) => cond).map(([_, msg]) => msg).join("\n")
 
         const msg = `[[RFOS v2.0]]
-        
 ${warnMsg}
 
 COMMANDS:
