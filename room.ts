@@ -1,6 +1,7 @@
 import { move } from "./adjacencies.ts";
 import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts";
-import { GM, show } from "./util.ts";
+import { show } from "./util.ts";
+import { GM } from "./gm.ts";
 
 export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump" | "open"
 export type ActionFn = (args: Record<string, string>) => void
@@ -124,6 +125,19 @@ If any problems come up, please complain to Nemin.`
 
       if (res !== null) {
         if (res.groups) {
+          if (action === "enter" && res.groups.what === "back") {
+            if (GM.prevRoom.length === 0) {
+              show("No previous room to go back to.")
+              return;
+            }
+
+            const prevRoom = GM.prevRoom[GM.prevRoom.length-1]
+            move(prevRoom)
+            GM.prevRoom = GM.prevRoom.slice(-2)
+
+            return;
+          }
+
           const canShoot = action === "use" 
             && YOURSELF.includes(res.groups.what) 
             && res.groups.tool === ITEM.GUN 
@@ -132,11 +146,13 @@ If any problems come up, please complain to Nemin.`
           if (canShoot) {
             if (!GM.deaths.has(DEATH.GUN)) {
               GM.deaths.add(DEATH.GUN)
-              show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as everything cuts to black.")
+              show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.")
               move(ROOM_NAME.DEATH)
             } else {
               show("No, that would not solve anything. You have to press on and see this to the end.")
             }
+
+            return;
           } 
 
           if (action === "look" && ["around", "the room", "room"].includes(res.groups.what)) {

@@ -1,6 +1,7 @@
 import { rooms } from "./roomlist.ts"
 import { ROOM_NAME } from "./roomnames.ts"
-import { GM, show } from "./util.ts"
+import { show } from "./util.ts"
+import { GM } from "./gm.ts"
 
 const adjacency: Map<string, boolean> = new Map()
 
@@ -14,13 +15,17 @@ const isAdjacent = (other: ROOM_NAME) => adjacency.get(`${ROOM_NAME[GM.currentNa
 export const move = (name: ROOM_NAME) => {
   if (name === ROOM_NAME.DEATH || GM.currentName === ROOM_NAME.DEATH || isAdjacent(name)) {
     const newName = rooms.has(name) ? name : ROOM_NAME.SPAWN;
-    const newRoom = rooms.get(newName)!
+    // biome-ignore lint/style/noNonNullAssertion: We go back to spawn if room isn't found, therefore this can be never undefined.
+const  newRoom = rooms.get(newName)!
 
     if (name !== newName) {
       show(`This is embarrassing. You tried to go to ${ROOM_NAME[name]}, but there is no such room. By the mysterious ways of Odd, you're placed back into the starting room. This was most likely caused by a bug. Please complain to Nemin about this.`)
     }
 
-    GM.prevName = GM.currentName
+    if (GM.currentName !== ROOM_NAME.DEATH) {
+      GM.prevRoom.push(GM.currentName)
+    }
+
     GM.currentName = name;
     GM.currentRoom = newRoom
 
