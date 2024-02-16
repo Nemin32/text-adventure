@@ -1,4 +1,4 @@
-import { move } from "./adjacencies.ts";
+import { die, goBack, move } from "./adjacencies.ts";
 import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts";
 import { show } from "./util.ts";
 import { GM } from "./gm.ts";
@@ -126,15 +126,7 @@ If any problems come up, please complain to Nemin.`
       if (res !== null) {
         if (res.groups) {
           if (action === "enter" && res.groups.what === "back") {
-            if (GM.prevRoom.length === 0) {
-              show("No previous room to go back to.")
-              return;
-            }
-
-            const prevRoom = GM.prevRoom[GM.prevRoom.length-1]
-            move(prevRoom)
-            GM.prevRoom = GM.prevRoom.slice(-2)
-
+            goBack()
             return;
           }
 
@@ -147,7 +139,7 @@ If any problems come up, please complain to Nemin.`
             if (!GM.deaths.has(DEATH.GUN)) {
               GM.deaths.add(DEATH.GUN)
               show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.")
-              move(ROOM_NAME.DEATH)
+              die()
             } else {
               show("No, that would not solve anything. You have to press on and see this to the end.")
             }
@@ -169,7 +161,7 @@ If any problems come up, please complain to Nemin.`
             if (!GM.deaths.has(DEATH.BREW)) {
               GM.deaths.add(DEATH.BREW)
               show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
-              move(ROOM_NAME.DEATH)
+              die()
             } else {
               show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")
             }

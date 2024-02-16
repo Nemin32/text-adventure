@@ -2,35 +2,72 @@ import { rooms } from "./roomlist.ts"
 import { ROOM_NAME } from "./roomnames.ts"
 import { show } from "./util.ts"
 import { GM } from "./gm.ts"
+import { Room } from "./room.ts"
 
-const adjacency: Map<string, boolean> = new Map()
+const adjacency: Set<string> = new Set()
 
 const makeAdjacent = (name1: ROOM_NAME, name2: ROOM_NAME) => {
-  adjacency.set(`${ROOM_NAME[name1]}${ROOM_NAME[name2]}`, true)
-  adjacency.set(`${ROOM_NAME[name2]}${ROOM_NAME[name1]}`, true)
+  adjacency.add(`${ROOM_NAME[name1]}${ROOM_NAME[name2]}`)
+  adjacency.add(`${ROOM_NAME[name2]}${ROOM_NAME[name1]}`)
 }
 
-const isAdjacent = (other: ROOM_NAME) => adjacency.get(`${ROOM_NAME[GM.currentName]}${ROOM_NAME[other]}`) ?? false
+const isAdjacent = (other: ROOM_NAME) => adjacency.has(`${ROOM_NAME[GM.currentName]}${ROOM_NAME[other]}`)
+const getRoom = (name: ROOM_NAME): [ROOM_NAME, Room<string>] => {
+  const room = rooms.get(name);
+
+  if (room) {
+    return [name, room];
+  }
+
+  // biome-ignore lint/style/noNonNullAssertion: The spawn always exists.
+return  [ROOM_NAME.SPAWN, rooms.get(ROOM_NAME.SPAWN)!]
+}
 
 export const move = (name: ROOM_NAME) => {
-  if (name === ROOM_NAME.DEATH || GM.currentName === ROOM_NAME.DEATH || isAdjacent(name)) {
-    const newName = rooms.has(name) ? name : ROOM_NAME.SPAWN;
-    // biome-ignore lint/style/noNonNullAssertion: We go back to spawn if room isn't found, therefore this can be never undefined.
-const  newRoom = rooms.get(newName)!
-
-    if (name !== newName) {
-      show(`This is embarrassing. You tried to go to ${ROOM_NAME[name]}, but there is no such room. By the mysterious ways of Odd, you're placed back into the starting room. This was most likely caused by a bug. Please complain to Nemin about this.`)
-    }
-
-    if (GM.currentName !== ROOM_NAME.DEATH) {
-      GM.prevRoom.push(GM.currentName)
-    }
-
-    GM.currentName = name;
-    GM.currentRoom = newRoom
-
-    GM.currentRoom.printDescription()
+  if (!isAdjacent(name)) {
+    show(`There is no path from ${ROOM_NAME[GM.currentName]} to ${ROOM_NAME[name]}.`)
+    return;
   }
+
+  const [newName, room] = getRoom(name)
+
+  GM.prevRoom.push(GM.currentName)
+  GM.currentName = newName;
+  GM.currentRoom = room
+
+  GM.currentRoom.printDescription()
+}
+
+export const goBack = () => {
+  if (GM.prevRoom.length === 0) {
+    show("No previous room to go back to.")
+    return;
+  }
+
+  const lastRoom = GM.prevRoom[GM.prevRoom.length-1]
+
+  if (lastRoom === ROOM_NAME.FINIS) {
+    show("Buddy, the factory is gone. Where'd you even go back to?")
+    return;
+  }
+
+  GM.prevRoom = GM.prevRoom.slice(0, -1)
+
+  const [name, room] = getRoom(lastRoom)
+  GM.currentName = name
+  GM.currentRoom = room
+
+  GM.currentRoom.printDescription()
+}
+
+export const die = () => {
+  GM.prevRoom.push(GM.currentName);
+
+  const [name, room] = getRoom(ROOM_NAME.DEATH)
+  GM.currentName = name
+  GM.currentRoom = room
+
+  GM.currentRoom.printDescription()
 }
 
 makeAdjacent(ROOM_NAME.SPAWN, ROOM_NAME.CORRA)

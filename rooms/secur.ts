@@ -1,4 +1,4 @@
-import { move } from "../adjacencies.ts";
+import { die, move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { show } from "../util.ts";
@@ -44,7 +44,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (!GM.deaths.has(DEATH.GAS)) {
           show("You hear distant hissing in the pipes as nerve-gas fills the lower levels, killing all those who might have survived the initial onslaught. A few seconds later you hear a deafening thud and the very floor opens below your metal legs. The gas, ignited by the fires ravaging the facility, erupts into the room and melts you in less than a moment.")
           GM.deaths.add(DEATH.GAS)
-          move(ROOM_NAME.DEATH)
+          die()
         } else {
           show("Nah. Who would you even gas at this point?")
         }
