@@ -62,7 +62,7 @@ export class Room<T extends string> {
   }
 
   doAction(input: string) {
-    const cases: Array<[RegExp, ActionKinds]>  = [
+    const cases: Array<[RegExp, ActionKinds]> = [
       [/(?:(look( at)?)|inspect)(?: the)? (?<what>.*)/, "look"],
       [/use(?: the)? (?<tool>.*) on(?: the)? (?<what>.*)/, "use"],
       [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
@@ -77,20 +77,18 @@ export class Room<T extends string> {
     const YOURSELF = ["me", "yourself", "self", "player", "character"]
 
     if (input === "help") {
-      const helpMsg = `Escape from RuptureFarms is a text-based adventure game, similar in spirit to Zork.
+      const helpMsg = `*Escape from RuptureFarms* is a text-based adventure game, similar in spirit to *Zork*.
 You interact with the world using the following text commands:
-
-- look around
-- look at <object>
-- use <tool> on <subject> (<subject> may be "me" or "self" to use an item on yourself)
-- press / push <object>
-- talk to <someone>
-- go / enter / move to <location> (use "go back" to enter the previous room)
-- read <something>
-- jump / dive into <somewhere>
-- open <something>
-- inventory
-
+- *look around*
+- *look at* <object>
+- *use* <tool> *on* <subject> (<subject> may be "me" or "self" to use an item on yourself)
+- *press* / *push* <object>
+- *talk to* <someone>
+- *go* / *enter* / *move to* <location> (use "go back" to enter the previous room)
+- *read* <something>
+- *jump* / *dive into* <somewhere>
+- *open* <something>
+- *inventory*
 Some puzzles might be concealed or require special interaction before you can solve them, but no puzzle requires anything not mentioned here. Experiment!
 If any problems come up, please complain to Nemin.`
 
@@ -123,58 +121,63 @@ If any problems come up, please complain to Nemin.`
     for (const [rx, action] of cases) {
       const res = input.match(rx)
 
-      if (res !== null) {
-        if (res.groups) {
-          if (action === "enter" && res.groups.what === "back") {
-            goBack()
-            return;
-          }
-
-          const canShoot = action === "use" 
-            && YOURSELF.includes(res.groups.what) 
-            && res.groups.tool === ITEM.GUN 
-            && GM.hasItem(ITEM.GUN)
-
-          if (canShoot) {
-            if (!GM.deaths.has(DEATH.GUN)) {
-              GM.deaths.add(DEATH.GUN)
-              show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.")
-              die()
-            } else {
-              show("No, that would not solve anything. You have to press on and see this to the end.")
-            }
-
-            return;
-          } 
-
-          if (action === "look" && ["around", "the room", "room"].includes(res.groups.what)) {
-            return show(this.description(this.flags))
-          }
-
-          const canDrink = action === "use" 
-            && YOURSELF.includes(res.groups.what)
-            && res.groups.tool === ITEM.BREW 
-            && GM.hasItem(ITEM.BREW)
-            && !GM.brewUsed
-
-          if (canDrink) {
-            if (!GM.deaths.has(DEATH.BREW)) {
-              GM.deaths.add(DEATH.BREW)
-              show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
-              die()
-            } else {
-              show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")
-            }
-
-            return;
-          }
-
-          return this.findAction(action, res.groups.what)(res.groups)
-        }
+      if (res === null || res.groups === undefined) {
+        continue
       }
+
+      const canShoot = action === "use"
+        && YOURSELF.includes(res.groups.what)
+        && res.groups.tool === ITEM.GUN
+        && GM.hasItem(ITEM.GUN)
+
+      const canDrink = action === "use"
+        && YOURSELF.includes(res.groups.what)
+        && res.groups.tool === ITEM.BREW
+        && GM.hasItem(ITEM.BREW)
+        && !GM.brewUsed
+
+      const looksAround = action === "look"
+        && ["around", "the room", "room"].includes(res.groups.what)
+
+      const goesBack = action === "enter"
+        && res.groups.what === "back"
+
+      switch (true) {
+        case looksAround:
+          this.printDescription()
+          break;
+
+        case goesBack:
+          goBack()
+          break;
+
+        case canShoot:
+          if (!GM.deaths.has(DEATH.GUN)) {
+            GM.deaths.add(DEATH.GUN)
+            show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.")
+            die()
+          } else {
+            show("No, that would not solve anything. You have to press on and see this to the end.")
+          }
+          break
+
+        case canDrink:
+          if (!GM.deaths.has(DEATH.BREW)) {
+            GM.deaths.add(DEATH.BREW)
+            show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
+            die()
+          } else {
+            show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.")
+          }
+          break;
+
+        default:
+          this.findAction(action, res.groups.what)(res.groups)
+      }
+
+      return;
     }
 
     show("No idea what you just meant.")
   }
-
 }

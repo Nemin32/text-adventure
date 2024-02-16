@@ -40,7 +40,6 @@ window.addEventListener("load", () => {
   const titleElem = document.createElement("pre")
   titleElem.innerText = title;
   titleElem.classList.add("title")
-  titleElem.classList.add("spec")
   output.appendChild(titleElem)
   output.appendChild(document.createElement("hr"))
 

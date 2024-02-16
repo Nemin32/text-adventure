@@ -1,5 +1,5 @@
 
-type Msg = {type: "msg", msg: string} | {type: "divider"} | {type: "bold", msg: string}
+type Msg = {type: "msg", msg: string} | {type: "divider"} | {type: "command", msg: string}
 
 let msgs: Msg[] = []
 
@@ -20,8 +20,8 @@ window.addEventListener("load", () => {
       } else {
         const p = document.createElement("pre")
 
-        if (msgs[0].type === "bold") {
-          p.style.fontWeight = "bold";
+        if (msgs[0].type === "command") {
+          p.classList.add("command")
         }
 
         p.innerHTML = msgs[0].msg
@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 
 })
 
-export function show(str: string, bold = false) {
+export function show(str: string, command = false) {
   //console.log(str)
-  msgs = [...msgs, ...str.split("\n").map<Msg>(s => ({type: bold ? "bold" : "msg", msg: s})), {type: "divider"}]
+  msgs = [...msgs, ...str.split("\n").map<Msg>(s => ({type: command ? "command" : "msg", msg: s})), {type: "divider"}]
 }

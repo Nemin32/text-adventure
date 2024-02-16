@@ -3,19 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Escape from RuptureFarms 1029</title>
   <script src="main.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
     }
 
+    html {
+      margin: 0;
+      padding: 1rem;
+
+      height: 100vh;
+      width: 100vw;
+      min-width: 1500px;
+      min-height: 1000px;
+
+      background: linear-gradient(#222, #422);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
     body {
-      font-family: monospace;
+      font-optical-sizing: auto;
+
       line-height: 1.45;
       font-size: 16px;
 
-      background-color: #222;
+      height: 100%;
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      font-family: monospace;
+
+      margin: 0;
+      padding: 0;
     }
 
     #output {
@@ -26,8 +55,8 @@
 
       width: 100%;
 
-      min-height: 800px;
-      max-height: 1000px;
+      min-height: 600px;
+      height: 900px;
 
       overflow-y: auto;
 
@@ -42,11 +71,16 @@
 
         max-width: 100%;
         white-space: pre-wrap;
+        font-family: "Kode Mono", monospace;
       }
 
       .spec {
         color: #ada;
         font-weight: bold;
+      }
+
+      .command {
+        color: #ccc;
       }
     }
 
@@ -56,6 +90,7 @@
 
     .title {
       line-height: 1 !important;
+      color: #d00;
     }
 
     #input {
@@ -75,9 +110,10 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
 
-      max-width: 1600px;
-      min-width: 800px;
+      width: 1600px;
+      min-width: 1450px;
 
       margin: 2rem auto;
     }
@@ -87,7 +123,7 @@
   <div id="container">
     <div id="output"></div>
     <form id="act">
-    <input id="input">
+    <input id="input" placeholder="Enter action...">
     </form>
   </div>
 </body>
