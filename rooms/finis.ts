@@ -42,7 +42,7 @@ DEATHS: ${GM.deaths.size} / ${DEATH.__LENGTH}
 ${allDeaths ? "Congrats, you're a master at not staying alive!" : "Hmm, seems like you missed some opportunities to get an early severance package."}
 ${deaths}
 
-Thank you for playing!`
+You finished the game. Thank you for playing!`
 }
 
 export const finis = new Room({}, actions, description)
