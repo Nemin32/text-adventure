@@ -2,7 +2,7 @@ import { Flags, Room, ActionGenerator } from "../room.ts";
 import { die, move } from "../movement.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { gctrl } from "./gctrl.ts";
 
 const MOLLUCK = ["the boss", "boss", "molluck", "body"];
@@ -92,19 +92,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
   ],
 
-  enter: [
-    {
-      trigger: ["door"],
-      action: () => {
-        if (flags.doorOpen) {
-          move(ROOM_NAME.CORRA);
-        } else {
-          show("You walk face first into the the door. These things aren't motion controlled, y'know?");
-        }
-      },
-    },
-  ],
-
   jump: [
     {
       trigger: ["saw", "meatsaw"],
@@ -124,10 +111,18 @@ const actions: ActionGenerator<flags> = (flags) => ({
 });
 
 const desc = (flags: flags): string => {
-  return `The chamber looks surprisingly fine despite having been ravaged by lightning. But then most of the place was made from metal. That's probably the only reason you're alive now.\nThe *meatsaw* in the center of the room is still active, though the prisoner meant to be dropped into it is nowhere to be seen. ${
-    player.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."
-  } On the wall opposite to you, there is a *button* and ${flags.doorOpen ? "an open" : "a closed"} *door*.`;
+  return `The chamber looks surprisingly fine despite having been ravaged by lightning. But then most of the place was made from metal. That's probably the only reason you're alive now.\nThe *meatsaw* in the center of the room is still active, though the prisoner meant to be dropped into it is nowhere to be seen. ${player.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."
+    } On the wall in front of you, there is a *button* and next to it ${flags.doorOpen ? "an open" : "a closed"} *door*.`;
 };
 
-const room = new Room({ doorOpen: false }, actions, desc);
+const canMove = (flags: flags) => ({
+  [Directions.Forward]: () => {
+    if (flags.doorOpen) return true;
+
+    show("You walk face first into the the door. These things aren't motion controlled, y'know?")
+    return false;
+  }
+})
+
+const room = new Room({ doorOpen: false }, actions, desc, canMove);
 export { room as spawn };

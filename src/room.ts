@@ -16,6 +16,8 @@ type Actions = Partial<
   >
 >;
 
+type CanMove = Partial<Record<Directions, () => boolean>>
+
 export type Flags<T extends string> = Record<T, boolean>;
 export type ActionGenerator<T extends Flags<string>> = (flags: T) => Actions;
 
@@ -55,6 +57,7 @@ export class Room<T extends string> {
   }
 
   actions: Actions;
+  moves: CanMove
 
   fallbacks: Record<ActionKinds, ActionFn> = {
     look: ({ what }) => show(`I can't see any ${what} here.`),
@@ -73,9 +76,17 @@ export class Room<T extends string> {
     private flags: Flags<T>,
     actionGenerator: (flags: Flags<T>) => Actions,
     private description: (flags: Flags<T>) => string,
-    private canMove: (dir: Directions) => boolean = () => true,
+    moveGenerator: (flags: Flags<T>) => CanMove = () => ({})
   ) {
     this.actions = actionGenerator(this.flags);
+    this.moves = moveGenerator(this.flags)
+  }
+
+  canMove(dir: Directions) {
+    const opt = this.moves[dir]
+    if (!opt) return true;
+
+    return opt()
   }
 
   setFlag(flag: T, value: boolean) {
@@ -117,7 +128,9 @@ export class Room<T extends string> {
 
     const dir = getDir(input);
     if (dir) {
-      moveDir(dir);
+      if (this.canMove(dir)) {
+        moveDir(dir);
+      }
 
       return;
     }

@@ -1,10 +1,9 @@
-import { rooms } from "./roomlist.ts";
-import { ROOM_NAME } from "./constants.ts";
+import { SPAWN_POS } from "./constants.ts";
 import { show } from "./display.ts";
+import { setRoom } from "./movement.ts";
 import { player } from "./player.ts";
 
-// biome-ignore lint/style/noNonNullAssertion: We know the spawn room exists.
-player.currentRoom = rooms.get(ROOM_NAME.SPAWN)!;
+setRoom(SPAWN_POS, false)
 
 function act(str: string) {
   show(str, true);

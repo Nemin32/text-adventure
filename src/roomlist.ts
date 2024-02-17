@@ -15,6 +15,7 @@ import { strip } from "./rooms/strip.ts";
 import { finis } from "./rooms/finis.ts";
 import { corrc } from "./rooms/corrc.ts";
 
+/*
 export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   [ROOM_NAME.BOILA, boila],
   [ROOM_NAME.CORRA, corra],
@@ -31,14 +32,15 @@ export const rooms: Map<ROOM_NAME, Room<string>> = new Map([
   [ROOM_NAME.FINIS, finis],
   [ROOM_NAME.DEATH, death as Room<string>],
 ]);
+*/
 
 const _____ = null;
 
 const { DEATH, FINIS, STORG, GASRE, ELEVA, CORRC, CORRA, CORRB, BOILA, GCTRL, LOUNG, SECUR, SPAWN, STRIP } = ROOM_NAME;
-export const gameMap: (ROOM_NAME | null)[][] = [
-  [DEATH, _____, FINIS, _____, STRIP, _____],
+export const gameMap: (Room<string> | null)[][] = [
+  [death, _____, finis, _____, strip, _____],
   [_____, _____, _____, _____, _____, _____],
-  [_____, STORG, GASRE, _____, ELEVA, _____],
-  [_____, _____, CORRC, CORRB, CORRA, GCTRL],
-  [SECUR, LOUNG, BOILA, _____, SPAWN, _____],
+  [_____, storg, gasre, _____, eleva, _____],
+  [_____, _____, corrc, corrb, corra, gctrl],
+  [secur, loung, boila, _____, spawn, _____],
 ];

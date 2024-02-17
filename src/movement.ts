@@ -1,27 +1,18 @@
-import { gameMap, rooms } from "./roomlist.ts";
+import { gameMap } from "./roomlist.ts";
 import { DEATH_POS, Directions, ROOM_NAME } from "./constants.ts";
 import { player } from "./player.ts";
-import { Room } from "./room.ts";
 import { show } from "./display.ts";
 
-const setRoom = (pos: [number, number], keepHistory = true) => {
-  const name = gameMap.at(pos[0])?.at(pos[1])
+export const setRoom = (pos: [number, number], keepHistory = true) => {
+  const room = gameMap.at(pos[0])?.at(pos[1])
 
-  if (!name) {
+  if (!room) {
     show("There is no path in that direction.")
     return;
   }
 
   if (keepHistory) {
     player.prevPos.push([...player.position]);
-  }
-
-  let room = rooms.get(name);
-
-  if (!room) {
-    show(`You tried to reach ${ROOM_NAME[name]}, but there was no room there. This is a bug. You've been transported to the spawn. Please complain to Nemin.`)
-    // biome-ignore lint/style/noNonNullAssertion: The spawn always exists.
-    room = rooms.get(ROOM_NAME.SPAWN)!;
   }
 
   player.position = pos;

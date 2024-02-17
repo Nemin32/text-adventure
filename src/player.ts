@@ -21,6 +21,15 @@ class Player {
   addItem(item: ITEM) {
     this.items.add(item);
   }
+
+  canGainItem(item: ITEM): boolean {
+    if (this.hasItem(item)) {
+      return false;
+    }
+
+    this.addItem(item)
+    return true;
+  }
 }
 
 const player = new Player();
