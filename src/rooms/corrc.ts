@@ -6,4 +6,4 @@ const actions: ActionGenerator<flags> = (flags) => ({});
 
 const description = (flags: flags) => ``;
 
-export const room = new Room({}, actions, description);
+export const corrc = new Room({}, actions, description);

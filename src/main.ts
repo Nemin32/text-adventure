@@ -1,14 +1,14 @@
-import { rooms } from "./roomlist.ts"
-import { ROOM_NAME } from "./constants.ts"
-import { show } from "./display.ts"
-import { player } from "./player.ts"
+import { rooms } from "./roomlist.ts";
+import { ROOM_NAME } from "./constants.ts";
+import { show } from "./display.ts";
+import { player } from "./player.ts";
 
 // biome-ignore lint/style/noNonNullAssertion: We know the spawn room exists.
-player.currentRoom = rooms.get(ROOM_NAME.SPAWN)!
+player.currentRoom = rooms.get(ROOM_NAME.SPAWN)!;
 
 function act(str: string) {
-  show(str, true)
-  player.currentRoom?.doAction(str.toLowerCase())
+  show(str, true);
+  player.currentRoom?.doAction(str.toLowerCase());
   player.stepCounter++;
 }
 
@@ -23,25 +23,27 @@ const title = String.raw`
                    | |                                               | |                                                                             
                    |_|                                               |_|                                                                             
                    
-A TEXT-ADVENTURE GAME, CREATED BY NEMIN (ODDWORDS.HU) @ 2024`.trim()
+A TEXT-ADVENTURE GAME, CREATED BY NEMIN (ODDWORDS.HU) @ 2024`.trim();
 
 window.addEventListener("load", () => {
-  const input = document.getElementById("input") as HTMLInputElement
-  const output = document.getElementById("output") as HTMLDivElement
-  const form = document.getElementById("act") as HTMLFormElement
+  const input = document.getElementById("input") as HTMLInputElement;
+  const output = document.getElementById("output") as HTMLDivElement;
+  const form = document.getElementById("act") as HTMLFormElement;
 
   form.addEventListener("submit", (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    act(input.value.trim())
-    input.value = ""
-  })
+    act(input.value.trim());
+    input.value = "";
+  });
 
-  const titleElem = document.createElement("pre")
+  const titleElem = document.createElement("pre");
   titleElem.innerText = title;
-  titleElem.classList.add("title")
-  output.appendChild(titleElem)
-  output.appendChild(document.createElement("hr"))
+  titleElem.classList.add("title");
+  output.appendChild(titleElem);
+  output.appendChild(document.createElement("hr"));
 
-  show("You take a ragged breath as you suddenly come to. Even before having a second to open your eyes, stimuli already began bombarding your mind. You feel your body press against something deathly cold. Your head is screaming at you with an ache worse than during your wildest hangovers. Something next to you screeches incessantly, like a thousand nails scraping on metal. And, last but not least, your entire being is in pain, like you were just beaten to an inch of your life.\nYou groan and blindly grope around, trying to find something to grab in an attempt to stabilize your spinning head. Slowly the nausea retracts just enough for you to attempt standing up, but despite several valiant attempts, you keep tumbling back like a helpless, overturned bug. The diagnosis is clear: Your legs have seized. Unfortunate and embarrassing, but it happens sometimes.\nYou reach down half-blind and fumble with the harness until you find the small reset button.\nThe machine spends a few seconds just whirring helplessly while belching poisonous fumes. You hack and wheeze as you wait, the noxious gas not helping your head in the slightest. You're just about to whack the machine in frustration when, without warning, it suddenly jerks back to life, allowing you to carefully stand back up.\nHaving finally escaped from the floor, you feel yourself well enough to figure out what's going on. You have some vague memories about what happened, but still, it'd probably be the best to first *look around*. Unless, of course, you'd rather just call out to your momma for *help*.")
-})
+  show(
+    "You take a ragged breath as you suddenly come to. Even before having a second to open your eyes, stimuli already began bombarding your mind. You feel your body press against something deathly cold. Your head is screaming at you with an ache worse than during your wildest hangovers. Something next to you screeches incessantly, like a thousand nails scraping on metal. And, last but not least, your entire being is in pain, like you were just beaten to an inch of your life.\nYou groan and blindly grope around, trying to find something to grab in an attempt to stabilize your spinning head. Slowly the nausea retracts just enough for you to attempt standing up, but despite several valiant attempts, you keep tumbling back like a helpless, overturned bug. The diagnosis is clear: Your legs have seized. Unfortunate and embarrassing, but it happens sometimes.\nYou reach down half-blind and fumble with the harness until you find the small reset button.\nThe machine spends a few seconds just whirring helplessly while belching poisonous fumes. You hack and wheeze as you wait, the noxious gas not helping your head in the slightest. You're just about to whack the machine in frustration when, without warning, it suddenly jerks back to life, allowing you to carefully stand back up.\nHaving finally escaped from the floor, you feel yourself well enough to figure out what's going on. You have some vague memories about what happened, but still, it'd probably be the best to first *look around*. Unless, of course, you'd rather just call out to your momma for *help*.",
+  );
+});

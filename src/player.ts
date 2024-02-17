@@ -1,15 +1,14 @@
 import { Room } from "./room.ts";
 import { DEATHS, ITEM, ROOM_NAME } from "./constants.ts";
+import { SPAWN_POS } from "./constants.ts";
 
 class Player {
   deaths: Set<DEATHS> = new Set();
-  prevRoom: ROOM_NAME[] = [];
-  currentName: ROOM_NAME = ROOM_NAME.SPAWN;
-  currentRoom: Room<string> | null = null;
   items: Set<ITEM> = new Set();
 
-  position: [number, number] = [0,0]
-  prevPos: Array<[number, number]> = []
+  currentRoom: Room<string> | null = null
+  position: [number, number] = SPAWN_POS;
+  prevPos: Array<[number, number]> = [];
 
   brewUsed = false;
 
@@ -24,7 +23,7 @@ class Player {
   }
 }
 
-const player = new Player()
+const player = new Player();
 
-export {player}
-export type {Player}
+export { player };
+export type { Player };

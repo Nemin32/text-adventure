@@ -1,57 +1,74 @@
-import { rooms } from "./roomlist.ts"
-import { Directions, ROOM_NAME, gameMap } from "./constants.ts"
-import { player } from "./player.ts"
-import { Room } from "./room.ts"
+import { gameMap, rooms } from "./roomlist.ts";
+import { DEATH_POS, Directions, ROOM_NAME } from "./constants.ts";
+import { player } from "./player.ts";
+import { Room } from "./room.ts";
+import { show } from "./display.ts";
 
-const getRoom = (name: ROOM_NAME): [ROOM_NAME, Room<string>] => {
-  const room = rooms.get(name);
+const setRoom = (pos: [number, number], keepHistory = true) => {
+  const name = gameMap.at(pos[0])?.at(pos[1])
 
-  if (room) {
-    return [name, room];
+  if (!name) {
+    show("There is no path in that direction.")
+    return;
   }
 
-  // biome-ignore lint/style/noNonNullAssertion: The spawn always exists.
-  return  [ROOM_NAME.SPAWN, rooms.get(ROOM_NAME.SPAWN)!]
-}
+  if (keepHistory) {
+    player.prevPos.push([...player.position]);
+  }
 
-function getDir(input: string) {
+  let room = rooms.get(name);
+
+  if (!room) {
+    show(`You tried to reach ${ROOM_NAME[name]}, but there was no room there. This is a bug. You've been transported to the spawn. Please complain to Nemin.`)
+    // biome-ignore lint/style/noNonNullAssertion: The spawn always exists.
+    room = rooms.get(ROOM_NAME.SPAWN)!;
+  }
+
+  player.position = pos;
+  player.currentRoom = room;
+  room.printDescription()
+};
+
+export function getDir(input: string) {
   const inputToDir = [
-    {inputs: ["forwards", "forward", "f", "north", "n"], dir: Directions.Forward},
-    {inputs: ["left", "l", "west", "w"], dir: Directions.Left},
-    {inputs: ["backwards", "backward", "l", "south", "s"], dir: Directions.Backward},
-    {inputs: ["right", "r", "east", "e"], dir: Directions.Right},
-  ]
+    { inputs: ["forwards", "forward", "f", "north", "n"], dir: Directions.Forward },
+    { inputs: ["left", "l", "west", "w"], dir: Directions.Left },
+    { inputs: ["backwards", "backward", "l", "south", "s"], dir: Directions.Backward },
+    { inputs: ["right", "r", "east", "e"], dir: Directions.Right },
+  ];
 
-  return inputToDir.find(({inputs}) => inputs.includes(input))?.dir
+  return inputToDir.find(({ inputs }) => inputs.includes(input))?.dir;
 }
 
-function moveDir(dir: Directions) {
+export function moveDir(dir: Directions) {
   const dirMap = new Map<Directions, [number, number]>([
-    [Directions.Forward, [0, -1]],
-    [Directions.Backward, [0, 1]],
-    [Directions.Left, [-1, 0]],
-    [Directions.Right, [1, 0]],
-  ])
+    [Directions.Forward, [-1, 0]],
+    [Directions.Backward, [1, 0]],
+    [Directions.Left, [0, -1]],
+    [Directions.Right, [0, 1]],
+  ]);
 
   // biome-ignore lint/style/noNonNullAssertion: All directions are initialized.
-  const  delta = dirMap.get(dir)!
-  const newPosition: [number, number] = [
-    player.position[0] + delta[0], 
-    player.position[1] + delta[1]
-  ]
+  const delta = dirMap.get(dir)!;
+  const newPosition: [number, number] = [player.position[0] + delta[0], player.position[1] + delta[1]];
 
-  const newRoom = gameMap.at(newPosition[0])?.at(newPosition[1])
+  setRoom(newPosition)
+}
 
-  if (newRoom) {
-    player.prevPos.push([...player.position])
-    player.position = newPosition
+export function die() {
+  setRoom(DEATH_POS, false);
+}
 
-    const [name, room] = getRoom(newRoom)
-    player.currentRoom = room
-    player.currentName = name
+export function goBack() {
+  const lastPos = player.prevPos.pop();
 
-    return true;
+  if (lastPos) {
+    setRoom(lastPos, false)
+  } else {
+    show("No previous room to go back to.")
   }
+}
 
-  return false;
+export function move(name: ROOM_NAME) {
+  show(`Tried to move to ${ROOM_NAME[name]}.`)
 }
