@@ -1,5 +1,5 @@
 import { Flags, Room, ActionGenerator } from "../room.ts";
-import { die, move } from "../movement.ts";
+import { die, move, moveDir } from "../movement.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
@@ -77,6 +77,22 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
       },
     },
+    {
+      trigger: ["body"],
+      action: () =>
+        show("You briefly contemplate poking him, but you quickly decide against it. You're not that suicidal."),
+    },
+    {
+      trigger: ["door"],
+      action: () => {
+        if (flags.doorOpen) {
+          show("You try pressing against the open door and fall through into the next room");
+          moveDir(Directions.Forward);
+        } else {
+          show("You press against the door with all your might, but this fight is won by the door.");
+        }
+      },
+    },
   ],
 
   talk: [
@@ -89,6 +105,35 @@ const actions: ActionGenerator<flags> = (flags) => ({
           show("He grumbles something, most likely a complaint, but you can't understand his words.");
         }
       },
+    },
+    {
+      trigger: ["door"],
+      action: () =>
+        show(
+          "You try to talk some good sense into the door. But sadly it's moved by a different mechanism than words.",
+        ),
+    },
+    {
+      trigger: ["meatsaw"],
+      action: () => show("You ask what sorts of meat it saw over all these years. There is no answer."),
+    },
+    {
+      trigger: ["button"],
+      action: () => show("The pressure of your sound-waves isn't quite enough to trigger the button."),
+    },
+  ],
+
+  open: [
+    {
+      trigger: ["door"],
+      action: () =>
+        flags.doorOpen
+          ? show("You wave your arms in front of the open door. Thank Odd, there's nobody else around.")
+          : show("You try to pry open the door, but it doesn't budge the slightest."),
+    },
+    {
+      trigger: ["meatsaw"],
+      action: () => show("Don't you remember that's how you got into this situation in the first place?"),
     },
   ],
 
@@ -111,18 +156,18 @@ const actions: ActionGenerator<flags> = (flags) => ({
 });
 
 const desc = (flags: flags): string => {
-  return `The chamber looks surprisingly fine despite having been ravaged by lightning. But then most of the place was made from metal. That's probably the only reason you're alive now.\nThe *meatsaw* in the center of the room is still active, though the prisoner meant to be dropped into it is nowhere to be seen. ${player.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."
-    } On the wall in front of you, there is a *button* and next to it ${flags.doorOpen ? "an open" : "a closed"} *door*.`;
+  return `The chamber looks surprisingly fine despite having been ravaged by lightning. But then most of the place was made from metal. That's probably the only reason you're alive now.\nThe *meatsaw* in the center of the room is still active, though the prisoner meant to be dropped into it is nowhere to be seen. ${
+    player.hasItem(ITEM.BOSS) ? "" : " You see a slightly charred *body* on the floor."
+  } On the wall in front of you, there is a *button* and next to it ${flags.doorOpen ? "an open" : "a closed"} *door*.`;
 };
 
 const canMove = (flags: flags) => ({
   [Directions.Forward]: () => {
     if (flags.doorOpen) return true;
 
-    show("You walk face first into the the door. These things aren't motion controlled, y'know?")
+    show("You walk face first into the the door. These things aren't motion controlled, y'know?");
     return false;
-  }
-})
+  },
+});
 
-const room = new Room({ doorOpen: false }, actions, desc, canMove);
-export { room as spawn };
+export const spawn = new Room({ doorOpen: false }, actions, desc, { door: Directions.Forward }, canMove);

@@ -1,6 +1,6 @@
 import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../constants.ts";
+import { Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
@@ -95,25 +95,25 @@ const actions: ActionGenerator<flags> = (flags) => ({
       },
     },
   ],
-  enter: [
-    {
-      trigger: ["path", "boiler room"],
-      action: () => move(ROOM_NAME.BOILA),
-    },
-    {
-      trigger: ["door", "security", "security booth"],
-      action: () => {
-        if (flags.securityOpen) {
-          move(ROOM_NAME.SECUR);
-        } else {
-          show("You try to enter the booth, but it is locked.");
-        }
-      },
-    },
-  ],
 });
 
 const description = (flags: flags) =>
   `You step into the employee lounge area. You've never quite understood why they placed the lounge past the boilers, but then you've suspected for years that RuptureFarms wasn't exactly built up to code... If there even was a code to begin with.\nStill, even with all the chaos and destruction outside, you feel a bit of fuzziness in your cold, dead heart as you gaze over the place that gave you so many good memories. A poker *table* dominates the middle of the room, situated between a handful of three-legged chairs. The floor is covered by a cheap, faded carpet, its pattern long unrecognizable under all the stains and years of abuse. A *darts board* hangs on the far end of the wall, next to it a faded *poster*. Below them, on a small cubby, you hear an old *TV* babbling to itself. As you make your way through the room, your legs keep kicking away empty bottles of SoulStorm Brew. You smile. It's a mess for sure, but it is your mess.\nA *door* to the left leads into a nearby security booth, while the *path* back into the boiler room is behind you.`;
 
-export const loung = new Room({ securityOpen: false, keyNoticed: false }, actions, description);
+const canMove = (flags) => ({
+  [Directions.Left]: () => {
+    if (flags.securityOpen) {
+      return true;
+    }
+
+    show("You try to enter the booth, but it is locked.");
+    return false;
+  },
+});
+
+export const loung = new Room({ securityOpen: false, keyNoticed: false }, actions, description, {
+  booth: Directions.Left,
+  security: Directions.Left,
+  door: Directions.Left,
+  path: Directions.Right,
+});

@@ -1,11 +1,11 @@
-import { move } from "../movement.ts";
+import { move, setRoom } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../constants.ts";
+import { Directions, ITEM, ROOM_NAME, STRIP_POS } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { gctrl } from "./gctrl.ts";
 
-type flags = Flags<"noticedBrew" | "madeCall">;
+type flags = Flags<"noticedBrew" | "madeCall" | "brewTaken">;
 
 const actions: ActionGenerator<flags> = (flags) => ({
   look: [
@@ -40,7 +40,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["schedules", "schedule"],
       action: () =>
         show(
-          "EXPORT:\nFeeCo Depot - Finished products (contact Sales about project New 'n' Tasty)\nBoneWerkz - Animal and otherwise byproducts\nSoulStorm Brewery - Disciplined personnel\n\nIMPORT:\nMeechtopia - Live Meeches (CANCELED)\nParamonia - Live Paramites (DELAYED)\nScrabania - Live Scrabs (DELAYED)",
+          "Unlike everything else in the room, the schedules are surprisingly fresh. They were probably only posted a few days ago at most.",
         ),
     },
     {
@@ -53,6 +53,24 @@ const actions: ActionGenerator<flags> = (flags) => ({
         ),
     },
   ],
+  read: [
+    {
+      trigger: ["schedule", "schedules"],
+      action: () =>
+        show(
+          "EXPORT:\nFeeCo Depot - Finished products (contact Sales about project New 'n' Tasty)\nBoneWerkz - Animal and otherwise byproducts\nSoulStorm Brewery - Disciplined personnel\n\nIMPORT:\nMeechtopia - Live Meeches (CANCELED)\nParamonia - Live Paramites (DELAYED)\nScrabania - Live Scrabs (DELAYED)",
+        ),
+    },
+    {
+      trigger: ["telephone", "phone"],
+      action: () =>
+        show(
+          flags.madeCall
+            ? "You can't read something you've wrecked."
+            : "For emergencies dial number 666. The costs will be deducted from your next paycheck.",
+        ),
+    },
+  ],
   take: [
     {
       trigger: ["brew", "soulstorm", "SoulStorm Brew", "Soulstorm Brew", "Soulstorm brew"],
@@ -62,13 +80,26 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (!player.hasItem(ITEM.BREW)) {
+        if (!flags.brewTaken) {
           show("You carefully pocket the bottle.");
           player.addItem(ITEM.BREW);
+          flags.brewTaken = true;
         } else {
           show("As nice as it'd be to find two bottles of brew, you're not that lucky.");
         }
       },
+    },
+    {
+      trigger: ["schedule", "schedules"],
+      action: () => show("You don't see much point in taking these papers."),
+    },
+    {
+      trigger: ["phone", "telephone"],
+      action: () => show("The phone is wired into the wall. You can't bring it with you."),
+    },
+    {
+      trigger: ["gate"],
+      action: () => show("Sure, let's just casually pick up and chuck the ten-ton gate into your pocket. Idiot."),
     },
   ],
   talk: [
@@ -88,18 +119,20 @@ const actions: ActionGenerator<flags> = (flags) => ({
   ],
   enter: [
     {
-      trigger: ["door"],
-      action: () => move(ROOM_NAME.CORRA),
-    },
-    {
       trigger: ["gate"],
       action: () => {
         if (gctrl.getFlag("gateOpen")) {
-          move(ROOM_NAME.STRIP);
+          setRoom(STRIP_POS);
         } else {
           show("The gate remains locked and sadly you cannot phase though metal.");
         }
       },
+    },
+  ],
+  open: [
+    {
+      trigger: ["gate"],
+      action: () => show("You grab the gate by two arms, flex and... Nothing happens. What did you expect?"),
     },
   ],
 });
@@ -109,6 +142,8 @@ const description = (flags: flags) =>
     gctrl.getFlag("gateOpen")
       ? "The *gate* is wide open, you should hurry and get out already."
       : "Except for the ten-ton *gate* in front of you blocking the path."
-  } Just a few hours ago this was an endlessly busy hub of wares coming and going from the Farms, using the freight elevator that connects the main corridor of the facility with the landing strip on the roof.\n*Schedules* are haphazardly stapled on the walls. There is a small, abandoned guard booth next to the gate, with a *telephone* inside. While the path between the two ends of the room is mostly clean, those stupid Mudokons never had too much finesse handling goods, so there is a lot of *junk* strewn around left and right.\nThe floor itself is covered in scratches from all the boxes being dragged around, with a visible path of rubbed-out metal connecting the elevator to the *door* into the factory.`;
+  } Just a few hours ago this was an endlessly busy hub of wares coming and going from the Farms, using the freight elevator that connects the main corridor of the facility with the landing strip on the roof.\n*Schedules* are haphazardly stapled on the walls. There is a small, abandoned guard booth next to the gate, with a *telephone* inside. While the path between the two ends of the room is mostly clean, those stupid Mudokons never had too much finesse handling goods, so there is a lot of *junk* strewn around left and right.\nThe floor itself is covered in scratches from all the boxes being dragged around, with a visible path of rubbed-out metal connecting the elevator to the *door* behind you leading back into the factory.`;
 
-export const eleva = new Room({ noticedBrew: false, madeCall: false }, actions, description);
+export const eleva = new Room({ noticedBrew: false, madeCall: false, brewTaken: false }, actions, description, {
+  door: Directions.Backward,
+});

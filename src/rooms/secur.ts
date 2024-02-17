@@ -1,6 +1,6 @@
 import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
@@ -53,10 +53,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
           show("Nah. Who would you even gas at this point?");
         }
       },
-    },
-    {
-      trigger: ["door"],
-      action: () => move(ROOM_NAME.LOUNG),
     },
   ],
   take: [
@@ -178,4 +174,5 @@ export const secur = new Room(
   { lockdownLifted: false, safeOpened: false, terminalUnlocked: false },
   actions,
   description,
+  { door: Directions.Right },
 );

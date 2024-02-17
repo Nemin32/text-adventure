@@ -1,4 +1,3 @@
-import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { DEATHS } from "../constants.ts";
 import { player } from "../player.ts";

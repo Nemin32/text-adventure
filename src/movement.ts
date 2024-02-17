@@ -4,10 +4,10 @@ import { player } from "./player.ts";
 import { show } from "./display.ts";
 
 export const setRoom = (pos: [number, number], keepHistory = true) => {
-  const room = gameMap.at(pos[0])?.at(pos[1])
+  const room = gameMap.at(pos[0])?.at(pos[1]);
 
   if (!room) {
-    show("There is no path in that direction.")
+    show("There is no path in that direction.");
     return;
   }
 
@@ -17,14 +17,14 @@ export const setRoom = (pos: [number, number], keepHistory = true) => {
 
   player.position = pos;
   player.currentRoom = room;
-  room.printDescription()
+  room.printDescription();
 };
 
 export function getDir(input: string) {
   const inputToDir = [
     { inputs: ["forwards", "forward", "f", "north", "n"], dir: Directions.Forward },
     { inputs: ["left", "l", "west", "w"], dir: Directions.Left },
-    { inputs: ["backwards", "backward", "l", "south", "s"], dir: Directions.Backward },
+    { inputs: ["backwards", "backward", "b", "south", "s"], dir: Directions.Backward },
     { inputs: ["right", "r", "east", "e"], dir: Directions.Right },
   ];
 
@@ -43,23 +43,23 @@ export function moveDir(dir: Directions) {
   const delta = dirMap.get(dir)!;
   const newPosition: [number, number] = [player.position[0] + delta[0], player.position[1] + delta[1]];
 
-  setRoom(newPosition)
+  setRoom(newPosition);
 }
 
 export function die() {
-  setRoom(DEATH_POS, false);
+  setRoom(DEATH_POS);
 }
 
 export function goBack() {
   const lastPos = player.prevPos.pop();
 
   if (lastPos) {
-    setRoom(lastPos, false)
+    setRoom(lastPos, false);
   } else {
-    show("No previous room to go back to.")
+    show("No previous room to go back to.");
   }
 }
 
 export function move(name: ROOM_NAME) {
-  show(`Tried to move to ${ROOM_NAME[name]}.`)
+  show(`Tried to move to ${ROOM_NAME[name]}.`);
 }

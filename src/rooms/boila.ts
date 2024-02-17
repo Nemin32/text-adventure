@@ -1,6 +1,6 @@
 import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { gasre } from "./gasre.ts";
@@ -8,28 +8,33 @@ import { gasre } from "./gasre.ts";
 type flags = Flags<"boilerFixed" | "generatorFixed">;
 
 const actions: ActionGenerator<flags> = (flags) => ({
-  enter: [
+  look: [
+    {
+      trigger: ["furnace", "boiler"],
+      action: () =>
+        show(
+          flags.boilerFixed
+            ? "It was a wild gambit, but thankfully it paid off. The wreckage of the furnace is still unbearably hot, but at least it won't melt your face off."
+            : "The furnace's mouth belches fire and flame without pause. Seeing how the nearby pipes have turned red from the heat, you'd rather not step any closer.",
+        ),
+    },
+    {
+      trigger: ["generator"],
+      action: () =>
+        show(
+          "An old gas-powered generator. A dirty and loose hose connects it to a nearby pipe headed towards the reservoirs. You notice a small *keyhole* on it.",
+        ),
+    },
     {
       trigger: ["door"],
-      action: () => move(ROOM_NAME.CORRB),
+      action: () => show("The door is completely covered in soot, giving it a dull black finish."),
     },
     {
       trigger: ["path"],
-      action: () => {
-        if (flags.boilerFixed) {
-          move(ROOM_NAME.LOUNG);
-        } else {
-          if (!player.deaths.has(DEATHS.BOILER)) {
-            player.deaths.add(DEATHS.BOILER);
-            show(
-              "You try your best to run past the furnace between two blasts of flame, but at the worst possible moment your leg gets caught in a pipe and you fall face first into the furnace. It takes mere seconds for you to burn to a crisp.",
-            );
-            die();
-          } else {
-            show("You kinda don't feel like burning to death today.");
-          }
-        }
-      },
+      action: () =>
+        show(
+          "The path is covered in snaking pipes, dust bunnies, and the occasional piece of coal. You're not certain it was ever cleaned.",
+        ),
     },
   ],
   use: [
@@ -41,10 +46,24 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
+        if (tool === ITEM.GUN) {
+          show("The furnace is solid metal. Your bullet wouldn't do anything.");
+        }
+
+        if (tool === ITEM.WRENCH) {
+          show(
+            "You attempt to muck around, but the wrench gets too hot in your hands. Beyond slightly burning yourself, you've accomplished nothing.",
+          );
+        }
+
+        if (tool === ITEM.KEYCARD) {
+          show("No way, the card is made out of plastic. It'd melt in less than a second.");
+        }
+
         if (tool === ITEM.BREW) {
           if (player.hasItem(ITEM.BREW)) {
             flags.boilerFixed = true;
-            player.brewUsed = true;
+            player.items.delete(ITEM.BREW);
             show(
               "You chuck the bottle of Brew into the furnace, which promptly explodes from the sudden heat. The furnace collapses into itself in a spectacular display of flame and destruction, coating the floor in hot coals and soot. You smile, it's nothing your legs can't handle.",
             );
@@ -57,11 +76,23 @@ const actions: ActionGenerator<flags> = (flags) => ({
       },
     },
     {
-      trigger: ["generator"],
+      trigger: ["generator", "keyhole"],
       action: ({ tool }) => {
         if (flags.generatorFixed) {
           show("The generator is happily running. There is nothing else you need to do.");
           return;
+        }
+
+        if (tool === ITEM.WRENCH) {
+          show("You give the generator a gentle whack. Nothing happens.");
+        }
+
+        if (tool === ITEM.GUN) {
+          show("No, it's a miracle that the generator is functional. Shooting it would do no good.");
+        }
+
+        if (tool === ITEM.KEYCARD) {
+          show("There is no slot on the generator, except for a small hole for a key.");
         }
 
         if (tool === ITEM.KEY) {
@@ -93,4 +124,33 @@ const description = (flags: flags) =>
       : "However, passage is currently blocked by the flames of an overheated *furnace* next to it."
   }`;
 
-export const boila = new Room({ boilerFixed: false, generatorFixed: false }, actions, description);
+const canMove = (flags: flags) => ({
+  [Directions.Left]: () => {
+    if (flags.boilerFixed) {
+      return true;
+    }
+
+    if (!player.deaths.has(DEATHS.BOILER)) {
+      player.deaths.add(DEATHS.BOILER);
+      show(
+        "You try your best to run past the furnace between two blasts of flame, but at the worst possible moment your leg gets caught in a pipe and you fall face first into the furnace. It takes mere seconds for you to burn to a crisp.",
+      );
+      die();
+      return false;
+    }
+
+    show("You kinda don't feel like burning to death today.");
+    return false;
+  },
+});
+
+export const boila = new Room(
+  { boilerFixed: false, generatorFixed: false },
+  actions,
+  description,
+  {
+    door: Directions.Forward,
+    path: Directions.Left,
+  },
+  canMove,
+);

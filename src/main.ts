@@ -1,9 +1,10 @@
 import { SPAWN_POS } from "./constants.ts";
 import { show } from "./display.ts";
-import { setRoom } from "./movement.ts";
 import { player } from "./player.ts";
+import { gameMap } from "./roomlist.ts";
 
-setRoom(SPAWN_POS, false)
+player.position = [...SPAWN_POS];
+player.currentRoom = gameMap[SPAWN_POS[0]][SPAWN_POS[1]];
 
 function act(str: string) {
   show(str, true);

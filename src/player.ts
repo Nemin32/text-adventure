@@ -6,11 +6,9 @@ class Player {
   deaths: Set<DEATHS> = new Set();
   items: Set<ITEM> = new Set();
 
-  currentRoom: Room<string> | null = null
+  currentRoom: Room<string> | null = null;
   position: [number, number] = SPAWN_POS;
   prevPos: Array<[number, number]> = [];
-
-  brewUsed = false;
 
   stepCounter = 0;
 
@@ -22,12 +20,12 @@ class Player {
     this.items.add(item);
   }
 
-  canGainItem(item: ITEM): boolean {
+  gainItem(item: ITEM): boolean {
     if (this.hasItem(item)) {
       return false;
     }
 
-    this.addItem(item)
+    this.addItem(item);
     return true;
   }
 }

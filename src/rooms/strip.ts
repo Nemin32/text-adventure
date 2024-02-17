@@ -1,6 +1,6 @@
-import { move } from "../movement.ts";
+import { move, setRoom } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../constants.ts";
+import { ELEVA_POS, FINIS_POS, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
@@ -12,7 +12,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["ship", "blimp", "plane"],
       action: () => {
         if (player.hasItem(ITEM.BOSS)) {
-          move(ROOM_NAME.FINIS);
+          setRoom(FINIS_POS);
         } else {
           show(
             "You cannot leave the boss behind. As much of a moldy old swindler he is, he is still your boss. And more importantly, who else would pay for your legs and ammo?",
@@ -22,7 +22,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["elevator", "lift"],
-      action: () => move(ROOM_NAME.ELEVA),
+      action: () => setRoom(ELEVA_POS),
     },
   ],
   look: [

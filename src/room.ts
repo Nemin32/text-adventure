@@ -1,10 +1,10 @@
-import { DEATHS, Directions, ITEM, ROOM_NAME } from "./constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME, isItem } from "./constants.ts";
 import { show } from "./display.ts";
 import { goBack, die, getDir, moveDir } from "./movement.ts";
 import { player } from "./player.ts";
 
 export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump" | "open";
-export type ActionFn = (args: Record<string, string>) => void;
+export type ActionFn = (args: Partial<{ what: string; tool: ITEM }>) => void;
 
 type Actions = Partial<
   Record<
@@ -16,7 +16,7 @@ type Actions = Partial<
   >
 >;
 
-type CanMove = Partial<Record<Directions, () => boolean>>
+type CanMove = Partial<Record<Directions, () => boolean>>;
 
 export type Flags<T extends string> = Record<T, boolean>;
 export type ActionGenerator<T extends Flags<string>> = (flags: T) => Actions;
@@ -28,6 +28,7 @@ You interact with the world using the following text commands:
 - *use* <tool> *on* <subject> (<subject> may be "me" or "self" to use an item on yourself)
 - *press* / *push* <object>
 - *talk to* <someone>
+- *take* / *pick up* <object>
 - *go* / *enter* / *move to* <location> (use "go back" to enter the previous room)
 - *read* <something>
 - *jump* / *dive into* <somewhere>
@@ -57,7 +58,7 @@ export class Room<T extends string> {
   }
 
   actions: Actions;
-  moves: CanMove
+  moves: CanMove;
 
   fallbacks: Record<ActionKinds, ActionFn> = {
     look: ({ what }) => show(`I can't see any ${what} here.`),
@@ -76,17 +77,18 @@ export class Room<T extends string> {
     private flags: Flags<T>,
     actionGenerator: (flags: Flags<T>) => Actions,
     private description: (flags: Flags<T>) => string,
-    moveGenerator: (flags: Flags<T>) => CanMove = () => ({})
+    private dirAliases: Record<string, Directions> = {},
+    moveGenerator: (flags: Flags<T>) => CanMove = () => ({}),
   ) {
     this.actions = actionGenerator(this.flags);
-    this.moves = moveGenerator(this.flags)
+    this.moves = moveGenerator(this.flags);
   }
 
   canMove(dir: Directions) {
-    const opt = this.moves[dir]
+    const opt = this.moves[dir];
     if (!opt) return true;
 
-    return opt()
+    return opt();
   }
 
   setFlag(flag: T, value: boolean) {
@@ -159,18 +161,48 @@ export class Room<T extends string> {
         continue;
       }
 
-      const canShoot =
-        action === "use" &&
-        YOURSELF.includes(res.groups.what) &&
-        res.groups.tool === ITEM.GUN &&
-        player.hasItem(ITEM.GUN);
+      const selfItems: Record<ITEM, () => void> = {
+        [ITEM.BOSS]: () => show("You feel a gigantic wave of disgust wash over you."),
+        [ITEM.BREW]: () => {
+          if (!player.deaths.has(DEATHS.BREW)) {
+            player.deaths.add(DEATHS.BREW);
+            show(
+              "You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.",
+            );
+            die();
+          } else {
+            show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.");
+          }
+        },
+        [ITEM.GUN]: () => {
+          if (!player.deaths.has(DEATHS.GUN)) {
+            player.deaths.add(DEATHS.GUN);
+            show(
+              "You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.",
+            );
+            die();
+          } else {
+            show("No, that would not solve anything. You have to press on and see this to the end.");
+          }
+        },
+        [ITEM.HAT]: () => show("You already have the hat on. Still, you give it an affectionate pat."),
+        [ITEM.KEY]: () => show("Sadly there is no inner potential to unlock in you."),
+        [ITEM.KEYCARD]: () => show("You use the keycard to clean some dirt from under your nails."),
+        [ITEM.WRENCH]: () => show("Even if you do have a few screws loose, sadly a wrench won't let you tighten them."),
+      };
 
-      const canDrink =
-        action === "use" &&
-        YOURSELF.includes(res.groups.what) &&
-        res.groups.tool === ITEM.BREW &&
-        player.hasItem(ITEM.BREW) &&
-        !player.brewUsed;
+      if (action === "use" && YOURSELF.includes(res.groups.what) && res.groups.tool !== undefined) {
+        const fn = selfItems[res.groups.tool];
+
+        if (fn) {
+          if (player.hasItem(res.groups.tool as ITEM)) {
+            fn();
+          } else {
+            show("I don't have that item on me.");
+          }
+          return;
+        }
+      }
 
       const looksAround = action === "look" && ["around", "the room", "room"].includes(res.groups.what);
 
@@ -185,29 +217,35 @@ export class Room<T extends string> {
           goBack();
           break;
 
-        case canShoot:
-          if (!player.deaths.has(DEATHS.GUN)) {
-            player.deaths.add(DEATHS.GUN);
-            show(
-              "You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.",
-            );
-            die();
-          } else {
-            show("No, that would not solve anything. You have to press on and see this to the end.");
-          }
-          break;
+        case action === "enter" && res.groups.what !== undefined: {
+          const dir = this.dirAliases[res.groups.what] ?? getDir(res.groups.what);
 
-        case canDrink:
-          if (!player.deaths.has(DEATHS.BREW)) {
-            player.deaths.add(DEATHS.BREW);
-            show(
-              "You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.",
-            );
-            die();
-          } else {
-            show("Even though you're parched, drinking the Brew suddenly doesn't seem like that good of an idea.");
+          if (!dir) {
+            this.findAction(action, res.groups.what)(res.groups);
+            return;
           }
+
+          if (this.canMove(dir)) {
+            moveDir(dir);
+          }
+
           break;
+        }
+
+        case action === "use": {
+          if (res.groups.tool === undefined) {
+            show("You need to specify what tool to use.");
+          }
+
+          const tool = res.groups.tool;
+          if (!isItem(tool) || !player.hasItem(tool)) {
+            show("You don't have any such tool.");
+            return;
+          }
+
+          this.findAction(action, res.groups.what)(res.groups);
+          break;
+        }
 
         default:
           this.findAction(action, res.groups.what)(res.groups);

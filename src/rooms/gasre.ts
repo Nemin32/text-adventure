@@ -1,22 +1,12 @@
 import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME, isItem } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
 type flags = Flags<"gasRedirected">;
 
 const actions: ActionGenerator<flags> = (flags) => ({
-  enter: [
-    {
-      trigger: ["passageway", "corridor"],
-      action: () => move(ROOM_NAME.CORRB),
-    },
-    {
-      trigger: ["door", "storage"],
-      action: () => move(ROOM_NAME.STORG),
-    },
-  ],
   jump: [
     {
       trigger: ["abyss"],
@@ -84,24 +74,51 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["valve", "plaque"],
       action: () => show("The plaque reads:\n<- PERFUME MANUFACTURING\n-> EMERGENCY GENERATOR"),
     },
+    {
+      trigger: ["tank", "tanks"],
+      action: () =>
+        show(
+          "The label on the tanks read 'Rated for 1.2 PSI maximum. Storing gas at higher pressure is the end user's own liability.'",
+        ),
+    },
   ],
   use: [
     {
       trigger: ["valve"],
       action: ({ tool }) => {
-        if (tool === ITEM.WRENCH) {
-          if (player.hasItem(ITEM.WRENCH)) {
-            if (!flags.gasRedirected) {
-              flags.gasRedirected = true;
-              show("You switch over the valve.");
-            } else {
-              show("The valve is already switched over.");
-            }
-          } else {
-            show("You don't have a wrench.");
-          }
-        } else {
-          show("I don't think that'd work.");
+        if (flags.gasRedirected) {
+          show("The valve is already switched over.");
+          return;
+        }
+
+        switch (tool) {
+          case ITEM.WRENCH:
+            flags.gasRedirected = true;
+            show("You switch over the valve.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("You hold the keycard against the valve. Nothing happens.");
+            break;
+
+          case ITEM.KEY:
+            show("It's a bolt, not a lock.");
+            break;
+
+          case ITEM.BREW:
+            show("While the hole of the bottle fits over the bolt, obviously it can't grip it.");
+            break;
+
+          case ITEM.BOSS:
+            show("You'd rather not even try.");
+            break;
+
+          case ITEM.GUN:
+            show("You try placing the finger-guard over the bolt, but it's too big.");
+            break;
+
+          case ITEM.HAT:
+            show("The hat is too soft an valuable to use here.");
         }
       },
     },
@@ -109,6 +126,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
 });
 
 const description = (_: flags) =>
-  `You step onto a rickety catwalk, hanging above a dark *abyss*. On both sides you see gigantic oval *tanks*, whose bases disappear into the blackness below. With each careful step of your mechanical harness, the catwalk whines and sways precariously. You're almost certain if you were only a little bit heavier, the screws holding you would loosen and you'd plummet to your death. Thankfully the room seems unharmed otherwise. You're not really sure how the fires haven't reached here yet and shudder to think what would have happened if they did.\nThere is also a massive pipe above the catwalk, which runs parallel with it, before suddenly splitting in two and disappearing among the tanks. There seems to be some sort of *valve* at the junction.\nBehind you is the open passageway to the *corridor*, while in front of you, at the far end of the catwalk, is another *door* with a *sign* next to it.`;
+  `You step onto a rickety catwalk, hanging above a dark *abyss*. On both sides you see gigantic oval *tanks*, whose bases disappear into the blackness below. With each careful step of your mechanical harness, the catwalk whines and sways precariously. You're almost certain if you were only a little bit heavier, the screws holding you would loosen and you'd plummet to your death. Thankfully the room seems unharmed otherwise. You're not really sure how the fires haven't reached here yet and shudder to think what would have happened if they did.\nThere is also a massive pipe above the catwalk, which runs parallel with it, before suddenly splitting in two and disappearing among the tanks. There seems to be some sort of *valve* at the junction.\nBehind you is the open passageway to the *corridor*, while the catwalk takes a sharp turn to the left, ending in a *door* with a *sign* next to it.`;
 
-export const gasre = new Room({ gasRedirected: false }, actions, description);
+export const gasre = new Room({ gasRedirected: false }, actions, description, {
+  corridor: Directions.Backward,
+  passageway: Directions.Backward,
+  door: Directions.Left,
+  storage: Directions.Left,
+});

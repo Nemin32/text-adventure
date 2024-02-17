@@ -1,18 +1,12 @@
 import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
 type flags = Flags<never>;
 
 const actions: ActionGenerator<flags> = (flags) => ({
-  enter: [
-    {
-      trigger: ["back", "door"],
-      action: () => move(ROOM_NAME.GASRE),
-    },
-  ],
   look: [
     {
       trigger: ["crate"],
@@ -100,4 +94,4 @@ const actions: ActionGenerator<flags> = (flags) => ({
 const description = (flags: flags) =>
   `As far as you can see *boxes* are stacked haphazardly on each other. The little that still sticks out from the ones at the bottom seem positively ancient and you're not entirely certain how the whole place hadn't collapsed into itself already. The darkness of the room is somewhat illuminated by fires at the opposite end. It's probably for the best if you get what you need and get out, before it reaches here.\nAmidst the mess three boxes in particularly get your attention: A wooden *crate*, a metal *locker* and a *toolbox*. Everything else seems too securely locked or hard to get to, so you'd rather not bother with them.\nAs the path forward is blocked by flames, the only way is through the *door* back to the gas reservoirs.`;
 
-export const storg = new Room({}, actions, description);
+export const storg = new Room({}, actions, description, { door: Directions.Right });

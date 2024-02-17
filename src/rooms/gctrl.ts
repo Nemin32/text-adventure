@@ -8,6 +8,8 @@ import { secur } from "./secur.ts";
 
 type flags = Flags<"gateOpen" | "gasRoomOpen" | "noticedKeycard" | "noticedSomething">;
 
+const TERMINAL = ["terminal", "pc", "computer", "screen"];
+
 const actions: ActionGenerator<flags> = (flags) => ({
   read: [
     {
@@ -89,6 +91,21 @@ COMMANDS:
   ],
   take: [
     {
+      trigger: ["something"],
+      action: () => {
+        if (!flags.noticedSomething) {
+          show("You pocket a handful of air.");
+          return;
+        }
+
+        if (player.gainItem(ITEM.KEYCARD)) {
+          show("A security keycard. Jackpot! You quickly pocket it into your mechanical pants.");
+        } else {
+          show("You've already got the keycard.");
+        }
+      },
+    },
+    {
       trigger: ["keycard"],
       action: () => {
         if (!flags.noticedKeycard) {
@@ -106,6 +123,17 @@ COMMANDS:
     },
   ],
   enter: [
+    {
+      trigger: ["command", "commands"],
+      action: () =>
+        show(
+          "This isn't one of those fancy magic machines run by slaves. You have to be more specific about what command you want to enter.",
+        ),
+    },
+    {
+      trigger: TERMINAL,
+      action: () => show("You've seen a movie about this, but no."),
+    },
     {
       trigger: ["one", "1"],
       action: () => {
@@ -179,15 +207,6 @@ STRIP: Landing strip`);
           "The terminal beeps before printing 'EMPLOYEES: 00, ESCAPEES: 99, CASUALTIES: 00'. To think that single schmuck could achieve this...\nYou really wish you had a loaded gun and a blue Mudokon in firing distance.",
         ),
     },
-
-    {
-      trigger: ["left"],
-      action: () => move(ROOM_NAME.CORRA),
-    },
-    {
-      trigger: ["right"],
-      action: () => move(ROOM_NAME.CORRB),
-    },
   ],
   talk: [
     {
@@ -208,8 +227,8 @@ STRIP: Landing strip`);
 });
 
 const description = (_: flags) => `You find yourself in a computer nest, right next to the elevator. Chairs lie haphazardly scattered around the room. A few terminals are embedded in the wall, wires running wildly all over the floor. You try some of them, but they're completely busted. A *slig* sits slumped in a chair nearby, his chest is full of sharp glass fragments. The terminal in front of him is belching smoke and you're pretty sure you can hear fire quietly popping from the inside.
-Miraculously the master *terminal* at the end of the room somehow still has enough power to work and it is waiting for instructions at the moment. You're not exactly qualified, but at this point nobody could stop you from *enter*-ing some commands, if you wanted.
-Otherwise, there is nothing else to note in the room. Both to your *left* and your *right*, you see two corridors stretch as far as the eye could see.`;
+Miraculously the master *terminal* at the end of the room somehow still has enough power to work and it is waiting for instructions at the moment. You're not exactly qualified, but at this point nobody could stop you from *enter*-ing some commands, if you wanted. Otherwise, there is nothing else to note in the room.
+To your left the *corridor* you came from yawns emptily.`;
 
 export const gctrl = new Room(
   {
