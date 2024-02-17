@@ -24,7 +24,7 @@ const description = (flags: flags) => {
     .map(([type, msg]) => `- ${DEATHS[type]}: ${player.deaths.has(type) ? msg : "???"}`)
     .join("\n");
 
-  const SHORTEST_PATH_WITH_CAP = 42; // Took me at least 42 moves to get the "good ending" with the cap.
+  const SHORTEST_PATH_WITH_CAP = 45; // Took me at least 45 moves to get the "good ending" with the cap.
   const SHORTEST_PATH = SHORTEST_PATH_WITH_CAP - 2; // It takes two moves to unlock the safe and take out the cap.
   const SHORTEST = gotHat ? SHORTEST_PATH_WITH_CAP : SHORTEST_PATH;
 
