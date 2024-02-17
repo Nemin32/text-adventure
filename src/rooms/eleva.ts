@@ -71,6 +71,75 @@ const actions: ActionGenerator<flags> = (flags) => ({
         ),
     },
   ],
+  use: [
+    {
+      trigger: ["phone", "telephone"],
+      action: ({ tool }) => {
+        if (flags.madeCall) {
+          show("A bit too late for that.");
+          return;
+        }
+
+        switch (tool as ITEM) {
+          case ITEM.GUN:
+          case ITEM.BREW:
+          case ITEM.WRENCH:
+            show("You'd rather not wreck your one chance at getting help.");
+            break;
+
+          case ITEM.KEY:
+          case ITEM.KEYCARD:
+            show("The phone isn't locked.");
+            break;
+
+          case ITEM.BOSS:
+            show("If only he wasn't unconscious... Surely they'd listen more to him.");
+            break;
+
+          case ITEM.HAT:
+            show("With this hat on your head, you're far more confident about making calls.");
+        }
+      },
+    },
+    {
+      trigger: ["gate"],
+      action: ({ tool }) => {
+        if (gctrl.getFlag("gateOpen")) {
+          show("The gate is open. What are you waiting for?");
+          return;
+        }
+
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You smash your wrench against the gate, but it just bounces off.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("There is no card reader on the gate.");
+            break;
+
+          case ITEM.KEY:
+            show("The gate isn't 'locked' in this sense.");
+            break;
+
+          case ITEM.BREW:
+            show("The explosion would be too weak to break the gate open.");
+            break;
+
+          case ITEM.GUN:
+            show("One bullet wouldn't even dent the gate.");
+            break;
+
+          case ITEM.HAT:
+            show("Somehow the gate refuses to open to your boyish charm.");
+            break;
+
+          case ITEM.BOSS:
+            show("He's out cold. Not like he could help you open the gate anyway.");
+        }
+      },
+    },
+  ],
   take: [
     {
       trigger: ["brew", "soulstorm", "SoulStorm Brew", "Soulstorm Brew", "Soulstorm brew"],
@@ -116,6 +185,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
       },
     },
+    {
+      trigger: ["gate"],
+      action: () => show("You sternly ask the gate to open. It doesn't."),
+    },
   ],
   enter: [
     {
@@ -133,6 +206,13 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["gate"],
       action: () => show("You grab the gate by two arms, flex and... Nothing happens. What did you expect?"),
+    },
+    {
+      trigger: ["phone", "telephone"],
+      action: () =>
+        show(
+          "You pick up the receiver, then place it back. Wait, isn't there something else you had to do between these two actions?",
+        ),
     },
   ],
 });

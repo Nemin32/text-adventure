@@ -1,4 +1,4 @@
-import { Directions } from "../constants.ts";
+import { Directions, ITEM } from "../constants.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
 import { show } from "../display.ts";
 import { gctrl } from "./gctrl.ts";
@@ -30,6 +30,44 @@ const actions: ActionGenerator<flags> = (flags) => ({
           : show("You almost sprain your shoulder trying to pull the door open, but it just won't budge."),
     },
   ],
+  use: [
+    {
+      trigger: GAS,
+      action: ({ tool }) => {
+        if (gctrl.getFlag("gasRoomOpen")) {
+          show("The door is already unlocked. Go ahead and go in.");
+          return;
+        }
+
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You smash your wrench against the door. Beyond hurting your hand, this accomplished nothing.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("The door has no card reader attached. It's probably unlocked from somewhere else.");
+            break;
+
+          case ITEM.KEY:
+            show("The door has no visible lock.");
+            break;
+
+          case ITEM.BREW:
+            show("The Brew's explosion wouldn't be powerful enough to open this door.");
+            break;
+
+          case ITEM.GUN:
+            show("Your one bullet wouldn't even dent the door.");
+            break;
+
+          case ITEM.HAT:
+          case ITEM.BOSS:
+            show("No, I don't think that'd work.");
+            break;
+        }
+      },
+    },
+  ],
   talk: [
     {
       trigger: GAS,
@@ -37,7 +75,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         gctrl.getFlag("gasRoomOpen")
           ? show("You don't see much point in talking to an open door.")
           : show(
-              "You attempt to identify yourself to the door. Yet the prideful contraption won't open itself even for the private escort of Molluck the Glukkon himself.",
+              "You attempt to verbally identify yourself to the door. Yet the prideful contraption remains locked even for the private escort of Molluck the Glukkon himself.",
             ),
     },
   ],

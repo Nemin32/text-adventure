@@ -12,7 +12,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["darts", "darts board"],
       action: () =>
         show(
-          "A few darts are sticking out from the board, mostly around the edges. None of the guys were very good shots. It's easier when you don't have to care about things like 'ballistics' and 'having a good aim'.`",
+          "A few darts are sticking out from the board, mostly around the edges. None of the guys were very good shots.\nIt's easier when you don't have to care about things like 'ballistics' and 'having a good aim'.`",
         ),
     },
     {
@@ -56,13 +56,15 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["door", "booth", "security booth"],
       action: ({ tool }) => {
         if (flags.securityOpen) {
-          show("There is nothing else you need to do with the door.");
+          show("The door is wide open, just waltz in.");
           return;
         }
 
         switch (tool as ITEM) {
           case ITEM.WRENCH:
-            show("You smack the padlock with the wrench, but it proves too strong.");
+            show(
+              "You smack the padlock with the wrench, but it doesn't budge.\nYou really should've hit the gym while you had the chance.",
+            );
             break;
 
           case ITEM.KEYCARD:
@@ -123,9 +125,15 @@ const canMove = (flags) => ({
   },
 });
 
-export const loung = new Room({ securityOpen: false, keyNoticed: false }, actions, description, {
-  booth: Directions.Left,
-  security: Directions.Left,
-  door: Directions.Left,
-  path: Directions.Right,
-});
+export const loung = new Room(
+  { securityOpen: false, keyNoticed: false },
+  actions,
+  description,
+  {
+    booth: Directions.Left,
+    security: Directions.Left,
+    door: Directions.Left,
+    path: Directions.Right,
+  },
+  canMove,
+);
