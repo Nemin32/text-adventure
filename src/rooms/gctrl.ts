@@ -162,6 +162,14 @@ COMMANDS:
   ],
   take: [
     {
+      trigger: TERMINAL,
+      action: () => show("It's bolted to the desk. Not to mention probably weighs a ton."),
+    },
+    {
+      trigger: ["slig", "body", "corpse"],
+      action: () => show("You don't feel like carrying a corpse around tonight."),
+    },
+    {
       trigger: ["something"],
       action: () => {
         if (!flags.noticedSomething) {

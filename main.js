@@ -611,7 +611,7 @@ var actions3 = (flags) => ({
   ]
 });
 var description3 = (flags) => `The boiler room has seen better days. As you navigate the wild web of pipes, you take a peek at the gauges. As expected, they're all in the red. In one corner of the room a dirty *generator* ${flags.generatorFixed ? "belches disgusting smoke, as it converts the gas into electricity." : "sits unused."}
-A *door* leads back into the corridor. Another *path* leads deeper inside, towards the employee lounge. ${flags.boilerFixed ? "Next to it, you see the still-smoking wreckage of what was once a *furnace*." : "However, passage is currently blocked by the flames of an overheated *furnace* next to it."}`;
+A *door* in front of you leads back into the corridor. Another *path* to the left leads deeper inside, towards the employee lounge. ${flags.boilerFixed ? "Next to it, you see the still-smoking wreckage of what was once a *furnace*." : "However, passage is currently blocked by the flames of an overheated *furnace* next to it."}`;
 var canMove = (flags) => ({
   ["W" /* Left */]: () => {
     if (flags.boilerFixed) {
@@ -977,6 +977,14 @@ COMMANDS:
     }
   ],
   take: [
+    {
+      trigger: TERMINAL2,
+      action: () => show("It's bolted to the desk. Not to mention probably weighs a ton.")
+    },
+    {
+      trigger: ["slig", "body", "corpse"],
+      action: () => show("You don't feel like carrying a corpse around tonight.")
+    },
     {
       trigger: ["something"],
       action: () => {
