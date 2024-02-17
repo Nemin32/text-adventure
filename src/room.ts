@@ -52,7 +52,7 @@ export class Room<T extends string> {
       return this.fallbacks[act]
     }
 
-    const fn = this.actions[act]?.find(({trigger, action}) => trigger.includes(name))?.action
+    const fn = this.actions[act]?.find(({trigger, action}) => trigger.map(t=>t.toLowerCase()).includes(name))?.action
 
     if (fn === undefined) {
       return this.fallbacks[act]

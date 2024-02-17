@@ -8,7 +8,7 @@ GM.currentRoom = rooms.get(ROOM_NAME.SPAWN)!
 
 function act(str: string) {
   show(str, true)
-  GM.currentRoom?.doAction(str)
+  GM.currentRoom?.doAction(str.toLowerCase())
   GM.stepCounter++;
 }
 

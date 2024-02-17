@@ -13,8 +13,6 @@ window.addEventListener("load", () => {
 
   setInterval(() => {
     if (msgs.length > 0) {
-      //console.log(msgs[0])
-
       if (msgs[0].type === "divider") {
         output.appendChild(document.createElement("hr"))
       } else {
