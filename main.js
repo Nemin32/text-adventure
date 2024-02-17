@@ -1069,23 +1069,26 @@ COMMANDS:
       action: () => {
         show(`The terminal hangs for a few seconds, then the following chart is printed:
 
-                        STRIP
-                          |
-        STORG - GASRE   ELEVA
-                  |       |
-             <- CORRB - CORRA - GCTRL ->
-                  |       |
-SECUR - LOUNG - BOILA   PRISN
+                                STRIP
+                                  |
+PKGIN - STORG - GASRE   BOARD   ELEVA
+                  |       |       |
+                CORRC - CORRB - CORRA - GCTRL
+                  |               |
+SECUR - LOUNG - BOILA           PRISN
 
+BOARD: Boardroom
 BOILA: Boiler room
 CORRA: Corridor A
 CORRB: Corridor B
+CORRC: Corridor C
 ELEVA: Elevator to landing strip
 GASRE: Gas reservoirs
 GCTRL: Gate control
 LOUNG: Lounge
-SECUR: Security booth
+PKGIN: Packaging Area
 PRISN: Execution chamber
+SECUR: Security booth
 STORG: General storage
 STRIP: Landing strip`);
       }
