@@ -1,6 +1,6 @@
 import { die, move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { show } from "../util.ts";
 import { GM } from "../gm.ts";
 
@@ -65,9 +65,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["crate"],
       action: ({ tool }) => {
         if (tool === ITEM.WRENCH) {
-          if (!GM.deaths.has(DEATH.FUZZLE)) {
+          if (!GM.deaths.has(DEATHS.FUZZLE)) {
             show("You pry open the crate using the wrench. A moment later furry balls blast out from the darkness inside, latching onto your body, tearing skin and muscle. You scream in agony and try to swat them off, but it's no use. You are slowly overwhelmed, until little more than bones and a pair of legs remain.")
-            GM.deaths.add(DEATH.FUZZLE)
+            GM.deaths.add(DEATHS.FUZZLE)
             die()
           } else {
             show("Upon second thoughts, it's best not to disturb whatever's inside there.")

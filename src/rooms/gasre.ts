@@ -1,6 +1,6 @@
 import { die, move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { show } from "../util.ts";
 import { GM } from "../gm.ts";
 
@@ -21,8 +21,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["abyss"],
       action: () => {
-        if (!GM.deaths.has(DEATH.ABYSS)) {
-          GM.deaths.add(DEATH.ABYSS)
+        if (!GM.deaths.has(DEATHS.ABYSS)) {
+          GM.deaths.add(DEATHS.ABYSS)
           show("You always wondered what's on the bottom of this chamber. Instead of bothering to find an elevator or stairs, you decide to take the easy way down. Your screams echo for seconds before a quiet splat is finally heard. You were never seen again.")
           die()
         } else {

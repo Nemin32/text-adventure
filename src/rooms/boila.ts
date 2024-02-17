@@ -1,6 +1,6 @@
 import { die, move } from "../adjacencies.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { show } from "../util.ts";
 import { GM } from "../gm.ts";
 import { gasre } from "./gasre.ts";
@@ -19,8 +19,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (flags.boilerFixed) {
           move(ROOM_NAME.LOUNG)
         } else {
-          if (!GM.deaths.has(DEATH.BOILER)) {
-            GM.deaths.add(DEATH.BOILER)
+          if (!GM.deaths.has(DEATHS.BOILER)) {
+            GM.deaths.add(DEATHS.BOILER)
             show("You try your best to run past the furnace between two blasts of flame, but at the worst possible moment your leg gets caught in a pipe and you fall face first into the furnace. It takes mere seconds for you to burn to a crisp.")
             die()
           } else {

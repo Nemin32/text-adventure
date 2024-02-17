@@ -1,5 +1,5 @@
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATH, ITEM } from "../roomnames.ts";
+import { DEATHS, ITEM } from "../roomnames.ts";
 import { GM } from "../gm.ts";
 
 type flags = Flags<never>
@@ -10,19 +10,19 @@ const actions: ActionGenerator<flags> = (flags) => ({
 
 const description = (flags: flags) => {
   const gotHat = GM.hasItem(ITEM.HAT)
-  const allDeaths = GM.deaths.size >= DEATH.__LENGTH
+  const allDeaths = GM.deaths.size >= DEATHS.__LENGTH
 
-  const deathOptions: Array<[DEATH, string]> = [
-    [DEATH.ABYSS, "You answered the call of the abyss."],
-    [DEATH.BOILER, "You could not outrun fire."],
-    [DEATH.BREW, "Abstinence would have been a virtue."],
-    [DEATH.FUZZLE, "Do not heckle dangerous animals."],
-    [DEATH.GAS, "What gas around comes around."],
-    [DEATH.GUN, "You went out with a bang."],
-    [DEATH.MEATSAW, "RuptureFarms's newest product: Slig Chops."],
+  const deathOptions: Array<[DEATHS, string]> = [
+    [DEATHS.ABYSS, "You answered the call of the abyss."],
+    [DEATHS.BOILER, "You could not outrun fire."],
+    [DEATHS.BREW, "Abstinence would have been a virtue."],
+    [DEATHS.FUZZLE, "Do not heckle dangerous animals."],
+    [DEATHS.GAS, "What gas around comes around."],
+    [DEATHS.GUN, "You went out with a bang."],
+    [DEATHS.MEATSAW, "RuptureFarms's newest product: Slig Chops."],
   ];
   
-  const deaths = deathOptions.map(([type, msg]) => `- ${DEATH[type]}: ${GM.deaths.has(type) ? msg : "???"}`).join("\n")
+  const deaths = deathOptions.map(([type, msg]) => `- ${DEATHS[type]}: ${GM.deaths.has(type) ? msg : "???"}`).join("\n")
 
   const SHORTEST_PATH_WITH_CAP = 42; // Took me at least 42 moves to get the "good ending" with the cap.
   const SHORTEST_PATH = SHORTEST_PATH_WITH_CAP - 2; // It takes two moves to unlock the safe and take out the cap.
@@ -42,7 +42,7 @@ With your course set, you lean back and close your eyes. It's been an awful day.
 *Total steps taken: ${GM.stepCounter}.*
 ${pathMsg}
 
-*DEATHS: ${GM.deaths.size} / ${DEATH.__LENGTH}*
+*DEATHS: ${GM.deaths.size} / ${DEATHS.__LENGTH}*
 ${allDeaths ? "Congrats, you're a master at not staying alive!" : "Hmm, seems like you missed some opportunities to get an early severance package."}
 ${deaths}
 

@@ -1,12 +1,15 @@
 import { Room } from "./room.ts";
-import { DEATH, ITEM, ROOM_NAME } from "./roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "./roomnames.ts";
 
 class GameManager {
-  deaths: Set<DEATH> = new Set();
+  deaths: Set<DEATHS> = new Set();
   prevRoom: ROOM_NAME[] = [];
   currentName: ROOM_NAME = ROOM_NAME.SPAWN;
   currentRoom: Room<string> | null = null;
   items: Set<ITEM> = new Set();
+
+  position: [number, number] = [0,0]
+  prevPos: Array<[number, number]> = []
 
   brewUsed = false;
 

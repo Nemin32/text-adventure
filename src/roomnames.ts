@@ -3,6 +3,7 @@ export enum ROOM_NAME {
   BOILA = "BOILA ",
   CORRA = "CORRA ",
   CORRB = "CORRB ",
+  CORRC = "CORRC",
   ELEVA = "ELEVA ",
   GASRE = "GASRE ",
   GCTRL = "GCTRL ",
@@ -28,7 +29,7 @@ export  const enum ITEM {
 }
 
 // biome-ignore lint/style/useEnumInitializers: <explanation>
-export  enum DEATH {
+export enum DEATHS {
   BREW, // ANY
   GUN, // ANY
   BOILER, // BOILA
@@ -38,3 +39,31 @@ export  enum DEATH {
   GAS, // SECUR
   __LENGTH
 }
+
+/*
+ N
+W+E
+ S
+*/
+
+export enum Directions {
+  Forward = "N",
+  Backward = "S",
+  Left = "W",
+  Right = "E"
+}
+
+const empty = null;
+const {DEATH, FINIS, CORRA, CORRB, CORRC, GCTRL, STORG, ELEVA, LOUNG, SECUR, SPAWN, BOILA, GASRE} = ROOM_NAME
+
+export const gameMap: (ROOM_NAME | null)[][] = [
+  [DEATH, empty, FINIS, empty, empty, empty],
+  [empty, empty, empty, empty, empty, empty],
+  [empty, STORG, GASRE, empty, ELEVA, empty],
+  [empty, empty, CORRC, CORRB, CORRA, GCTRL],
+  [SECUR, LOUNG, BOILA, empty, SPAWN, empty]
+]
+
+export const DEATH_POS: [number, number] = [0,0]
+export const FINIS_POS: [number, number] = [0,2]
+export const SPAWN_POS: [number, number] = [4,4]

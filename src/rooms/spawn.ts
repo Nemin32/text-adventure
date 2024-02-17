@@ -2,7 +2,7 @@ import { Flags, Room, ActionGenerator } from "../room.ts";
 import { die, move } from "../adjacencies.ts";
 import { show } from "../util.ts";
 import { GM } from "../gm.ts";
-import { DEATH, ITEM, ROOM_NAME } from "../roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
 import { gctrl } from "./gctrl.ts";
 
 const MOLLUCK = ["the boss", "boss", "molluck", "body"]
@@ -92,8 +92,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["saw", "meatsaw"],
       action: () => {
-        if (!GM.deaths.has(DEATH.MEATSAW)) {
-          GM.deaths.add(DEATH.MEATSAW)
+        if (!GM.deaths.has(DEATHS.MEATSAW)) {
+          GM.deaths.add(DEATHS.MEATSAW)
           show("Against all sense and better judgement, you jump into the meatsaw. The blades effortlessly mince your meat, you hardly even have time to scream.")
           die()
         } else {
