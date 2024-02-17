@@ -22,14 +22,19 @@ export type Flags<T extends string> = Record<T, boolean>;
 export type ActionGenerator<T extends Flags<string>> = (flags: T) => Actions;
 
 const helpMsg = `*Escape from RuptureFarms* is a text-based adventure game, similar in spirit to *Zork*.
-You interact with the world using the following text commands:
+You may move around with any of the following commands:
+- *north* / *south* / *west* / *east*
+- *n* / *s* / *w* / *e*
+- *forward*(*s*) / *backward*(*s*) / *left* / *right*
+- *f* / *b* / *l* / *r*
+You can interact with the world using the following commands:
 - *look around*
 - *look at* <object>
-- *use* <tool> *on* <subject> (<subject> may be "me" or "self" to use an item on yourself)
+- *use* <tool> *on* <subject> (<subject> may be *me* or *self* to use an item on yourself)
 - *press* / *push* <object>
 - *talk to* <someone>
 - *take* / *pick up* <object>
-- *go* / *enter* / *move to* <location> (use "go back" to enter the previous room)
+- *go* / *enter* / *move to* <location> (use *go back* to enter the previous room)
 - *read* <something>
 - *jump* / *dive into* <somewhere>
 - *open* <something>
@@ -68,9 +73,9 @@ export class Room<T extends string> {
     take: ({ what }) => show(`I couldn't possibly take the ${what}.`),
     talk: ({ what }) => show(`Talk to ${what}? Are you stupid?`),
     read: ({ what }) => show(`I might be illiterate, but I can't read the ${what}.`),
-    open: ({ what }) => show(`I can't exactly open the ${what}.`),
-    use: ({ what, tool }) =>
-      player.hasItem(tool as ITEM) ? show(`How would I even use ${tool} on ${what}?`) : show(`I don't have that tool.`),
+    open: ({ what }) => show(`I don't know how to open the ${what}.`),
+    use: ({ tool }) =>
+      player.hasItem(tool as ITEM) ? show("No, I don't think that'd work.") : show(`I don't have that tool.`),
   };
 
   constructor(
@@ -120,7 +125,7 @@ export class Room<T extends string> {
       [/(?:(look( at)?)|inspect)(?: the)? (?<what>.*)/, "look"],
       [/use(?: the)? (?<tool>.*) on(?: the)? (?<what>.*)/, "use"],
       [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
-      [/(?:take|pick up)(?: the)? (?<what>.*)/, "take"],
+      [/(?:take|pick up|get)(?: the)? (?<what>.*)/, "take"],
       [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
       [/(?:enter(?: the)?|(?:move(?: to)?)|go) (?<what>.*)/, "enter"],
       [/(?:read)(?: the)? (?<what>.*)/, "read"],

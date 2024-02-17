@@ -46,32 +46,31 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (tool === ITEM.GUN) {
-          show("The furnace is solid metal. Your bullet wouldn't do anything.");
-        }
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show(
+              "You attempt to muck around, but the wrench gets too hot in your hands. Beyond slightly burning yourself, you've accomplished nothing.",
+            );
+            break;
 
-        if (tool === ITEM.WRENCH) {
-          show(
-            "You attempt to muck around, but the wrench gets too hot in your hands. Beyond slightly burning yourself, you've accomplished nothing.",
-          );
-        }
+          case ITEM.KEYCARD:
+            show("No way, the card is made out of plastic. It'd melt in less than a second.");
+            break;
 
-        if (tool === ITEM.KEYCARD) {
-          show("No way, the card is made out of plastic. It'd melt in less than a second.");
-        }
-
-        if (tool === ITEM.BREW) {
-          if (player.hasItem(ITEM.BREW)) {
+          case ITEM.BREW:
             flags.boilerFixed = true;
             player.items.delete(ITEM.BREW);
             show(
               "You chuck the bottle of Brew into the furnace, which promptly explodes from the sudden heat. The furnace collapses into itself in a spectacular display of flame and destruction, coating the floor in hot coals and soot. You smile, it's nothing your legs can't handle.",
             );
-          } else {
-            show("The sight makes you thirsty for sure, but you don't have any Brew on you.");
-          }
-        } else {
-          show("No, I don't think that would work.");
+            break;
+
+          case ITEM.GUN:
+            show("The furnace is solid metal. Your bullet wouldn't do anything.");
+            break;
+
+          default:
+            show("No, I don't think that could work.");
         }
       },
     },
@@ -83,20 +82,16 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (tool === ITEM.WRENCH) {
-          show("You give the generator a gentle whack. Nothing happens.");
-        }
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You give the generator a gentle whack. Nothing happens.");
+            break;
 
-        if (tool === ITEM.GUN) {
-          show("No, it's a miracle that the generator is functional. Shooting it would do no good.");
-        }
+          case ITEM.KEYCARD:
+            show("There is no slot on the generator, except for a small hole for a key.");
+            break;
 
-        if (tool === ITEM.KEYCARD) {
-          show("There is no slot on the generator, except for a small hole for a key.");
-        }
-
-        if (tool === ITEM.KEY) {
-          if (player.hasItem(ITEM.KEY)) {
+          case ITEM.KEY:
             if (!gasre.getFlag("gasRedirected")) {
               show("You turn the key... and nothing happens. Hm. The generator seems to be out of gas.");
               return;
@@ -106,11 +101,44 @@ const actions: ActionGenerator<flags> = (flags) => ({
             show(
               "With a grating sputter and a wild jerk the generator springs into life, delivering vital electricity to the grid.",
             );
-          } else {
-            show("Hmm, you seem to need a key to start this baby.");
-          }
+            break;
+
+          case ITEM.BREW:
+            show(
+              "The generator runs on gas. While drinking Brew does create gas eventually, you don't think it'd be a viable substitute.",
+            );
+            break;
+
+          case ITEM.BOSS:
+            show("No, I don't think that would work.");
+            break;
+
+          case ITEM.GUN:
+            show("No, it's a miracle that the generator is functional. Shooting it would do no good.");
+            break;
+
+          case ITEM.HAT:
+            show("You'd rather not dirty your cap with this generator.");
         }
       },
+    },
+  ],
+  open: [
+    {
+      trigger: ["generator"],
+      action: () =>
+        show(
+          "You open the small door on the side of the generator. An incomprehensible mess of wires, pipes, and eletronics stares back at you. You close the door.",
+        ),
+    },
+    {
+      trigger: ["furnace", "boiler"],
+      action: () =>
+        show(
+          flags.boilerFixed
+            ? "I don't think the furnace can get any more 'open' than that."
+            : "Being open is the very issue you're trying to solve.",
+        ),
     },
   ],
 });

@@ -1,5 +1,6 @@
 import { Directions } from "../constants.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
+import { show } from "../display.ts";
 import { gctrl } from "./gctrl.ts";
 
 type flags = Flags<never>;

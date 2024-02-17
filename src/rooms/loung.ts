@@ -34,7 +34,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         ),
     },
     {
-      trigger: ["TV", "tv", "television"],
+      trigger: ["tv", "television"],
       action: () =>
         show(
           "The TV is repeating a pre-recorded message from The Magog on the March. 'Everything will be fine, just go back to work, let smarter people deal with it, invest into Sligcoin and AyEye, yadda, yadda.'\nPoor sod, I wonder if he believes even a single word of the drivel they make him say.",
@@ -44,13 +44,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["door"],
       action: () =>
-        flags.securityOpen
-          ? show(
-              "The door leads into the security booth. With the padlock shot off, nothing stops you from just waltzing inside. Odd bless firearms.",
-            )
-          : show(
-              "The door leads into the security booth. It's been haphazardly locked with a padlock, but as you inspect the mechanism, it seems very shoddy and weak. You're certain it wouldn't take much to blast it right off.",
-            ),
+        show(
+          flags.securityOpen
+            ? "The door leads into the security booth. With the padlock shot off, nothing stops you from just waltzing inside. Odd bless firearms."
+            : "The door leads into the security booth. It's been haphazardly locked with a padlock, but as you inspect the mechanism, it seems very shoddy and weak. You're certain it wouldn't take much to blast it right off.",
+        ),
     },
   ],
   use: [
@@ -62,17 +60,31 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (tool === ITEM.GUN) {
-          if (player.hasItem(ITEM.GUN)) {
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You smack the padlock with the wrench, but it proves too strong.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("It's a padlock, not a fancy card reader.");
+            break;
+
+          case ITEM.KEY:
+            show("The key is too small.");
+            break;
+
+          case ITEM.GUN:
             show(
-              "It feels a bit wrong to waste your one bullet on something inanimate, but then this is an emergency. You take aim and blast the padlock into smithereens, unlocking the door in style.",
+              "It feels a bit wrong to waste your one bullet on something inanimate, but then this is an emergency. You take aim and blast the padlock into smithereens, unlocking the door in style.\nWith no more ammunition, the gun is just dead weight, so, as much as it pains you, you ditch it.",
             );
             flags.securityOpen = true;
-          } else {
-            show("Yeah, good idea, if only I had a gun to actually try it.");
-          }
-        } else {
-          show("No, I don't think that'd work.");
+            player.items.delete(ITEM.GUN);
+            break;
+
+          case ITEM.HAT:
+          case ITEM.BOSS:
+          case ITEM.BREW:
+            show("No I don't think that'd work.");
         }
       },
     },

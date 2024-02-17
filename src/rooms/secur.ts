@@ -100,7 +100,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["paper", "papers"],
       action: () =>
         show(
-          "The papers mostly contain shipping schedules, guard hours, reports from informants, the usual stuff. You don't exactly have time to read through them in detail, but it doesn't matter anyway. All the bureaucracy in the world couldn't stop a rebellion from finally happening.",
+          "The papers are covered in coffee-stains, earmarks, tears, and all the other usual signs of carelessness. Sucks to be them.",
         ),
     },
     {
@@ -113,6 +113,36 @@ const actions: ActionGenerator<flags> = (flags) => ({
   ],
   use: [
     {
+      trigger: ["safe"],
+      action: ({ tool }) => {
+        if (flags.safeOpened) {
+          show("The safe is already open. Loot it already.");
+        }
+
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You give the safe a mean smack. It doesn't even leave a scratch.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("You hold the keycard against the safe. Nothing happens.");
+            break;
+
+          case ITEM.KEY:
+            show("There is no hole.");
+            break;
+
+          case ITEM.BOSS:
+            show("He's still unconscious. Not to mention, he probably wouldn't know the code himself anyway.");
+            break;
+
+          case ITEM.BREW:
+          case ITEM.GUN:
+          case ITEM.HAT:
+        }
+      },
+    },
+    {
       trigger: TERMINAL,
       action: ({ tool }) => {
         if (flags.terminalUnlocked) {
@@ -120,15 +150,28 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (tool === ITEM.KEYCARD) {
-          if (player.hasItem(ITEM.KEYCARD)) {
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("You'd rather not risk blowing up the machine.");
+            break;
+
+          case ITEM.KEYCARD:
             flags.terminalUnlocked = true;
             show("The terminal lets out a small chime as it logs you in.");
-          } else {
-            show("I need to find a keycard first.");
-          }
-        } else {
-          show("No, I don't think that'd work.");
+            break;
+
+          case ITEM.KEY:
+            show("It's a fancy card reader, not a padlock.");
+            break;
+
+          case ITEM.HAT:
+            show("The terminal is very impressed with your cool aht, but it still refuses to unlock itself.");
+            break;
+
+          case ITEM.GUN:
+          case ITEM.BREW:
+          case ITEM.BOSS:
+            show("No, I don't think that'd work.");
         }
       },
     },
@@ -139,6 +182,13 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () =>
         show(
           "The note reads:\n'Alright, shitheads, let me explain it for the last time. *The code is the date of the factory's opening.* That's the one and only number have to remember to keep your job here. If you're unable to even accomplish this one task, visit me and I'll personally arrange for your early retirement. - Head of Security'",
+        ),
+    },
+    {
+      trigger: ["paper", "papers"],
+      action: () =>
+        show(
+          "The papers mostly contain shipping schedules, guard hours, reports from informants, the usual stuff. You don't exactly have time to read through them in detail, but it doesn't matter anyway. All the bureaucracy in the world couldn't stop a rebellion from finally happening.",
         ),
     },
     {
@@ -157,6 +207,12 @@ const actions: ActionGenerator<flags> = (flags) => ({
           );
         }
       },
+    },
+  ],
+  open: [
+    {
+      trigger: ["safe"],
+      action: () => show(flags.safeOpened ? "The safe is already open" : "The safe is securely locked."),
     },
   ],
 });

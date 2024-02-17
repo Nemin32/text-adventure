@@ -33,7 +33,7 @@ window.addEventListener("load", () => {
 
       msgs = msgs.slice(1);
     }
-  }, 50);
+  }, 150);
 });
 
 export function show(str: string, command = false) {

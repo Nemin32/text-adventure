@@ -5,7 +5,7 @@ import { player } from "../player.ts";
 import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { gctrl } from "./gctrl.ts";
 
-const MOLLUCK = ["the boss", "boss", "molluck", "body"];
+const MOLLUCK = ["boss", "molluck", "body"];
 
 type flags = Flags<"doorOpen">;
 
@@ -95,6 +95,77 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
   ],
 
+  use: [
+    {
+      trigger: MOLLUCK,
+      action: ({ tool }) => {
+        if (player.hasItem(ITEM.BOSS)) {
+          show("He's on your shoulders, you can't really do anything with him like that.");
+          return;
+        }
+
+        switch (tool as ITEM) {
+          case ITEM.GUN:
+          case ITEM.WRENCH:
+            show("It would be so satisfying, but no, you hold your hand. You need him alive. At least for now.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("It's a plastic card. How would that help wake your boss up?");
+            break;
+
+          case ITEM.KEY:
+            show("You're pretty sure Glukkons lack keyholes.");
+            break;
+
+          case ITEM.BREW:
+            show("The boss never drank the stuff. You wonder why though, it's delicious.");
+            break;
+
+          case ITEM.HAT:
+            show("No, the hat is yours. Not even he can take it.");
+            break;
+
+          case ITEM.BOSS:
+            show("No, I don't think that'd work.");
+        }
+      },
+    },
+
+    {
+      trigger: ["meatsaw", "saw"],
+      action: ({ tool }) => {
+        switch (tool as ITEM) {
+          case ITEM.KEY:
+          case ITEM.KEYCARD:
+          case ITEM.WRENCH:
+            show(
+              "You still might need it. Plus, you're sure the boss would deduct any material harm from your next salary.",
+            );
+            break;
+
+          case ITEM.BREW:
+            show("Sure, let's throw what's basically a bomb into a blender. That cannot go wrong!");
+            break;
+
+          case ITEM.BOSS:
+            show("Morbid and cruel, twisted and violent... You love the idea, but no. You need him alive.");
+            break;
+
+          case ITEM.GUN:
+            show("Sacrilege! You'd never hurt a poor innocent firearm like that.");
+            break;
+
+          case ITEM.HAT:
+            show(
+              "You feel nauseous for even entertaining the thought. You promise the hat never to even think something like this again.",
+            );
+            break;
+        }
+      },
+    },
+  ],
+
   talk: [
     {
       trigger: MOLLUCK,
@@ -134,6 +205,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["meatsaw"],
       action: () => show("Don't you remember that's how you got into this situation in the first place?"),
+    },
+    {
+      trigger: ["body"],
+      action: () => show("Ew, no."),
     },
   ],
 

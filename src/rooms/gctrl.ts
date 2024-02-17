@@ -52,9 +52,80 @@ COMMANDS:
       },
     },
   ],
+  use: [
+    {
+      trigger: TERMINAL,
+      action: ({ tool }) => {
+        switch (tool as ITEM) {
+          case ITEM.GUN:
+          case ITEM.WRENCH:
+            show("You'd rather not risk blowing up the main terminal.");
+            break;
+
+          case ITEM.KEYCARD:
+            show("The terminal isn't locked.");
+            break;
+
+          case ITEM.KEY:
+            show("There is no hole on the terminal.");
+            break;
+
+          case ITEM.BREW:
+            show("Spilling a flammable liquid on an explosive device. Yeah, great idea.");
+            break;
+
+          case ITEM.BOSS:
+            show("Even if he wasn't unconscious, he's not a very tech-savvy person.");
+            break;
+
+          case ITEM.HAT:
+            show("You check yourself out in the reflection of the screen. Dapper!");
+        }
+      },
+    },
+    {
+      trigger: ["slig", "body", "corpse"],
+      action: ({ tool }) => {
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show(
+              "You give the body a whack to see if he'll spring to life but all you hear is a moan. That's when you realize who you've just hit. Now you HAVE to get out of here.",
+            ); // Thanks Oddey!
+            break;
+
+          case ITEM.KEYCARD:
+            show("You show the sucker what you just snatched from his body. He's absolutely out of words.");
+            break;
+
+          case ITEM.KEY:
+            show("Uhm, Sligs don't have keyholes.");
+            break;
+
+          case ITEM.BREW:
+            show(
+              "Not even the Brew could bring this fella back to life.\nNot that you'd share with him even if it did.",
+            );
+            break;
+
+          case ITEM.BOSS:
+            show(
+              "Death and unconsciousness really are quite familiar on a surface level. Sadly you need the boss alive.",
+            );
+            break;
+
+          case ITEM.GUN:
+            show("You're a bit late with capping the guy.");
+            break;
+
+          case ITEM.HAT:
+            show("You're not gonna dirty your cap with the blood of this guy.");
+        }
+      },
+    },
+  ],
   look: [
     {
-      trigger: ["terminal", "computer", "screen"],
+      trigger: TERMINAL,
       action: () =>
         show(
           "A standard-use VYKKER-TEK terminal, operated with a keyboard with just slightly too big gaps between keys for comfort.\nUsable 80% of 50% of the time.\nOccasionally explodes under heavy load.\n\nAll things considered you'd rather tolerate the boss any day than be on computer duty.",
@@ -157,7 +228,7 @@ COMMANDS:
             "That did the trick.\nYou should get the boss and get outta here before this burning heap collapses on your neck.",
           );
         } else {
-          show("The gate is already open, what are you waiting for?\n Move already!");
+          show("The gate is already open, what are you waiting for?\nMove already!");
         }
       },
     },
@@ -205,6 +276,15 @@ STRIP: Landing strip`);
       action: () =>
         show(
           "The terminal beeps before printing 'EMPLOYEES: 00, ESCAPEES: 99, CASUALTIES: 00'. To think that single schmuck could achieve this...\nYou really wish you had a loaded gun and a blue Mudokon in firing distance.",
+        ),
+    },
+  ],
+  press: [
+    {
+      trigger: ["1", "2", "3", "4", "one", "two", "three", "four"],
+      action: () =>
+        show(
+          "You'd rather not bang anything so aggressively into a computer that might explore. Let's just *enter* it gently.",
         ),
     },
   ],

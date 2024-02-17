@@ -40,6 +40,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
           "The Farms had seen some strong weather before, but nothing like this. If you were superstitious, you'd think this isn't a normal storm, rather the work of magic, but not even that Abe guy could have conjured all this up alone. Did he not work alone?",
         ),
     },
+    {
+      trigger: ["lift", "elevator"],
+      action: () => show("Going back might mean certain death, but still, the option is there."),
+    },
   ],
 });
 

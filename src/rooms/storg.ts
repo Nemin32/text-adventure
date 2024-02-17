@@ -4,7 +4,7 @@ import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
-type flags = Flags<never>;
+type flags = Flags<"gunFound">;
 
 const actions: ActionGenerator<flags> = (flags) => ({
   look: [
@@ -46,11 +46,12 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["locker"],
       action: () => {
-        if (!player.hasItem(ITEM.GUN)) {
+        if (!flags.gunFound) {
           show(
             "You're overjoyed to find a fresh gun inside... only to realize in dismay that it only has a single bullet in it. Still, gripping the weapon gives you a certain calmness you haven't felt for a long time.",
           );
           player.addItem(ITEM.GUN);
+          flags.gunFound = true;
         } else {
           show("The locker is empty.");
         }
@@ -73,20 +74,61 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["crate"],
       action: ({ tool }) => {
-        if (tool === ITEM.WRENCH) {
-          if (!player.deaths.has(DEATHS.FUZZLE)) {
-            show(
-              "You pry open the crate using the wrench. A moment later furry balls blast out from the darkness inside, latching onto your body, tearing skin and muscle. You scream in agony and try to swat them off, but it's no use. You are slowly overwhelmed, until little more than bones and a pair of legs remain.",
-            );
-            player.deaths.add(DEATHS.FUZZLE);
-            die();
-          } else {
-            show("Upon second thoughts, it's best not to disturb whatever's inside there.");
-          }
-        } else {
-          show("No, I don't think that'd work.");
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            if (!player.deaths.has(DEATHS.FUZZLE)) {
+              show(
+                "You pry open the crate using the wrench. A moment later furry balls blast out from the darkness inside, latching onto your body, tearing skin and muscle. You scream in agony and try to swat them off, but it's no use. You are slowly overwhelmed, until little more than bones and a pair of legs remain.",
+              );
+              player.deaths.add(DEATHS.FUZZLE);
+              die();
+            } else {
+              show("Upon second thoughts, it's best not to disturb whatever's inside there.");
+            }
+            break;
+
+          case ITEM.KEYCARD:
+            show("The keycard is too brittle to use as a lever.");
+            break;
+
+          case ITEM.KEY:
+            show("The key is too tiny to use as any sort of leverage.");
+            break;
+
+          case ITEM.BREW:
+            show("Coating the crate in Brew doesn't seem like a helpful idea.");
+            break;
+
+          case ITEM.BOSS:
+            show("Even his commanding presence couldn't open this crate.");
+            break;
+
+          case ITEM.GUN:
+            show("You want to open this crate, not tear a hole into it.");
+            break;
+
+          case ITEM.HAT:
+            show("While your hat does give you a lot of confidence, it doesn't make you physically stronger.");
         }
       },
+    },
+  ],
+
+  enter: [
+    {
+      trigger: ["crate"],
+      action: () => show("The crate is locked."),
+    },
+    {
+      trigger: ["locker"],
+      action: () => show("The locker is far too small for you."),
+    },
+    {
+      trigger: ["toolbox"],
+      action: () =>
+        show(
+          "You attempt compressing yourself to one tenth of your size to fit into the toolbox. You're unsuccessful.",
+        ),
     },
   ],
 });
@@ -94,4 +136,4 @@ const actions: ActionGenerator<flags> = (flags) => ({
 const description = (flags: flags) =>
   `As far as you can see *boxes* are stacked haphazardly on each other. The little that still sticks out from the ones at the bottom seem positively ancient and you're not entirely certain how the whole place hadn't collapsed into itself already. The darkness of the room is somewhat illuminated by fires at the opposite end. It's probably for the best if you get what you need and get out, before it reaches here.\nAmidst the mess three boxes in particularly get your attention: A wooden *crate*, a metal *locker* and a *toolbox*. Everything else seems too securely locked or hard to get to, so you'd rather not bother with them.\nAs the path forward is blocked by flames, the only way is through the *door* back to the gas reservoirs.`;
 
-export const storg = new Room({}, actions, description, { door: Directions.Right });
+export const storg = new Room({ gunFound: false }, actions, description, { door: Directions.Right });

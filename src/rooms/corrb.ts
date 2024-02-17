@@ -34,6 +34,14 @@ const actions: ActionGenerator<flags> = (_) => ({
         ),
     },
   ],
+
+  enter: [
+    {
+      trigger: ["boardroom", "door"],
+      action: () =>
+        show("Seeing the carnage inside, that doesn't seem like a wise idea. The smell is nauseating even from here."),
+    },
+  ],
 });
 
 const description = (_: flags) =>
