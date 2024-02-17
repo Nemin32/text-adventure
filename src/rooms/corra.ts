@@ -1,7 +1,7 @@
 import { ActionGenerator, Flags, Room } from "../room.ts"
-import { move } from "../adjacencies.ts"
-import { show } from "../util.ts"
-import { ROOM_NAME } from "../roomnames.ts"
+import { move } from "../movement.ts"
+import { show } from "../display.ts"
+import { ROOM_NAME } from "../constants.ts"
 
 type flags = Flags<never>
 

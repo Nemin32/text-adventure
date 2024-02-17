@@ -1,6 +1,6 @@
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM } from "../roomnames.ts";
-import { GM } from "../gm.ts";
+import { DEATHS, ITEM } from "../constants.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<never>
 
@@ -9,8 +9,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
 })
 
 const description = (flags: flags) => {
-  const gotHat = GM.hasItem(ITEM.HAT)
-  const allDeaths = GM.deaths.size >= DEATHS.__LENGTH
+  const gotHat = player.hasItem(ITEM.HAT)
+  const allDeaths = player.deaths.size >= DEATHS.__LENGTH
 
   const deathOptions: Array<[DEATHS, string]> = [
     [DEATHS.ABYSS, "You answered the call of the abyss."],
@@ -22,15 +22,15 @@ const description = (flags: flags) => {
     [DEATHS.MEATSAW, "RuptureFarms's newest product: Slig Chops."],
   ];
   
-  const deaths = deathOptions.map(([type, msg]) => `- ${DEATHS[type]}: ${GM.deaths.has(type) ? msg : "???"}`).join("\n")
+  const deaths = deathOptions.map(([type, msg]) => `- ${DEATHS[type]}: ${player.deaths.has(type) ? msg : "???"}`).join("\n")
 
   const SHORTEST_PATH_WITH_CAP = 42; // Took me at least 42 moves to get the "good ending" with the cap.
   const SHORTEST_PATH = SHORTEST_PATH_WITH_CAP - 2; // It takes two moves to unlock the safe and take out the cap.
   const SHORTEST = gotHat ? SHORTEST_PATH_WITH_CAP : SHORTEST_PATH
 
-  const pathMsg = GM.stepCounter < SHORTEST
+  const pathMsg = player.stepCounter < SHORTEST
       ? "Impressive. You've managed to beat the developer's shortest path. Please tell me how you did it."
-      : GM.stepCounter === SHORTEST
+      : player.stepCounter === SHORTEST
         ? "Well done. You didn't bother looking at stuff or immersing yourself in the environment. You just blitzed through the entire game with fearsome efficiency, matching the developer's own final score."
         : `If you're up to the challenge, try finishing the game in ${SHORTEST} actions or less.`
 
@@ -39,10 +39,10 @@ You gulp a little and decide to look away instead. To steel your resolve, you th
 ${gotHat ? "You glance up at the cap sitting proudly on your head and take a deep breath, allowing much of the stress to evaporate from your body. For the first time in a long time, you feel a bit optimistic all of the sudden. You're not even sure why, but you feel like things are gonna get better." : "You can't entirely calm yourself. You frown a little. Something seems to be missing. You'll be fine, but you feel a bit of hollowness. Perhaps you've left something back you weren't supposed to?"}
 With your course set, you lean back and close your eyes. It's been an awful day. As the ruins of your former home slowly disappear behind the horizon, you hear the boss groan and sputter. His single remaining eye pierces your soul as he demands to know what happened. You stand up and ask him to stay sitting. That way it'll be easier to take the news. You've survived RuptureFarms... surely you'll survive him too.
 
-*Total steps taken: ${GM.stepCounter}.*
+*Total steps taken: ${player.stepCounter}.*
 ${pathMsg}
 
-*DEATHS: ${GM.deaths.size} / ${DEATHS.__LENGTH}*
+*DEATHS: ${player.deaths.size} / ${DEATHS.__LENGTH}*
 ${allDeaths ? "Congrats, you're a master at not staying alive!" : "Hmm, seems like you missed some opportunities to get an early severance package."}
 ${deaths}
 

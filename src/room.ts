@@ -1,6 +1,6 @@
-import { DEATHS, Directions, ITEM, ROOM_NAME } from "./roomnames.ts";
-import { show } from "./util.ts";
-import { GM } from "./gm.ts";
+import { DEATHS, Directions, ITEM, ROOM_NAME } from "./constants.ts";
+import { show } from "./display.ts";
+import { player } from "./player.ts";
 
 export type ActionKinds = "look" | "talk" | "press" | "take" | "use" | "enter" | "read" | "jump" | "open"
 export type ActionFn = (args: Record<string, string>) => void
@@ -58,7 +58,7 @@ export class Room<T extends string> {
     talk: ({what}) => show(`Talk to ${what}? Are you stupid?`),
     read: ({what}) => show(`I might be illiterate, but I can't read the ${what}.`),
     open: ({what}) => show(`I can't exactly open the ${what}.`),
-    use: ({what, tool}) => (GM.hasItem(tool as ITEM) ? show(`How would I even use ${tool} on ${what}?`) : show(`I don't have that tool.`))
+    use: ({what, tool}) => (player.hasItem(tool as ITEM) ? show(`How would I even use ${tool} on ${what}?`) : show(`I don't have that tool.`))
   }
 
   constructor(
@@ -111,12 +111,12 @@ export class Room<T extends string> {
     }
 
     if (input === "inventory") {
-      if (GM.items.size === 0) {
+      if (player.items.size === 0) {
         show("You don't have any items on you.")
         return;
       }
 
-      const items = [...GM.items.values()].map(i => `- ${i}: ${invMap.get(i)}`).join("\n")
+      const items = [...player.items.values()].map(i => `- ${i}: ${invMap.get(i)}`).join("\n")
       show(`Your current possessions:\n${items}`)
 
       return;
@@ -132,13 +132,13 @@ export class Room<T extends string> {
       const canShoot = action === "use"
         && YOURSELF.includes(res.groups.what)
         && res.groups.tool === ITEM.GUN
-        && GM.hasItem(ITEM.GUN)
+        && player.hasItem(ITEM.GUN)
 
       const canDrink = action === "use"
         && YOURSELF.includes(res.groups.what)
         && res.groups.tool === ITEM.BREW
-        && GM.hasItem(ITEM.BREW)
-        && !GM.brewUsed
+        && player.hasItem(ITEM.BREW)
+        && !player.brewUsed
 
       const looksAround = action === "look"
         && ["around", "the room", "room"].includes(res.groups.what)
@@ -156,8 +156,8 @@ export class Room<T extends string> {
           break;
 
         case canShoot:
-          if (!GM.deaths.has(DEATHS.GUN)) {
-            GM.deaths.add(DEATHS.GUN)
+          if (!player.deaths.has(DEATHS.GUN)) {
+            player.deaths.add(DEATHS.GUN)
             show("You turn the gun towards your face and stare down the barrel. Neither dying under the rubble nor burning to death sound like very dignified deaths. Why not go out your own way? You slowly pull the trigger. Your ears barely register the bang as your body collapses on the ground and everything cuts to black.")
             die()
           } else {
@@ -166,8 +166,8 @@ export class Room<T extends string> {
           break
 
         case canDrink:
-          if (!GM.deaths.has(DEATHS.BREW)) {
-            GM.deaths.add(DEATHS.BREW)
+          if (!player.deaths.has(DEATHS.BREW)) {
+            player.deaths.add(DEATHS.BREW)
             show("You drink the Brew and pass out. Not even the approaching flames can disturb your slumber. You never wake up again.")
             die()
           } else {

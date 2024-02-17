@@ -1,6 +1,6 @@
 import { rooms } from "./roomlist.ts"
-import { Directions, ROOM_NAME, gameMap } from "./roomnames.ts"
-import { GM } from "./gm.ts"
+import { Directions, ROOM_NAME, gameMap } from "./constants.ts"
+import { player } from "./player.ts"
 import { Room } from "./room.ts"
 
 const getRoom = (name: ROOM_NAME): [ROOM_NAME, Room<string>] => {
@@ -36,19 +36,19 @@ function moveDir(dir: Directions) {
   // biome-ignore lint/style/noNonNullAssertion: All directions are initialized.
   const  delta = dirMap.get(dir)!
   const newPosition: [number, number] = [
-    GM.position[0] + delta[0], 
-    GM.position[1] + delta[1]
+    player.position[0] + delta[0], 
+    player.position[1] + delta[1]
   ]
 
   const newRoom = gameMap.at(newPosition[0])?.at(newPosition[1])
 
   if (newRoom) {
-    GM.prevPos.push([...GM.position])
-    GM.position = newPosition
+    player.prevPos.push([...player.position])
+    player.position = newPosition
 
     const [name, room] = getRoom(newRoom)
-    GM.currentRoom = room
-    GM.currentName = name
+    player.currentRoom = room
+    player.currentName = name
 
     return true;
   }

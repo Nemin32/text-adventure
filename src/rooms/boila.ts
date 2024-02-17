@@ -1,8 +1,8 @@
-import { die, move } from "../adjacencies.ts";
+import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 import { gasre } from "./gasre.ts";
 
 type flags = Flags<"boilerFixed" | "generatorFixed">
@@ -19,8 +19,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (flags.boilerFixed) {
           move(ROOM_NAME.LOUNG)
         } else {
-          if (!GM.deaths.has(DEATHS.BOILER)) {
-            GM.deaths.add(DEATHS.BOILER)
+          if (!player.deaths.has(DEATHS.BOILER)) {
+            player.deaths.add(DEATHS.BOILER)
             show("You try your best to run past the furnace between two blasts of flame, but at the worst possible moment your leg gets caught in a pipe and you fall face first into the furnace. It takes mere seconds for you to burn to a crisp.")
             die()
           } else {
@@ -40,9 +40,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
 
         if (tool === ITEM.BREW) {
-          if (GM.hasItem(ITEM.BREW)) {
+          if (player.hasItem(ITEM.BREW)) {
             flags.boilerFixed = true;
-            GM.brewUsed = true;
+            player.brewUsed = true;
             show("You chuck the bottle of Brew into the furnace, which promptly explodes from the sudden heat. The furnace collapses into itself in a spectacular display of flame and destruction, coating the floor in hot coals and soot. You smile, it's nothing your legs can't handle.")
           } else {
             show("The sight makes you thirsty for sure, but you don't have any Brew on you.")
@@ -61,7 +61,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
 
         if (tool === ITEM.KEY) {
-          if (GM.hasItem(ITEM.KEY)) {
+          if (player.hasItem(ITEM.KEY)) {
             if (!gasre.getFlag("gasRedirected")) {
               show("You turn the key... and nothing happens. Hm. The generator seems to be out of gas.")
               return;

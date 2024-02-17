@@ -1,4 +1,4 @@
-import { ROOM_NAME } from "./roomnames.ts"
+import { ROOM_NAME } from "./constants.ts"
 import { Room } from "./room.ts"
 import { corra } from "./rooms/corra.ts"
 import { spawn } from "./rooms/spawn.ts"

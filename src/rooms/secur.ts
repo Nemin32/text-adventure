@@ -1,8 +1,8 @@
-import { die, move } from "../adjacencies.ts";
+import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<"lockdownLifted" | "terminalUnlocked" | "safeOpened">
 
@@ -41,9 +41,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (!GM.deaths.has(DEATHS.GAS)) {
+        if (!player.deaths.has(DEATHS.GAS)) {
           show("You hear distant hissing in the pipes as nerve-gas fills the lower levels, killing all those who might have survived the initial catastrophe. A few seconds later you hear a deafening thud and the very floor bulges, then opens below your metal legs. An incredible volume of gas, ignited by the fires ravaging the facility, erupts into the room and melts you in less than a moment.")
-          GM.deaths.add(DEATHS.GAS)
+          player.deaths.add(DEATHS.GAS)
           die()
         } else {
           show("Nah. Who would you even gas at this point?")
@@ -64,8 +64,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return
         }
 
-        if (!GM.hasItem(ITEM.HAT)) {
-          GM.addItem(ITEM.HAT)
+        if (!player.hasItem(ITEM.HAT)) {
+          player.addItem(ITEM.HAT)
           show("You place the cap on your head. It makes you feel like a part of you that you never knew was missing returned.")
         } else {
           show("The cap is already sitting on your head, stupid.")
@@ -80,7 +80,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         if (!flags.safeOpened) {
           show("The safe is securely locked. The number-pad on it is expecting a four digit input. You could *enter* the password here, if you knew it. There is also a small *note* plastered onto the safe.")
         } else {
-          if (!GM.hasItem(ITEM.HAT)) {
+          if (!player.hasItem(ITEM.HAT)) {
             show("A snazzy pilot *cap* is staring back at you from inside the safe.")
           } else {
             show("The safe is completely empty.")
@@ -111,7 +111,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
 
         if (tool === ITEM.KEYCARD) {
-          if (GM.hasItem(ITEM.KEYCARD)) {
+          if (player.hasItem(ITEM.KEYCARD)) {
             flags.terminalUnlocked = true;
             show("The terminal lets out a small chime as it logs you in.")
           } else {

@@ -1,7 +1,7 @@
 import { Room } from "./room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "./roomnames.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "./constants.ts";
 
-class GameManager {
+class Player {
   deaths: Set<DEATHS> = new Set();
   prevRoom: ROOM_NAME[] = [];
   currentName: ROOM_NAME = ROOM_NAME.SPAWN;
@@ -24,7 +24,7 @@ class GameManager {
   }
 }
 
-const GM = new GameManager()
+const player = new Player()
 
-export {GM}
-export type {GameManager}
+export {player}
+export type {Player}

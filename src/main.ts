@@ -1,15 +1,15 @@
 import { rooms } from "./roomlist.ts"
-import { ROOM_NAME } from "./roomnames.ts"
-import { show } from "./util.ts"
-import { GM } from "./gm.ts"
+import { ROOM_NAME } from "./constants.ts"
+import { show } from "./display.ts"
+import { player } from "./player.ts"
 
 // biome-ignore lint/style/noNonNullAssertion: We know the spawn room exists.
-GM.currentRoom = rooms.get(ROOM_NAME.SPAWN)!
+player.currentRoom = rooms.get(ROOM_NAME.SPAWN)!
 
 function act(str: string) {
   show(str, true)
-  GM.currentRoom?.doAction(str.toLowerCase())
-  GM.stepCounter++;
+  player.currentRoom?.doAction(str.toLowerCase())
+  player.stepCounter++;
 }
 
 // Generated using: https://patorjk.com/software/taag

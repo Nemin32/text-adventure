@@ -1,8 +1,8 @@
-import { die, move } from "../adjacencies.ts";
+import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<"gasRedirected">
 
@@ -21,8 +21,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["abyss"],
       action: () => {
-        if (!GM.deaths.has(DEATHS.ABYSS)) {
-          GM.deaths.add(DEATHS.ABYSS)
+        if (!player.deaths.has(DEATHS.ABYSS)) {
+          player.deaths.add(DEATHS.ABYSS)
           show("You always wondered what's on the bottom of this chamber. Instead of bothering to find an elevator or stairs, you decide to take the easy way down. Your screams echo for seconds before a quiet splat is finally heard. You were never seen again.")
           die()
         } else {
@@ -74,7 +74,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["valve"],
       action: ({tool}) => {
         if (tool === ITEM.WRENCH) {
-          if (GM.hasItem(ITEM.WRENCH)) {
+          if (player.hasItem(ITEM.WRENCH)) {
             if (!flags.gasRedirected) {
               flags.gasRedirected = true;
               show("You switch over the valve.")

@@ -1,8 +1,8 @@
-import { move } from "../adjacencies.ts";
+import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<never>
 
@@ -11,7 +11,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["ship", "blimp", "plane"],
       action: () => {
-        if (GM.hasItem(ITEM.BOSS)) {
+        if (player.hasItem(ITEM.BOSS)) {
           move(ROOM_NAME.FINIS)
         } else {
           show("You cannot leave the boss behind. As much of a moldy old swindler he is, he is still your boss. And more importantly, who else would pay for your legs and ammo?")

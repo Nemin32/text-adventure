@@ -1,8 +1,8 @@
-import { move } from "../adjacencies.ts";
+import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 import { gctrl } from "./gctrl.ts";
 
 type flags = Flags<"noticedBrew" | "madeCall">
@@ -12,7 +12,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["junk", "trash"],
       action: () => {
-        if (!GM.hasItem(ITEM.BREW)) {
+        if (!player.hasItem(ITEM.BREW)) {
           show("Huh. As you take a better look at the trash, you notice a perfectly preserved, unopened bottle of *SoulStorm Brew*. Who in their right mind would leave that sorta stuff just lying around?")
           flags.noticedBrew = true;
         } else {
@@ -48,9 +48,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return
         }
 
-        if (!GM.hasItem(ITEM.BREW)) {
+        if (!player.hasItem(ITEM.BREW)) {
           show("You carefully pocket the bottle.")
-          GM.addItem(ITEM.BREW)
+          player.addItem(ITEM.BREW)
         } else {
           show("As nice as it'd be to find two bottles of brew, you're not that lucky.")
         }

@@ -1,8 +1,8 @@
-import { move } from "../adjacencies.ts";
+import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<"securityOpen" | "keyNoticed">
 
@@ -16,7 +16,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["poker table", "table", "poker", "desk"],
       action: () => {
         flags.keyNoticed = true;
-        show(`You see four hands on the table, one of them being a five of aces... Yeah, there is reason why you eventually stopped playing for Moolah. Upper management was incredibly unhappy with the amount of break-time fatalities.${!GM.hasItem(ITEM.KEY) ? " Huh there also seems to be a small *key* on the desk." : ""}`)
+        show(`You see four hands on the table, one of them being a five of aces... Yeah, there is reason why you eventually stopped playing for Moolah. Upper management was incredibly unhappy with the amount of break-time fatalities.${!player.hasItem(ITEM.KEY) ? " Huh there also seems to be a small *key* on the desk." : ""}`)
       }
     },
     {
@@ -45,7 +45,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
 
         if (tool === ITEM.GUN) {
-          if (GM.hasItem(ITEM.GUN)) {
+          if (player.hasItem(ITEM.GUN)) {
             show("It feels a bit wrong to waste your one bullet on something inanimate, but then this is an emergency. You take aim and blast the padlock into smithereens, unlocking the door in style.")
             flags.securityOpen = true;
           } else {
@@ -66,8 +66,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
           return;
         }
 
-        if (!GM.hasItem(ITEM.KEY)) {
-          GM.addItem(ITEM.KEY)
+        if (!player.hasItem(ITEM.KEY)) {
+          player.addItem(ITEM.KEY)
           show("You pocket the small key.")
         } else {
           show("You've already put the key away.")

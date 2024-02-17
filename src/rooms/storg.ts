@@ -1,8 +1,8 @@
-import { die, move } from "../adjacencies.ts";
+import { die, move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { DEATHS, ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 
 type flags = Flags<never>
 
@@ -39,9 +39,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["locker"],
       action: () => {
-        if (!GM.hasItem(ITEM.GUN)) {
+        if (!player.hasItem(ITEM.GUN)) {
           show("You're overjoyed to find a fresh gun inside... only to realize in dismay that it only has a single bullet in it. Still, gripping the weapon gives you a certain calmness you haven't felt for a long time.")
-          GM.addItem(ITEM.GUN)
+          player.addItem(ITEM.GUN)
         } else {
           show("The locker is empty.")
         }
@@ -50,9 +50,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["toolbox"],
       action: () => {
-        if (!GM.hasItem(ITEM.WRENCH)) {
+        if (!player.hasItem(ITEM.WRENCH)) {
           show("You found a wrench inside the toolbox.")
-          GM.addItem(ITEM.WRENCH)
+          player.addItem(ITEM.WRENCH)
         } else {
           show("None of the other tools seem helpful in your situation.")
         }
@@ -65,9 +65,9 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["crate"],
       action: ({ tool }) => {
         if (tool === ITEM.WRENCH) {
-          if (!GM.deaths.has(DEATHS.FUZZLE)) {
+          if (!player.deaths.has(DEATHS.FUZZLE)) {
             show("You pry open the crate using the wrench. A moment later furry balls blast out from the darkness inside, latching onto your body, tearing skin and muscle. You scream in agony and try to swat them off, but it's no use. You are slowly overwhelmed, until little more than bones and a pair of legs remain.")
-            GM.deaths.add(DEATHS.FUZZLE)
+            player.deaths.add(DEATHS.FUZZLE)
             die()
           } else {
             show("Upon second thoughts, it's best not to disturb whatever's inside there.")

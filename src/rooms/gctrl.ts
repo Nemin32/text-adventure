@@ -1,8 +1,8 @@
-import { move } from "../adjacencies.ts";
+import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
-import { GM } from "../gm.ts";
+import { ITEM, ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
+import { player } from "../player.ts";
 import { boila } from "./boila.ts";
 import { secur } from "./secur.ts";
 
@@ -44,7 +44,7 @@ COMMANDS:
       trigger: ["slig", "body", "corpse"],
       action: () => {
         show("You take a closer look at your former compatriot. If not for the many sharp glass fragments sticking out of him and the copious amount of dried blood, he'd look like he's sound asleep. Poor guy probably died before the whole shitstorm began. These terminals are notoriously fickle things.")
-        if (!GM.hasItem(ITEM.KEYCARD)) {
+        if (!player.hasItem(ITEM.KEYCARD)) {
           show("Huh, he seems to have *something* clutched in his hand.")
           flags.noticedSomething = true
         }
@@ -58,7 +58,7 @@ COMMANDS:
           return
         }
 
-        if (GM.hasItem(ITEM.KEYCARD)) {
+        if (player.hasItem(ITEM.KEYCARD)) {
           show("You've already put away the keycard.")
         } else {
           show("Your dead compatriot is holding a security *keycard*. Jackpot.")
@@ -76,8 +76,8 @@ COMMANDS:
           return
         }
 
-        if (!GM.hasItem(ITEM.KEYCARD) ) {
-          GM.addItem(ITEM.KEYCARD)
+        if (!player.hasItem(ITEM.KEYCARD) ) {
+          player.addItem(ITEM.KEYCARD)
           show("You pocket the keycard into your mechanical pants.")
         } else {
           show("You've already got the keycard.")

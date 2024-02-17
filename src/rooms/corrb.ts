@@ -1,7 +1,7 @@
-import { move } from "../adjacencies.ts";
+import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ROOM_NAME } from "../roomnames.ts";
-import { show } from "../util.ts";
+import { ROOM_NAME } from "../constants.ts";
+import { show } from "../display.ts";
 import { gctrl } from "./gctrl.ts";
 
 type flags = Flags<never>
