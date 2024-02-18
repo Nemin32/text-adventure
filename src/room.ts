@@ -1,4 +1,4 @@
-import { DEATHS, Directions, ITEM, ROOM_NAME, isItem } from "./constants.ts";
+import { DEATHS, DEATH_POS, Directions, FINIS_POS, ITEM, ROOM_NAME, isItem } from "./constants.ts";
 import { show } from "./display.ts";
 import { goBack, die, getDir, moveDir } from "./movement.ts";
 import { player } from "./player.ts";
@@ -175,6 +175,27 @@ export class Room<T extends string> {
   }
 
   doAction(input: string) {
+    const inDeath = player.position[0] === DEATH_POS[0] && player.position[1] === DEATH_POS[1];
+
+    const inFinish = player.position[0] === FINIS_POS[0] && player.position[1] === FINIS_POS[1];
+
+    if (inDeath) {
+      if (input === "go back") {
+        goBack();
+      } else {
+        show(
+          "You've messed up and now you're dead, scrap, scrab-feed, toast. Just take their offer and *go back* already.",
+        );
+      }
+
+      return;
+    }
+
+    if (inFinish) {
+      show("You've already won. What else do you want?");
+      return;
+    }
+
     const quip = quipMap.get(input);
     if (quip) {
       show(quip);

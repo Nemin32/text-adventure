@@ -161,8 +161,8 @@ COMMANDS (enter number to use):
     },
     {
       trigger: ["corridor"],
-      action: () => show("It's a dark path, but one you'll inevitably need to take.")
-    }
+      action: () => show("It's a dark path, but one you'll inevitably need to take."),
+    },
   ],
   take: [
     {

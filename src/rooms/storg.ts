@@ -70,8 +70,8 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["door"],
-      action: () => show("It's already open.")
-    }
+      action: () => show("It's already open."),
+    },
   ],
 
   use: [
