@@ -25,16 +25,19 @@
 
     html {
       margin: 0;
-      padding: 1rem;
+      padding: 0.25rem;
 
-      height: 100vh;
-      width: 100vw;
-      min-width: 1500px;
-      min-height: 1000px;
+      width: 100%;
+      min-height: fit-content;
+      height: 100%;
 
       background: linear-gradient(#222, #422);
       background-repeat: no-repeat;
       background-size: cover;
+    }
+
+    hr {
+	    color: #aaa;
     }
 
     body {
@@ -56,17 +59,12 @@
     }
 
     #output {
-      background-color: #333;
-      color: #8a8;
-
-      margin-top: 1rem;
+      background-color: #262a2b;
+      color: #a8a095;
 
       width: 100%;
-
-      min-height: 600px;
-      height: 900px;
-
       overflow-y: auto;
+      flex: 1;
 
       border: 1px solid #666;
 
@@ -98,7 +96,10 @@
 
     .title {
       line-height: 1 !important;
-      color: #d00;
+      color: #ff3131;
+
+      white-space: pre !important;
+      overflow-x: auto;
     }
 
     #input {
@@ -120,10 +121,25 @@
       justify-content: center;
       align-items: center;
 
-      width: 1600px;
-      min-width: 1450px;
+      min-height: 500px;
+      height: min(100vh, 900px);
+      max-height: 95%;
 
-      margin: 2rem auto;
+      width: 1600px;
+      min-width: 450px;
+
+      margin: 0rem auto;
+    }
+
+    @media(orientation: portrait) {
+	    #container {
+		    display: flex;
+		    flex-direction: column;
+		    min-width: 0;	
+		    width: 100%;
+
+		    margin: 0;
+	    }
     }
   </style>
 </head>

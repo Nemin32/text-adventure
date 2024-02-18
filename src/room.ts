@@ -103,7 +103,7 @@ const cases: Array<[RegExp, ActionKinds]> = [
   [/(?:press|push)(?: the)? (?<what>.*)/, "press"],
   [/(?:take|pick up|get)(?: the)? (?<what>.*)/, "take"],
   [/talk (?:with |to )?(?: the)?(?<what>.*)/, "talk"],
-  [/(?:enter(?: the)?|(?:move(?: to)?)|go) (?<what>.*)/, "enter"],
+  [/(?:(enter( the)?)|(move( to)?)|(go( to)?)) (?<what>.*)/, "enter"],
   [/(?:read)(?: the)? (?<what>.*)/, "read"],
   [/(?:jump|dive|pounce)(?: into(?: the)?)? (?<what>.*)/, "jump"],
   [/open (?<what>.*)/, "open"],

@@ -86,7 +86,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["door"],
       action: () => {
         if (flags.doorOpen) {
-          show("You try pressing against the open door and fall through into the next room");
+          show("You try pressing against the open door and fall through into the next room.");
           moveDir(Directions.Forward);
         } else {
           show("You press against the door with all your might, but this fight is won by the door.");
