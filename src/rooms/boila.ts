@@ -19,6 +19,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
         ),
     },
     {
+      trigger: ["keyhole"],
+      action: () => show("A hole for a small key.")
+    },
+    {
       trigger: ["generator"],
       action: () =>
         show(

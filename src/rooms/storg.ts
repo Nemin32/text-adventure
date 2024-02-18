@@ -68,6 +68,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
         }
       },
     },
+    {
+      trigger: ["door"],
+      action: () => show("It's already open.")
+    }
   ],
 
   use: [
@@ -149,6 +153,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
 });
 
 const description = (flags: flags) =>
-  `As far as you can see *boxes* are stacked haphazardly on each other. The little that still sticks out from the ones at the bottom seem positively ancient and you're not entirely certain how the whole place hadn't collapsed into itself already. The darkness of the room is somewhat illuminated by fires at the opposite end. It's probably for the best if you get what you need and get out, before it reaches here.\nAmidst the mess three boxes in particularly get your attention: A wooden *crate*, a metal *locker* and a *toolbox*. Everything else seems too securely locked or hard to get to, so you'd rather not bother with them.\nAs the path forward is blocked by flames, the only way is through the *door* back to the gas reservoirs.`;
+  `As far as you can see *boxes* are stacked haphazardly on each other. The little that still sticks out from the ones at the bottom seem positively ancient and you're not entirely certain how the whole place hadn't collapsed into itself already. The darkness of the room is somewhat illuminated by fires at the opposite end. It's probably for the best if you get what you need and get out, before it reaches here.\nAmidst the mess three boxes in particularly get your attention: A wooden *crate*, a metal *locker* and a *toolbox*. Everything else seems too securely locked or hard to get to, so you'd rather not bother with them.\nAs the path forward is blocked by flames, the only way is through the *door* on the right back to the gas reservoirs.`;
 
 export const storg = new Room({ gunFound: false }, actions, description, { door: Directions.Right });

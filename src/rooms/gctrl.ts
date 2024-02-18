@@ -42,11 +42,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
         const msg = `[[RFOS v2.0]]
 ${warnMsg}
 
-COMMANDS:
-1. Unlock elevator to the landing strip
-2. Unlock gas reservoirs
-3. Directory
-4. Employee tally`;
+COMMANDS (enter number to use):
+[1] Unlock elevator to the landing strip
+[2] Unlock gas reservoirs
+[3] Directory
+[4] Employee tally`;
 
         show(msg);
       },
@@ -159,6 +159,10 @@ COMMANDS:
         }
       },
     },
+    {
+      trigger: ["corridor"],
+      action: () => show("It's a dark path, but one you'll inevitably need to take.")
+    }
   ],
   take: [
     {
@@ -214,7 +218,7 @@ COMMANDS:
       action: () => show("You've seen a movie about this, but no."),
     },
     {
-      trigger: ["one", "1"],
+      trigger: ["one", "1", "unlock gate", "unlock elevator"],
       action: () => {
         if (!boila.getFlag("generatorFixed")) {
           show(
@@ -241,7 +245,7 @@ COMMANDS:
       },
     },
     {
-      trigger: ["two", "2"],
+      trigger: ["two", "2", "unlock gas", "unlock gas reservoirs"],
       action: () => {
         if (!flags.gasRoomOpen) {
           flags.gasRoomOpen = true;
@@ -254,7 +258,7 @@ COMMANDS:
       },
     },
     {
-      trigger: ["three", "3"],
+      trigger: ["three", "3", "directory"],
       action: () => {
         show(`The terminal hangs for a few seconds, then the following chart is printed:
 
@@ -283,7 +287,7 @@ STRIP: Landing strip`);
       },
     },
     {
-      trigger: ["four", "4"],
+      trigger: ["four", "4", "tally", "employee tally"],
       action: () =>
         show(
           "The terminal beeps before printing 'EMPLOYEES: 00, ESCAPEES: 99, CASUALTIES: 00'. To think that single schmuck could achieve this...\nYou really wish you had a loaded gun and a blue Mudokon in firing distance.",

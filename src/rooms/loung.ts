@@ -21,7 +21,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         flags.keyNoticed = true;
         show(
           `You see four hands on the table, one of them being a five of aces... Yeah, there is reason why you eventually stopped playing for Moolah. Upper management was incredibly unhappy with the amount of break-time fatalities.${
-            !player.hasItem(ITEM.KEY) ? " Huh there also seems to be a small *key* on the desk." : ""
+            !player.hasItem(ITEM.KEY) ? " Huh, there also seems to be a small *key* on the desk." : ""
           }`,
         );
       },
@@ -52,6 +52,39 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
   ],
   use: [
+    {
+      trigger: ["darts", "darts board", "board"],
+      action: ({tool}) => {
+        switch (tool as ITEM) {
+          case ITEM.WRENCH:
+            show("It's a bit too big for precise throwing.")
+            break;
+
+          case ITEM.KEYCARD:
+            show("You throw the card against the board, but it bounces off.")
+            break;
+
+          case ITEM.KEY:
+            show("You don't want to risk losing the key ricocheting away and disappearing in the junk.")
+            break;
+
+          case ITEM.BOSS:
+            show("It'd be too easy of a shot.")
+            break;
+
+          case ITEM.GUN:
+            show("You struggle to resist the urge, but that bullets needs to be used better.")
+            break;
+
+          case ITEM.HAT:
+            show("You throw your hat on the board and it lands perfectly. You place it back on your head proudly.")
+            break;
+
+          case ITEM.BREW:
+            show("No, I don't think that'd work.")
+        }
+      }
+    },
     {
       trigger: ["door", "booth", "security booth"],
       action: ({ tool }) => {

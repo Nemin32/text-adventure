@@ -45,7 +45,7 @@ const actions: ActionGenerator<flags> = (_) => ({
 });
 
 const description = (_: flags) =>
-  "You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* mounted on the wall, some of which still faintly glow, the having long had lost their power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside.\nTo The corridor continues to your left, while to your right is the way back to the execution chamber.";
+  "You find yourself in yet another dim corridor. The darkness inside is only illuminated by the occasional product *poster* mounted on the wall, some of which still faintly glow, the rest having long had lost their power. The *door* to the Boardroom hangs open next to you, light occasionally flickering on and off from the inside.\nTo The corridor continues to your left, while to your right is the way back to the execution chamber.";
 
 export const corrb = new Room({}, actions, description, {
   corridor: Directions.Left,

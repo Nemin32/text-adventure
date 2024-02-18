@@ -225,7 +225,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
           show("[[RFOS v2.0]]\nAll operations nominal. Have a very safe and productive day!");
         } else {
           show(
-            "[[RFOS v2.0]]\nATTENTION - Site-wide employee tally mismatch. Potential breakout in progress. Lockdown engaged, all commerce halted. Apply force, cull dissent, restore productivity.\n\nOPTIONS:\n1. Manually lift lockdown\n2. Flush lower levels with gas",
+            "[[RFOS v2.0]]\nATTENTION - Site-wide employee tally mismatch. Potential breakout in progress. Lockdown engaged, all commerce halted. Apply force, cull dissent, restore productivity.\n\nCOMMANDS (enter number to use):\n[1] Manually lift lockdown\n[2] Flush lower levels with gas",
           );
         }
       },

@@ -4,6 +4,11 @@ import { player } from "./player.ts";
 import { show } from "./display.ts";
 
 export const setRoom = (pos: [number, number], keepHistory = true) => {
+  if (pos[0] < 0 || pos[1] < 0) {
+    show("There is no path in that direction.");
+    return;
+  }
+
   const room = gameMap.at(pos[0])?.at(pos[1]);
 
   if (!room) {

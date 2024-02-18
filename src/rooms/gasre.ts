@@ -102,7 +102,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         switch (tool as ITEM) {
           case ITEM.WRENCH:
             flags.gasRedirected = true;
-            show("You switch over the valve.");
+            show("You switch over the valve. Gas begins to rush towards the maintenance room.");
             break;
 
           case ITEM.KEYCARD:
