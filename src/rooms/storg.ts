@@ -114,6 +114,21 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
   ],
 
+  jump: [
+    {
+      trigger: ["crate"],
+      action: () => show("Unless you can somehow shrink into the size of a quarter, no."),
+    },
+    {
+      trigger: ["locker"],
+      action: () => show("You skip over the locker. Back in Slaughter School you had to do dozens of this exercise."),
+    },
+    {
+      trigger: ["toolbox"],
+      action: () => show("You jump onto the toolbox and almost fall face first as your metal legs slide down from it."),
+    },
+  ],
+
   enter: [
     {
       trigger: ["crate"],

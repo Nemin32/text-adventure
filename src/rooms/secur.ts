@@ -11,6 +11,10 @@ const TERMINAL = ["terminal", "pc", "computer", "screen"];
 const actions: ActionGenerator<flags> = (flags) => ({
   enter: [
     {
+      trigger: TERMINAL,
+      action: () => show("Okay, but what command do you want to enter? Be more specific."),
+    },
+    {
       trigger: ["1997"],
       action: () => {
         if (!flags.safeOpened) {
@@ -22,7 +26,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       },
     },
     {
-      trigger: ["1"],
+      trigger: ["1", "lift", "lift lockdown"],
       action: () => {
         if (flags.lockdownLifted) {
           show("The terminal remains unresponsive.");
@@ -36,7 +40,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       },
     },
     {
-      trigger: ["2"],
+      trigger: ["2", "flush", "flush gas", "flush lower levels"],
       action: () => {
         if (flags.lockdownLifted) {
           show("The terminal remains unresponsive.");
@@ -53,6 +57,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
           show("Nah. Who would you even gas at this point?");
         }
       },
+    },
+    {
+      trigger: ["command", "commands"],
+      action: () => show("Sure, you'll just hack the mainframe and reticulate some splines. Be more specific."),
     },
   ],
   take: [
@@ -176,6 +184,20 @@ const actions: ActionGenerator<flags> = (flags) => ({
       },
     },
   ],
+  press: [
+    {
+      trigger: ["safe"],
+      action: () => show("You're far too wimpy to move the safe."),
+    },
+    {
+      trigger: TERMINAL,
+      action: () => show("These are delicate machines, you should *enter* some commands instead."),
+    },
+    {
+      trigger: ["1", "2", "one", "two"],
+      action: () => show("You'd rather not punch anything in aggressively. Try to *enter* them gently."),
+    },
+  ],
   read: [
     {
       trigger: ["note"],
@@ -213,6 +235,19 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["safe"],
       action: () => show(flags.safeOpened ? "The safe is already open" : "The safe is securely locked."),
+    },
+  ],
+  jump: [
+    {
+      trigger: TERMINAL,
+      action: () => show("*Mate,* no such *tricks* will work here."),
+    },
+    {
+      trigger: ["safe"],
+      action: () =>
+        show(
+          "You attempt to dropkick the safe. It goes so well that it takes you a good minute until you can scrape yourself together from the floor.",
+        ),
     },
   ],
 });

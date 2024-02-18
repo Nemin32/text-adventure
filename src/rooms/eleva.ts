@@ -52,6 +52,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
             : "A simple rotary phone. As you inspect it from closer, the line appears unharmed. Perhaps there is still a chance to call for help?",
         ),
     },
+    {
+      trigger: ["door"],
+      action: () => show("Yup, that's a door. It leads back into the depths of the facility."),
+    },
   ],
   read: [
     {

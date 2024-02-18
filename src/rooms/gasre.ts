@@ -64,6 +64,14 @@ const actions: ActionGenerator<flags> = (flags) => ({
           }.`,
         ),
     },
+    {
+      trigger: ["corridor"],
+      action: () => show("As far as you know a corridor is a type of path."),
+    },
+    {
+      trigger: ["door"],
+      action: () => show("It's, y'know, a door. Connects two separate rooms."),
+    },
   ],
   read: [
     {

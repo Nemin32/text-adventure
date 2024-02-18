@@ -25,6 +25,33 @@ const actions: ActionGenerator<flags> = (flags) => ({
       action: () => setRoom(ELEVA_POS),
     },
   ],
+  jump: [
+    {
+      trigger: ["ship", "blimp", "plane"],
+      action: () => {
+        if (player.hasItem(ITEM.BOSS)) {
+          setRoom(FINIS_POS);
+        } else {
+          show(
+            "You cannot leave the boss behind. As much of a moldy old swindler he is, he is still your boss. And more importantly, who else would pay for your legs and ammo?",
+          );
+        }
+      },
+    },
+    {
+      trigger: ["elevator", "lift"],
+      action: () => {
+        show("You throw yourself into the elevator and bash your fist against the lower floor button.");
+        setRoom(ELEVA_POS);
+      },
+    },
+  ],
+  use: [
+    {
+      trigger: ["ship", "blimp", "plane"],
+      action: () => show("There is no time to waste. Get into the ship!"),
+    },
+  ],
   look: [
     {
       trigger: ["blimp", "ship"],

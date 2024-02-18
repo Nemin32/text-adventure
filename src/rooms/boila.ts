@@ -128,7 +128,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
       trigger: ["generator"],
       action: () =>
         show(
-          "You open the small door on the side of the generator. An incomprehensible mess of wires, pipes, and eletronics stares back at you. You close the door.",
+          "You open the small door on the side of the generator. An incomprehensible mess of wires, pipes, and electronics stares back at you. You blink slowly, then close the door.",
         ),
     },
     {
@@ -137,7 +137,22 @@ const actions: ActionGenerator<flags> = (flags) => ({
         show(
           flags.boilerFixed
             ? "I don't think the furnace can get any more 'open' than that."
-            : "Being open is the very issue you're trying to solve.",
+            : "The furnace's mouth being open is the very issue you're trying to solve.",
+        ),
+    },
+  ],
+  jump: [
+    {
+      trigger: ["generator"],
+      action: () => show("The generator is too tall for you to jump onto."),
+    },
+    {
+      trigger: ["furnace", "boiler"],
+      action: () =>
+        show(
+          flags.boilerFixed
+            ? "You trample the smouldering wreckage to let out some steam. That felt good."
+            : "It is a common misconception that Sligs are fireproof. You're very much not. In fact you hate fire.",
         ),
     },
   ],

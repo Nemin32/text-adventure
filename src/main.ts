@@ -7,9 +7,8 @@ player.position = [...SPAWN_POS];
 player.currentRoom = gameMap[SPAWN_POS[0]][SPAWN_POS[1]];
 
 function act(str: string) {
-  show(str, true);
+  show(`> ${str}`, true);
   player.currentRoom?.doAction(str.toLowerCase());
-  player.stepCounter++;
 }
 
 // Generated using: https://patorjk.com/software/taag

@@ -17,7 +17,7 @@ const actions: ActionGenerator<flags> = (flags) => ({
         ),
     },
     {
-      trigger: ["maint", "maintenance"],
+      trigger: ["maintenance", "boiler", "boila", "ze boila", "boilah", "ze boilah"],
       action: () => show("A simple wooden door. A bit dirty from soot, but at the very least it's not locked."),
     },
   ],
@@ -102,7 +102,15 @@ export const corrc = new Room(
   {
     "gas reservoirs": Directions.Forward,
     gas: Directions.Forward,
+    reservoir: Directions.Forward,
+    reservoirs: Directions.Forward,
+
     maintenance: Directions.Backward,
+    boiler: Directions.Backward,
+    boilah: Directions.Backward,
+    boila: Directions.Backward,
+    "ze boilah": Directions.Backward,
+    "ze boila": Directions.Backward,
   },
   canMove,
 );
