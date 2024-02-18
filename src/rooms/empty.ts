@@ -4,6 +4,6 @@ type flags = Flags<never>;
 
 const actions: ActionGenerator<flags> = (flags) => ({});
 
-const description = (flags: flags) => ``;
+const description = (flags: flags) => "";
 
 export const room = new Room({}, actions, description);

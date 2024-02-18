@@ -1,6 +1,6 @@
-import { die, move } from "../movement.ts";
+import { die } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { gasre } from "./gasre.ts";

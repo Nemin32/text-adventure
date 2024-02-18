@@ -1,6 +1,6 @@
-import { move, setRoom } from "../movement.ts";
+import { setRoom } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { Directions, ITEM, ROOM_NAME, STRIP_POS } from "../constants.ts";
+import { Directions, ITEM, STRIP_POS } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { gctrl } from "./gctrl.ts";
@@ -168,7 +168,10 @@ const actions: ActionGenerator<flags> = (flags) => ({
     },
     {
       trigger: ["phone", "telephone"],
-      action: () => show("The phone is wired into the wall. You can't bring it with you."),
+      action: () =>
+        show(
+          "You pick up the receiver, then place it back. Wait, isn't there something else you had to do between these two actions?",
+        ),
     },
     {
       trigger: ["gate"],
@@ -210,13 +213,6 @@ const actions: ActionGenerator<flags> = (flags) => ({
     {
       trigger: ["gate"],
       action: () => show("You grab the gate by two arms, flex and... Nothing happens. What did you expect?"),
-    },
-    {
-      trigger: ["phone", "telephone"],
-      action: () =>
-        show(
-          "You pick up the receiver, then place it back. Wait, isn't there something else you had to do between these two actions?",
-        ),
     },
   ],
 });

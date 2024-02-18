@@ -1,6 +1,5 @@
-import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { Directions, ROOM_NAME } from "../constants.ts";
+import { Directions } from "../constants.ts";
 import { show } from "../display.ts";
 import { gctrl } from "./gctrl.ts";
 

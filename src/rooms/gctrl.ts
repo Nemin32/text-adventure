@@ -1,6 +1,5 @@
-import { move } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { ITEM, ROOM_NAME } from "../constants.ts";
+import { ITEM } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 import { boila } from "./boila.ts";
@@ -89,7 +88,7 @@ COMMANDS (enter number to use):
         switch (tool as ITEM) {
           case ITEM.WRENCH:
             show(
-              "You give the body a whack to see if he'll spring to life but all you hear is a moan. That's when you realize who you've just hit. Now you HAVE to get out of here.",
+              "You give the body a whack to see if he'll spring to life but all you hear is a moan. That's when you realize who you've just hit.\nNow you HAVE to get out of here.",
             ); // Thanks Oddey!
             break;
 

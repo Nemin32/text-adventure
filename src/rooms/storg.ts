@@ -1,6 +1,6 @@
-import { die, move } from "../movement.ts";
+import { die } from "../movement.ts";
 import { ActionGenerator, Flags, Room } from "../room.ts";
-import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM } from "../constants.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
 
@@ -148,6 +148,22 @@ const actions: ActionGenerator<flags> = (flags) => ({
         show(
           "You attempt compressing yourself to one tenth of your size to fit into the toolbox. You're unsuccessful.",
         ),
+    },
+  ],
+
+  read: [
+    {
+      trigger: ["locker", "gun locker"],
+      action: () =>
+        show("The locker has the following text on it: 'RoadKill Inc. - You order the weapon, We deliver it'."),
+    },
+    {
+      trigger: ["crate"],
+      action: () => show("'DANGER! HANDLE WITH CARE! OPEN ONLY IN SAFE ENVIRONMENTS!' That's reassuring..."),
+    },
+    {
+      trigger: ["toolbox"],
+      action: () => show("The toolbox has no discernible text on it."),
     },
   ],
 });

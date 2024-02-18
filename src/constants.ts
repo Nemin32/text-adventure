@@ -1,21 +1,3 @@
-export enum ROOM_NAME {
-  BOILA = "BOILA ",
-  CORRA = "CORRA ",
-  CORRB = "CORRB ",
-  CORRC = "CORRC",
-  ELEVA = "ELEVA ",
-  GASRE = "GASRE ",
-  GCTRL = "GCTRL ",
-  LOUNG = "LOUNG ",
-  SECUR = "SECUR ",
-  SPAWN = "SPAWN ",
-  STRIP = "STRIP ",
-  STORG = "STORG ",
-
-  DEATH = "DEATH",
-  FINIS = "FINIS",
-}
-
 // biome-ignore lint/suspicious/noConstEnum: <explanation>
 export const enum ITEM {
   WRENCH = "wrench",

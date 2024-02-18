@@ -1,5 +1,5 @@
 import { gameMap } from "./roomlist.ts";
-import { DEATH_POS, Directions, ROOM_NAME } from "./constants.ts";
+import { DEATH_POS, Directions } from "./constants.ts";
 import { player } from "./player.ts";
 import { show } from "./display.ts";
 
@@ -63,8 +63,4 @@ export function goBack() {
   } else {
     show("No previous room to go back to.");
   }
-}
-
-export function move(name: ROOM_NAME) {
-  show(`Tried to move to ${ROOM_NAME[name]}.`);
 }

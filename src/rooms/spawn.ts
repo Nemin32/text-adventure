@@ -1,8 +1,8 @@
 import { Flags, Room, ActionGenerator } from "../room.ts";
-import { die, move, moveDir } from "../movement.ts";
+import { die, moveDir } from "../movement.ts";
 import { show } from "../display.ts";
 import { player } from "../player.ts";
-import { DEATHS, Directions, ITEM, ROOM_NAME } from "../constants.ts";
+import { DEATHS, Directions, ITEM } from "../constants.ts";
 import { gctrl } from "./gctrl.ts";
 
 const MOLLUCK = ["boss", "molluck", "body"];
@@ -62,6 +62,27 @@ const actions: ActionGenerator<flags> = (flags) => ({
         show(
           "Despite the calamity, the saw spins on unbothered. For some reason the boss insisted on giving it its own power supply. 'For prisoner processing efficiency,' you recall him saying. So much for that.",
         ),
+    },
+  ],
+
+  enter: [
+    {
+      trigger: MOLLUCK,
+      action: () => show("Not in a million years, pal."),
+    },
+    {
+      trigger: ["meatsaw", "saw"],
+      action: () => {
+        if (!player.deaths.has(DEATHS.MEATSAW)) {
+          player.deaths.add(DEATHS.MEATSAW);
+          show(
+            "Against all sense and better judgement, you jump into the meatsaw. The blades effortlessly mince your meat, you hardly even have time to scream.",
+          );
+          die();
+        } else {
+          show("You feel a queer sense of déja vu and decide against the stupid idea.");
+        }
+      },
     },
   ],
 
@@ -203,11 +224,11 @@ const actions: ActionGenerator<flags> = (flags) => ({
           : show("You try to pry open the door, but it doesn't budge the slightest."),
     },
     {
-      trigger: ["meatsaw"],
+      trigger: ["meatsaw", "saw"],
       action: () => show("Don't you remember that's how you got into this situation in the first place?"),
     },
     {
-      trigger: ["body"],
+      trigger: MOLLUCK,
       action: () => show("Ew, no."),
     },
   ],
